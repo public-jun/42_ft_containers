@@ -1,30 +1,42 @@
 NAME := containers
 CXX := clang++
-CXXFLAGS := -Wall -Wextra -Werror -std=c++98 -pedantic -MMD -MP
+CXXFLAGS := -Wall -Wextra -Werror -std=c++98 -pedantic
 
 INCLUDE := -I./includes
 
-srcs := main.cpp
+srcsname := main.cpp
+srcsdir := ./
+srcs := $(addprefix $(srcsdir)/,$(srcsname))
 
-objs := $(srcs:.cpp=.o)
-depends := $(srcs:.cpp=.d)
+
+objsdir := ./obj
+objs := $(addprefix $(objsdir)/,$(srcsname:.cpp=.o))
+
+depsdir := ./deps
+depends := $(addprefix $(depsdir)/,$(srcsname:.cpp=.d))
+
+build := $(objsdir) $(depsdir)
+
 
 RM := rm -rf
 
-.PHONY: all
-all: $(NAME)
 
-$(NAME): $(objs)
+.PHONY: all
+all: $(build) $(NAME)
+
+$(NAME): $(objs) $(build)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $(NAME) $(objs)
 
-# .cpp.o:
-# 	$(CXX) $(CXXFLAGS) $(INCLUDE) -c  -o $@  $<
+$(objs): $(srcs)
+	$(CXX) $(CXXFLAGS) -MMD -MP -MF $(depends) $(INCLUDE) -c  -o $@ $<
 
--include $(depends)
+$(build):
+	mkdir -p $(build)
+
 .PHONY: clean
 clean:
 	$(RM) *.dSYM
-	$(RM) $(objs) $(depends)
+	$(RM) $(build)
 
 .PHONY: fclean
 fclean: clean
@@ -32,3 +44,5 @@ fclean: clean
 
 .PHONY: re
 re: fclean all
+
+-include $(depends)

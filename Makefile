@@ -17,18 +17,16 @@ depends := $(addprefix $(depsdir)/,$(srcsname:.cpp=.d))
 
 build := $(objsdir) $(depsdir)
 
-
 RM := rm -rf
-
 
 .PHONY: all
 all: $(build) $(NAME)
 
-$(NAME): $(objs) $(build)
+$(NAME): $(objs)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $(NAME) $(objs)
 
 $(objs): $(srcs)
-	$(CXX) $(CXXFLAGS) -MMD -MP -MF $(depends) $(INCLUDE) -c  -o $@ $<
+	$(CXX) $(CXXFLAGS) -c $< -MMD -MP -MF $(depends) $(INCLUDE) -o $@
 
 $(build):
 	mkdir -p $(build)

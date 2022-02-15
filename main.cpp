@@ -1,16 +1,18 @@
-#include <iostream>
-#include <string>
-#include <deque>
-#if 1 //CREATE A REAL STL EXAMPLE
-	#include <vector.hpp>
-	namespace ft = std;
-#else
-	#include <map.hpp>
-	#include <stack.hpp>
-	#include <vector.hpp>
-#endif
+// #include <iostream>
+// #include <string>
+// #include <deque>
+// #if 1 //CREATE A REAL STL EXAMPLE
+// 	#include <vectorp>
+// 	namespace ft = std;
+// #else
+// 	#include <map.hpp>
+// 	#include <stack.hpp>
+// 	#include <vector.hpp>
+// #endif
 
-#include <stdlib.h>
+// #include <stdlib.h>
+
+#include <tester.hpp>
 
 #define MAX_RAM 4294967296
 #define BUFFER_SIZE 4096

@@ -86,9 +86,9 @@ test: $(result)
 
 ft: $(result)
 	$(CXX) $(CXXFLAGS) -DTEST=0 $(srcs)  $(INCLUDE) -o $(NAME)
-	@./$(NAME) > $(ft_out) 2>$(ft_err) ||:
-	@cat $(ft_out)
-	@cat $(ft_err)
+	# @./$(NAME) > $(ft_out) 2>$(ft_err) ||:
+	# @cat $(ft_out)
+	# @cat $(ft_err)
 
 std: $(result)
 	$(CXX) $(CXXFLAGS) -DTEST=1 $(srcs)  $(INCLUDE) -o $(NAME)

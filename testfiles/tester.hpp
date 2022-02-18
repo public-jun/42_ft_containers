@@ -28,12 +28,16 @@ namespace ft = std;
 #include <string>
 #include <typeinfo>  //typeid
 
-// #define cout std::cout
-// #define endl std::endl
-// #define cerr std::cerr
-// #define rep(i, n) for (int i = 0; i < n; ++i)
+#define cout std::cout
+#define endl std::endl
+#define cerr std::cerr
+#define rep(i, n) for (int i = 0; i < n; ++i)
 
 //// tester
+/**********************/
+/*     tutorial.cpp   */
+/**********************/
+void tutorial_test(void);
 
 //// helper
 

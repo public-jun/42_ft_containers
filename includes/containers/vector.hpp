@@ -29,6 +29,7 @@ public:
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
     // コンストラクタ
+    // cppreference(https://en.cppreference.com/w/cpp/container/vector/vector)
     vector() : vector(allocator_type()) {}
     vector(const allocator_type& alloc) noexcept : alloc(alloc) {}
     vector(size_type size, const allocator_type& alloc = allocator_type())
@@ -42,6 +43,77 @@ public:
     {
         resize(size, value);
     }
+    template <typename InputIterator>
+    vector(InputIterator first, InputIterator last,
+           const Allocator& = Allocator())
+    {
+        reserve(std::distance(first, last));
+        for (auto i = first; i != last; ++i)
+        {
+            push_back(*i);
+        }
+    }
+
+    // コピーコンストラクタ
+    // コンテナのコピーにあたってアロケータをコピーすべきかどうかは、アロケータの実装が選べるようになっている
+    vector(const vector& r)
+        : alloc(traits::select_on_container_copy_construction(r.alloc))
+    {
+        // コピー処理
+        // 1. コピー元の要素数を保持できるだけのストレージを確保
+        reserve(r.size());
+        // 2. コピー元の要素をコピー構築
+        // dest はコピー先
+        // [src, last) はコピー元
+        for (auto dest = first, src = r.begin(), last = r.end(); src != last;
+             ++dest, ++src)
+        {
+            construct(dest, *src);
+        }
+        last = first + r.size();
+    }
+
+    // コピー代入演算子
+    vector& operator=(const vector& r)
+    {
+        // 1. 自分自身への代入なら何もしない
+        if (this == &r)
+            return *this;
+
+        // 2. 要素数が同じならば
+        if (size() == r.size())
+        {
+            // 要素ごとにコピー代入
+            std::copy(r.begin(), r.end(), begin());
+        }
+        // 3. それ以外の場合で
+            // 予約数が十分ならば、
+        else if (capacity() >= r.size())
+        {
+            // 有効な要素はコピー
+            std::copy(r.begin(), r.begin() + r.size(), begin());
+            // 残りはコピー構築
+            for (auto src_iter = r.begin() + r.size(), src_end = r.end(); src_iter != src_end; ++src_iter, ++last)
+            {
+                construct(last, *src_iter);
+            }
+        }
+        // 4. 予約数が不十分ならば
+        else
+        {
+            // 要素を全て破棄
+            destroy_all();
+            // 予約
+            reserve(r.size());
+            // コピー構築
+            for (auto src_iter = r.begin(), src_end = r.end(), dest_iter = begin(); src_iter != src_end; ++src_iter, ++dest_iter, ++last)
+            {
+                construct(dest_iter, *src_iter);
+            }
+        }
+        return *this;
+    }
+
     // デストラクタ
     ~vector()
     {
@@ -51,8 +123,8 @@ public:
         deallocate();
     }
     // コピー
-    vector(const vector& x);
-    vector& operator=(const vector& x);
+    // vector(const vector& x);
+    // vector& operator=(const vector& x);
 
     //********************//
     //   メンバ関数       //

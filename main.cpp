@@ -14,13 +14,17 @@
 
 #include <tester.hpp>
 
-int main()
-{
-    ft::vector<int> v(10, 1);
-    // v[2] = 99;
-    // v.resize(5);
-    // vは{1,1,99,1,1}
+int main() {
+    tutorial_test();
+    return 0;
 }
+// int main()
+// {
+//     ft::vector<int> v(10, 1);
+//     v[2] = 99;
+//     v.resize(5);
+//     vは{1,1,99,1,1}
+// }
 
 // #define MAX_RAM 4294967296
 // #define BUFFER_SIZE 4096

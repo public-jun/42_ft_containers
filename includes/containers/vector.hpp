@@ -30,22 +30,36 @@ public:
 
     // コンストラクタ
     // cppreference(https://en.cppreference.com/w/cpp/container/vector/vector)
+    // (1)
     vector() : vector(allocator_type()) {}
-    vector(const allocator_type& alloc) noexcept : alloc(alloc) {}
-    vector(size_type size, const allocator_type& alloc = allocator_type())
-        : vector(alloc)
+    // (2)
+    explicit vector(const allocator_type& alloc) noexcept : first(NULL),
+                                                            last(NULL),
+                                                            reserved_last(NULL),
+                                                            alloc(alloc)
     {
-        resize(size);
     }
-    vector(size_type size, const_reference value,
+    // c++11なので除外
+    // explicit vector(size_type size,
+    //                 const allocator_type& alloc = allocator_type())
+    //     : vector(alloc)
+    // {
+    //     resize(size);
+    // }
+    // (3)
+    vector(size_type count, const T& value = T(),
            const allocator_type& alloc = allocator_type())
         : vector(alloc)
     {
-        resize(size, value);
+        resize(count, value);
     }
+    // (4)
     template <typename InputIterator>
     vector(InputIterator first, InputIterator last,
-           const Allocator& = Allocator())
+           const Allocator& allocator                    = Allocator(),
+           typename std::enable_if<!std::is_integral<InputIterator>::value,
+                                   InputIterator>::type* = NULL)
+        : first(NULL), last(NULL), reserved_last(NULL), alloc(allocator)
     {
         reserve(std::distance(first, last));
         for (auto i = first; i != last; ++i)
@@ -87,13 +101,14 @@ public:
             std::copy(r.begin(), r.end(), begin());
         }
         // 3. それ以外の場合で
-            // 予約数が十分ならば、
+        // 予約数が十分ならば、
         else if (capacity() >= r.size())
         {
             // 有効な要素はコピー
             std::copy(r.begin(), r.begin() + r.size(), begin());
             // 残りはコピー構築
-            for (auto src_iter = r.begin() + r.size(), src_end = r.end(); src_iter != src_end; ++src_iter, ++last)
+            for (auto src_iter = r.begin() + r.size(), src_end = r.end();
+                 src_iter != src_end; ++src_iter, ++last)
             {
                 construct(last, *src_iter);
             }
@@ -102,11 +117,13 @@ public:
         else
         {
             // 要素を全て破棄
-            destroy_all();
+            destroy_until(rbegin()); // destroy_all()
             // 予約
             reserve(r.size());
             // コピー構築
-            for (auto src_iter = r.begin(), src_end = r.end(), dest_iter = begin(); src_iter != src_end; ++src_iter, ++dest_iter, ++last)
+            for (auto src_iter = r.begin(), src_end = r.end(),
+                      dest_iter = begin();
+                 src_iter != src_end; ++src_iter, ++dest_iter, ++last)
             {
                 construct(dest_iter, *src_iter);
             }
@@ -149,10 +166,10 @@ public:
             throw std::out_of_range("index is out of range.");
         return first[i];
     }
-    reference front() { return first; }
-    const_reference front() const { return first; }
-    reference back() { return last - 1; }
-    const_reference back() const { return last - 1; }
+    reference front() { return *first; }
+    const_reference front() const { return *first; }
+    reference back() { return *(last - 1); }
+    const_reference back() const { return *(last - 1); }
     pointer data() noexcept { return first; }
     const_pointer data() const noexcept { return first; }
 
@@ -187,18 +204,13 @@ public:
         auto ptr = allocate(sz);
 
         // 古いストレージの情報を保存
-        auto old_first = first;
-        auto old_last  = last;
-        // auto old_capacity = capacity();
+        auto old_first    = first;
+        auto old_last     = last;
+        auto old_capacity = capacity();
 
         first         = ptr;
         last          = first;
         reserved_last = first + sz;
-
-        // 例外安全のため
-        // 関数を抜けるときに古いストレージを破棄する
-        // std::scope_exit e(
-        //     [&] { traits::dellocate(alloc, old_first, old_capacity); });
 
         // 古いストレージから新しいストレージに要素をコピー構築
         //  実際にはムーブ構築
@@ -217,7 +229,9 @@ public:
         {
             destroy(&*riter);
         }
-        // scope_exit によって自動的にストレージが破棄される
+        // scope_exit
+        // によって自動的にストレージが破棄され亡くなるので、deallocate を追記
+        alloc.deallocate(old_first, old_capacity);
     }
 
     void resize(size_type sz)

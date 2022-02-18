@@ -8,7 +8,8 @@ NAME := container
 #####################################
 CXX := clang++
 #CXXFLAGS := -Wall -Wextra -Werror -std=c++98 -pedantic
-CXXFLAGS := -Wall -Wextra -Werror
+# CXXFLAGS := -Wall -Wextra -Werror
+CXXFLAGS := -Wall -Wextra
 
 #####################################
 #	Include header				 	#
@@ -74,7 +75,7 @@ $(NAME): $(objs)
 	$(CXX) $(CXXFLAGS) -DTEST=1 $(INCLUDE) -o $(NAME) $(objs)
 
 test: $(result)
-	$(CXX) $(CXXFLAGS) -DTEST=0 $(srcs)  $(INCLUDE) -o $(NAME)
+	$(CXX) $(CXXFLAGS) -DTEST=0 $(srcs) $(testdir)/tutorial.cpp  $(INCLUDE) -o $(NAME)
 	@./$(NAME) > $(ft_out) 2>$(ft_err)
 	$(CXX) $(CXXFLAGS) -DTEST=1 $(srcs)  $(INCLUDE) -o $(NAME)
 	@./$(NAME) > $(std_out) 2>$(std_err)
@@ -85,7 +86,7 @@ test: $(result)
 	@cat $(std_err)
 
 ft: $(result)
-	$(CXX) $(CXXFLAGS) -DTEST=0 $(srcs)  $(INCLUDE) -o $(NAME)
+	$(CXX) $(CXXFLAGS) -DTEST=0 $(srcs) $(testdir)/tutorial.cpp $(INCLUDE) -o $(NAME)
 	# @./$(NAME) > $(ft_out) 2>$(ft_err) ||:
 	# @cat $(ft_out)
 	# @cat $(ft_err)

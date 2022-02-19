@@ -65,6 +65,59 @@ struct iterator_traits<const T*> {
     typedef ft::random_access_iterator_tag iterator_category;
 };
 
+/// reverse_iterator
+template <class Iter>
+class reverse_iterator
+    : public iterator<typename ft::iterator_traits<Iter>::iterator_category,
+                      typename ft::iterator_traits<Iter>::value_type,
+                      typename ft::iterator_traits<Iter>::difference_type,
+                      typename ft::iterator_traits<Iter>::pointer,
+                      typename ft::iterator_traits<Iter>::reference>
+{
+protected:
+    // Member objects
+    Iter current_;
+    typedef ft::iterator_traits<Iter> traits_type;
+
+public:
+    // Member type
+    typedef Iter iterator_type;
+    typedef typename traits_type::iterator_category iterator_category;
+    typedef typename traits_type::value_type value_type;
+    typedef typename traits_type::difference_type difference_type;
+    typedef typename traits_type::pointer pointer;
+    typedef typename traits_type::reference reference;
+
+    // Member functions
+    //// constructor
+    reverse_iterator() : current_() {}
+    explicit reverse_iterator(iterator_type x) : current_(x) {}
+    template <class U>
+    reverse_iterator(const reverse_iterator<U>& other) : current_(other.base())
+    {}
+
+    //// destructor
+    virtual ~reverse_iterator() {}
+
+    iterator_type base() const { return current_; }
+
+    // operators
+    template <class U>
+    reverse_iterator& operator=(const reverse_iterator<U>& other)
+    {
+        current_ = other.base();
+        return *this;
+    }
+
+    //// Dereference iterator
+    reference operator*() const
+    {
+        Iter tmp = current_;
+        return *--tmp;
+    }
+    pointer operator->() const { return &(operator*()); }
+};
+
 }; // namespace ft
 
 #endif

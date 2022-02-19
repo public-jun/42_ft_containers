@@ -5,8 +5,7 @@
 #include <iterator>
 #include <limits>
 
-namespace ft
-{
+namespace ft {
 
 template <typename T, typename Allocator = std::allocator<T> >
 class vector
@@ -37,8 +36,7 @@ public:
                                                             last(NULL),
                                                             reserved_last(NULL),
                                                             alloc(alloc)
-    {
-    }
+    {}
     // c++11なので除外
     // explicit vector(size_type size,
     //                 const allocator_type& alloc = allocator_type())

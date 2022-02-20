@@ -116,6 +116,49 @@ public:
         return *--tmp;
     }
     pointer operator->() const { return &(operator*()); }
+
+    reference operator[](difference_type n) const { return *(*this + n); }
+
+    reverse_iterator& operator++()
+    {
+        --current_;
+        return *this;
+    }
+    reverse_iterator& operator--()
+    {
+        ++current_;
+        return *this;
+    }
+    reverse_iterator operator++(int)
+    {
+        reverse_iterator tmp = *this;
+        ++(*this);
+        return tmp;
+    }
+    reverse_iterator operator--(int)
+    {
+        reverse_iterator tmp = *this;
+        --(*this);
+        return tmp;
+    }
+    reverse_iterator operator+(difference_type n) const
+    {
+        return reverse_iterator(current_ - n);
+    }
+    reverse_iterator operator-(difference_type n) const
+    {
+        return reverse_iterator(current_ + n);
+    }
+    reverse_iterator& operator+=(difference_type n)
+    {
+        current_ -= n;
+        return *this
+    }
+    reverse_iterator& operator-=(difference_type n)
+    {
+        current_ += n;
+        return *this;
+    }
 };
 
 }; // namespace ft

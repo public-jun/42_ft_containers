@@ -1,4 +1,5 @@
 #include "tester.hpp"
+#include <iterator.hpp>
 #include <array>
 
 template <typename T>
@@ -279,5 +280,21 @@ void tutorial_test()
             v.push_back(i);
         ft::vector<int> w = v;
         // wは{1,2,3,4,5}
+    }
+
+    {
+        // reverse_iterator
+        ft::vector<int> myvector;
+        for (int i = 0; i < 10; i++)
+            myvector.push_back(i);
+
+        typedef ft::vector<int>::iterator iter_type;
+        ft::reverse_iterator<iter_type> rev_end(myvector.begin());
+        ft::reverse_iterator<iter_type> rev_begin(myvector.end());
+
+        cout << "myvector:";
+        for (iter_type it = rev_end.base(); it != rev_begin.base(); ++it)
+            cout << ' ' << *it;
+        cout << '\n';
     }
 }

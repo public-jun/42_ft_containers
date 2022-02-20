@@ -152,7 +152,7 @@ public:
     reverse_iterator& operator+=(difference_type n)
     {
         current_ -= n;
-        return *this
+        return *this;
     }
     reverse_iterator& operator-=(difference_type n)
     {

@@ -18,8 +18,6 @@
 
 int main() {
     tutorial_test();
-    // std::iterator_traits
-    // std::reverse_iterator;
     return 0;
 }
 // int main()

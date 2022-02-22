@@ -82,6 +82,100 @@ public:
     }
 };
 
+// Non member functions
+//// operator==
+template <class Iterator>
+bool operator==(const wrap_iter<Iterator>& lhs, const wrap_iter<Iterator>& rhs)
+{
+    return lhs.base() == rhs.base();
+}
+template <class Iterator1, class Iterator2>
+bool operator==(const wrap_iter<Iterator1>& lhs,
+                const wrap_iter<Iterator2>& rhs)
+{
+    return lhs.base() == rhs.base();
+}
+
+//// operator!=
+template <class Iterator>
+bool operator!=(const wrap_iter<Iterator>& lhs, const wrap_iter<Iterator>& rhs)
+{
+    return lhs.base() != rhs.base()
+}
+template <class Iterator1, class Iterator2>
+bool operator!=(const wrap_iter<Iterator1>& lhs,
+                const wrap_iter<Iterator2>& rhs)
+{
+    return lhs.base() != rhs.base();
+}
+
+//// operator<
+template <class Iterator>
+bool operator<(const wrap_iter<Iterator>& lhs, const wrap_iter<Iterator>& rhs)
+{
+    return lhs.base() < rhs.base();
+}
+template <class Iterator1, class Iterator2>
+bool operator<(const wrap_iter<Iterator1>& lhs, const wrap_iter<Iterator2>& rhs)
+{
+    return lhs.base() < rhs.base();
+}
+
+//// operator<=
+template <class Iterator>
+bool operator<=(const wrap_iter<Iterator>& lhs, const wrap_iter<Iterator>& rhs)
+{
+    return lhs.base() <= rhs.base();
+}
+template <class Iterator1, class Iterator2>
+bool operator<=(const wrap_iter<Iterator1>& lhs,
+                const wrap_iter<Iterator2>& rhs)
+{
+    return lhs.base() <= rhs.base();
+}
+
+//// operator>
+template <class Iterator>
+bool operator>(const wrap_iter<Iterator>& lhs, const wrap_iter<Iterator>& rhs)
+{
+    return lhs.base() > rhs.base();
+}
+template <class Iterator1, class Iterator2>
+bool operator>(const wrap_iter<Iterator1>& lhs, const wrap_iter<Iterator2>& rhs)
+{
+    return lhs.base() > rhs.base();
+}
+
+//// operator>=
+template <class Iterator>
+bool operator>=(const wrap_iter<Iterator>& lhs, const wrap_iter<Iterator>& rhs)
+{
+    return lhs.base() >= rhs.base();
+}
+template <class Iterator1, class Iterator2>
+bool operator>=(const wrap_iter<Iterator1>& lhs,
+                const wrap_iter<Iterator2>& rhs)
+{
+    return lhs.base() >= rhs.base();
+}
+
+//// operator+
+template <class Iterator>
+wrap_iter<Iterator> operator+(typename wrap_iter<Iterator>::difference_type n,
+                              wrap_iter<Iterator> it)
+{
+    it += n;
+    return it;
+}
+
+//// operator-
+template <class Iterator1, class Iterator2>
+typename wrap_iter<Iterator1>::difference_type
+operator-(const wrap_iter<Iterator1>& lhs, const wrap_iter<Iterator2>& rhs)
+{
+    return lhs.base() - rhs.base();
+}
+
 }; // namespace ft
 
 #endif /* WRAP_ITER_HPP */

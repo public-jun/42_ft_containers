@@ -1,7 +1,8 @@
 #####################################
 #	Program name				 	#
 #####################################
-NAME := container
+NAME_STL := stl_container
+NAME_FT := ft_container
 
 #####################################
 #	Compile option				 	#
@@ -20,32 +21,39 @@ INCLUDE := -I./includes/containers -I./includes/utils
 #####################################
 #	Src							 	#
 #####################################
-srcsname := main.cpp
-srcsdir := .
+srcsname := main.cpp tutorial.cpp
+srcsdir := ./testfiles
 srcs := $(addprefix $(srcsdir)/,$(srcsname))
 
 #####################################
 #	Test 						 	#
 #####################################
-testdir := ./testfiles
 INCLUDE += -I./testfiles
 
 #####################################
 #	.o files					 	#
 #####################################
-objsdir := ./obj
-objs := $(addprefix $(objsdir)/,$(srcsname:.cpp=.o))
+OBJDIR_STL := ./obj_stl
+OBJS_STL := $(addprefix $(OBJDIR_STL)/,$(srcsname:.cpp=.o))
+
+OBJDIR_FT := ./obj_ft
+OBJS_FT := $(addprefix $(OBJDIR_FT)/,$(srcsname:.cpp=.o))
 
 #####################################
 #	.d files					 	#
 #####################################
-depsdir := ./deps
-depends := $(addprefix $(depsdir)/,$(srcsname:.cpp=.d))
+DEPSDIR_STL := ./deps_stl
+DEPS_STL := $(addprefix $(DEPSDIR_STL)/,$(srcsname:.cpp=.d));
+DEPFLAG_STL = -MT $@ -MMD -MP -MF $(DEPSDIR_STL)/$*.d
+
+DEPSDIR_FT := ./deps_ft
+DEPS_FT := $(addprefix $(DEPSDIR_FT)/,$(srcsname:.cpp=.d));
+DEPFLAG_FT = -MT $@ -MMD -MP -MF $(DEPSDIR_FT)/$*.d
 
 #####################################
 #	build files					 	#
 #####################################
-build := $(objsdir) $(depsdir)
+build := $(OBJDIR_STL) $(DEPSDIR_STL) $(OBJDIR_FT) $(DEPSDIR_FT)
 
 #####################################
 #	result files				 	#
@@ -53,8 +61,8 @@ build := $(objsdir) $(depsdir)
 result := ./result
 ft_out := $(result)/ft_out
 ft_err := $(result)/ft_err
-std_out := $(result)/std_out
-std_err := $(result)/std_err
+stl_out := $(result)/stl_out
+stl_err := $(result)/stl_err
 
 #####################################
 #	Remove option				 	#
@@ -62,40 +70,46 @@ std_err := $(result)/std_err
 RM := rm -rf
 
 .PHONY: all
-all: $(build) $(NAME)
+all: $(build) $(NAME_STL) $(NAME_FT)
 
 $(build):
 	mkdir -p $(build)
 
-$(objs): $(srcs)
-	$(CXX) $(CXXFLAGS) -DTEST=1 -c $< -MMD -MP -MF $(depends) $(INCLUDE) -o $@
+$(NAME_STL): $(OBJS_STL)
+	$(CXX) $(CXXFLAGS) -DTEST=1 $(INCLUDE) -o $(NAME_STL) $(OBJS_STL)
 
-# '-DTEST=1' call std::
-$(NAME): $(objs)
-	$(CXX) $(CXXFLAGS) -DTEST=1 $(INCLUDE) -o $(NAME) $(objs)
+$(NAME_FT): $(OBJS_FT)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $(NAME_FT) $(OBJS_FT)
+
+$(OBJDIR_STL)/%.o: $(srcsdir)/%.cpp  | $(DEPSDIR_STL)
+	$(CXX) $(CXXFLAGS) $(DEPFLAG_STL) -DTEST=1 -c ./$< $(INCLUDE) -o $@
+
+$(OBJDIR_FT)/%.o: $(srcsdir)/%.cpp  | $(DEPSDIR_FT)
+	$(CXX) $(CXXFLAGS) $(DEPFLAG_FT) -c ./$< $(INCLUDE) -o $@
+
 
 test: $(result)
-	$(CXX) $(CXXFLAGS) -DTEST=0 $(srcs) $(testdir)/tutorial.cpp  $(INCLUDE) -o $(NAME)
-	@./$(NAME) > $(ft_out) 2>$(ft_err)
-	$(CXX) $(CXXFLAGS) -DTEST=1 $(srcs)  $(INCLUDE) -o $(NAME)
-	@./$(NAME) > $(std_out) 2>$(std_err)
-	diff out_ft out_std ||:
+	$(CXX) $(CXXFLAGS) -DTEST=0 $(srcs) $(INCLUDE) -o $(NAME_FT)
+	@./$(NAME_FT) > $(ft_out) 2>$(ft_err)
+	$(CXX) $(CXXFLAGS) -DTEST=1 $(srcs)  $(INCLUDE) -o $(NAME_STL)
+	@./$(NAME_STL) > $(stl_out) 2>$(stl_err)
+	diff $(ft_out) $(stl_out) ||:
 	@echo "---ft_err---"
 	@cat $(ft_err)
-	@echo "---std_err---"
-	@cat $(std_err)
+	@echo "---stl_err---"
+	@cat $(stl_err)
 
 ft: $(result)
-	$(CXX) $(CXXFLAGS) -DTEST=0 $(srcs) $(testdir)/tutorial.cpp $(INCLUDE) -o $(NAME)
-	# @./$(NAME) > $(ft_out) 2>$(ft_err) ||:
-	# @cat $(ft_out)
-	# @cat $(ft_err)
+	$(CXX) $(CXXFLAGS) -DTEST=0 $(srcs) $(INCLUDE) -o $(NAME_FT)
+	@./$(NAME_FT) > $(ft_out) 2>$(ft_err) ||:
+	@cat $(ft_out)
+	@cat $(ft_err)
 
-std: $(result)
-	$(CXX) $(CXXFLAGS) -DTEST=1 $(srcs)  $(INCLUDE) -o $(NAME)
-	@./$(NAME) > $(std_out) 2>$(std_err) ||:
-	@cat $(std_out)
-	@cat $(std_err)
+stl: $(result)
+	$(CXX) $(CXXFLAGS) -DTEST=1 $(srcs)  $(INCLUDE) -o $(NAME_STL)
+	@./$(NAME_STL) > $(stl_out) 2>$(stl_err) ||:
+	@cat $(stl_out)
+	@cat $(stl_err)
 
 $(result):
 	mkdir -p $(result)
@@ -107,9 +121,9 @@ clean:
 
 .PHONY: fclean
 fclean: clean
-	$(RM) $(NAME) $(result)
+	$(RM) $(NAME_STL) $(NAME_FT) $(result)
 
 .PHONY: re
 re: fclean all
 
--include $(depends)
+-include $(DEPS_STL) $(DEPS_FT)

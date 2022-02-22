@@ -10,6 +10,7 @@
 namespace ft = std;
 #else    // -DTEST=0
 #include <vector.hpp>
+#include <iterator.hpp>
 #endif
 
 

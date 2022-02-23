@@ -10,7 +10,9 @@
 namespace ft = std;
 #else    // -DTEST=0
 #include <vector.hpp>
-#include <iterator.hpp>
+#include <iterator_traits.hpp>
+#include <reverse_iterator.hpp>
+#include <wrap_iter.hpp>
 #endif
 
 

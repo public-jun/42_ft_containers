@@ -1,7 +1,7 @@
 #ifndef WRAP_ITER_HPP
 #define WRAP_ITER_HPP
 
-#include <iterator.hpp>
+#include <iterator_traits.hpp>
 
 namespace ft {
 template <class Iter>
@@ -100,7 +100,7 @@ bool operator==(const wrap_iter<Iterator1>& lhs,
 template <class Iterator>
 bool operator!=(const wrap_iter<Iterator>& lhs, const wrap_iter<Iterator>& rhs)
 {
-    return lhs.base() != rhs.base()
+    return lhs.base() != rhs.base();
 }
 template <class Iterator1, class Iterator2>
 bool operator!=(const wrap_iter<Iterator1>& lhs,

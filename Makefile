@@ -43,11 +43,11 @@ OBJS_FT := $(addprefix $(OBJDIR_FT)/,$(srcsname:.cpp=.o))
 #	.d files					 	#
 #####################################
 DEPSDIR_STL := ./deps_stl
-DEPS_STL := $(addprefix $(DEPSDIR_STL)/,$(srcsname:.cpp=.d));
+DEPS_STL := $(addprefix $(DEPSDIR_STL)/,$(srcsname:.cpp=.d))
 DEPFLAG_STL = -MT $@ -MMD -MP -MF $(DEPSDIR_STL)/$*.d
 
 DEPSDIR_FT := ./deps_ft
-DEPS_FT := $(addprefix $(DEPSDIR_FT)/,$(srcsname:.cpp=.d));
+DEPS_FT := $(addprefix $(DEPSDIR_FT)/,$(srcsname:.cpp=.d))
 DEPFLAG_FT = -MT $@ -MMD -MP -MF $(DEPSDIR_FT)/$*.d
 
 #####################################

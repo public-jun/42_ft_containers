@@ -12,6 +12,7 @@ namespace ft = std;
 #include <vector.hpp>
 #include <iterator_traits.hpp>
 #include <reverse_iterator.hpp>
+#include <utils.hpp>
 #include <wrap_iter.hpp>
 #endif
 

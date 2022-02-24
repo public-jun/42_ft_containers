@@ -13,9 +13,14 @@
 // #include <stdlib.h>
 
 #include <tester.hpp>
+#include <type_traits>
 
 int main() {
     tutorial_test();
+    if (ft::is_integral<float>::value == true)
+        cout << "value is true" << endl;
+    else
+        cout << "value is false" << endl;
     return 0;
 }
 // int main()

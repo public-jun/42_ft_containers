@@ -2,6 +2,9 @@
 #define UTILS_HPP
 
 namespace ft {
+
+/* is_integral PART */
+
 template <class _Tp, _Tp __v>
 struct integral_constant {
     static const _Tp value = __v;
@@ -14,29 +17,6 @@ struct integral_constant {
 typedef integral_constant<bool, true> true_type;
 // integral_constantの特殊化false_type
 typedef integral_constant<bool, false> false_type;
-
-/// remove_cv
-//// remove const
-template <class _Tp>
-struct remove_cv {
-    typedef _Tp type;
-};
-template <class _Tp>
-struct remove_cv<const _Tp> {
-    typedef _Tp type;
-};
-/*
-** volatile ... コンパイルの最適化を抑制する修飾子
-*/
-//// remove volatile
-template <class _Tp>
-struct remove_cv<volatile _Tp> {
-    typedef _Tp type;
-};
-template <class _Tp>
-struct remove_cv<const volatile _Tp> {
-    typedef _Tp type;
-};
 
 /// is_same
 template <class _Tp, class _Up>
@@ -70,6 +50,29 @@ struct is_integral_helper<long> : public true_type {};
 template <>
 struct is_integral_helper<unsigned long> : public true_type {};
 
+/// remove_cv
+//// remove const
+template <class _Tp>
+struct remove_cv {
+    typedef _Tp type;
+};
+template <class _Tp>
+struct remove_cv<const _Tp> {
+    typedef _Tp type;
+};
+/*
+** volatile ... コンパイルの最適化を抑制する修飾子
+*/
+//// remove volatile
+template <class _Tp>
+struct remove_cv<volatile _Tp> {
+    typedef _Tp type;
+};
+template <class _Tp>
+struct remove_cv<const volatile _Tp> {
+    typedef _Tp type;
+};
+
 // is_integral
 /*
 ** ex. is_integral<int>::value == true
@@ -78,6 +81,21 @@ struct is_integral_helper<unsigned long> : public true_type {};
 template <class _Tp>
 struct is_integral : is_integral_helper<typename remove_cv<_Tp>::type>::type {};
 
+/* is_integral PART END */
+
+/* enable_if PART */
+
+// Primary template.
+template <bool, class _Tp = void>
+struct enable_if {};
+
+// Partial specialization for true.
+template <class _Tp>
+struct enable_if<true, _Tp> {
+    typedef _Tp type;
+};
+
+/* enabel_if PART END */
 }; // namespace ft
 
 #endif /* UTILS_HPP */

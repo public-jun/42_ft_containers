@@ -10,7 +10,7 @@ NAME_FT := ft_container
 CXX := clang++
 #CXXFLAGS := -Wall -Wextra -Werror -std=c++98 -pedantic
 # CXXFLAGS := -Wall -Wextra -Werror
-CXXFLAGS := -Wall -Wextra
+CXXFLAGS := -Wall -Wextra -g
 
 #####################################
 #	Include header				 	#

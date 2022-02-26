@@ -12,20 +12,20 @@ class vector
 {
 public:
     // value_type などのネストされた型名
-    using value_type      = T;
-    using pointer         = T*;
-    using const_pointer   = const pointer;
-    using reference       = value_type&;
-    using const_reference = const value_type&;
-    using allocator_type  = Allocator;
-    using size_type       = std::size_t;
-    using difference_type = std::ptrdiff_t;
+    typedef T value_type;
+    typedef T* pointer;
+    typedef const pointer const_pointer;
+    typedef value_type& reference;
+    typedef const value_type& const_reference;
+    typedef Allocator allocator_type;
+    typedef std::size_t size_type;
+    typedef std::ptrdiff_t difference_type;
 
     // イテレータのエイリアス
-    using iterator               = pointer;
-    using const_iterator         = const_pointer;
-    using reverse_iterator       = std::reverse_iterator<iterator>;
-    using const_reverse_iterator = std::reverse_iterator<const_iterator>;
+    typedef pointer iterator;
+    typedef const_pointer const_iterator;
+    typedef std::reverse_iterator<iterator> reverse_iterator;
+    typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
     // コンストラクタ
     // cppreference(https://en.cppreference.com/w/cpp/container/vector/vector)
@@ -69,7 +69,7 @@ public:
     // コピーコンストラクタ
     // コンテナのコピーにあたってアロケータをコピーすべきかどうかは、アロケータの実装が選べるようになっている
     vector(const vector& r)
-        : alloc(traits::select_on_container_copy_construction(r.alloc))
+        : alloc(std::allocator_traits<allocator_type>::select_on_container_copy_construction(r.alloc))
     {
         // コピー処理
         // 1. コピー元の要素数を保持できるだけのストレージを確保
@@ -216,7 +216,8 @@ public:
              ++old_iter, ++last)
         {
             // このコピーの理解にはムーブせマンティクスの理解が必要
-            construct(last, std::move(*old_iter));
+            // construct(last, std::move(*old_iter));
+            construct(last, *old_iter);
         }
 
         // 新しいストレージにコピーし終えたので
@@ -302,24 +303,34 @@ private:
 
 private:
     // ユーザーからは使えないヘルパー関数
-    using traits = std::allocator_traits<allocator_type>;
 
     // allocate/deallocate
-    pointer allocate(size_type n) { return traits::allocate(alloc, n); }
-    void deallocate() { traits::deallocate(alloc, first, capacity()); }
+    pointer allocate(size_type n) {
+        return std::allocator_traits<allocator_type>::allocate(alloc, n);
+    }
+    void deallocate() {
+        std::allocator_traits<allocator_type>::deallocate(alloc, first,
+                                                                capacity());
+    }
 
     // construct/destroy
-    void construct(pointer ptr) { traits::construct(alloc, ptr); }
+    void construct(pointer ptr) {
+        std::allocator_traits<allocator_type>::construct(alloc, ptr);
+    }
     void construct(pointer ptr, const_reference value)
     {
-        traits::construct(alloc, ptr, value);
+        std::allocator_traits<allocator_type>::construct(alloc, ptr,
+                                                               value);
     }
     // move version
     void construct(pointer ptr, value_type&& value)
     {
-        traits::construct(alloc, ptr, std::move(value));
+        std::allocator_traits<allocator_type>::construct(alloc, ptr,
+                                                         std::move(value));
     }
-    void destroy(pointer ptr) { traits::destroy(alloc, ptr); }
+    void destroy(pointer ptr) {
+        std::allocator_traits<allocator_type>::destroy(alloc, ptr);
+    }
     void destroy_until(reverse_iterator rend)
     {
         for (auto riter = rbegin(); riter != rend; ++riter, --last)

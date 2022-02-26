@@ -60,7 +60,7 @@ public:
         : first(NULL), last(NULL), reserved_last(NULL), alloc(allocator)
     {
         reserve(std::distance(first, last));
-        for (auto i = first; i != last; ++i)
+        for (pointer i = first; i != last; ++i)
         {
             push_back(*i);
         }
@@ -77,7 +77,7 @@ public:
         // 2. コピー元の要素をコピー構築
         // dest はコピー先
         // [src, last) はコピー元
-        for (auto dest = first, src = r.begin(), last = r.end(); src != last;
+        for (pointer dest = first, src = r.begin(), last = r.end(); src != last;
              ++dest, ++src)
         {
             construct(dest, *src);
@@ -105,7 +105,7 @@ public:
             // 有効な要素はコピー
             std::copy(r.begin(), r.begin() + r.size(), begin());
             // 残りはコピー構築
-            for (auto src_iter = r.begin() + r.size(), src_end = r.end();
+            for (const_iterator src_iter = r.begin() + r.size(), src_end = r.end();
                  src_iter != src_end; ++src_iter, ++last)
             {
                 construct(last, *src_iter);
@@ -119,7 +119,7 @@ public:
             // 予約
             reserve(r.size());
             // コピー構築
-            for (auto src_iter = r.begin(), src_end = r.end(),
+            for (const_iterator src_iter = r.begin(), src_end = r.end(),
                       dest_iter = begin();
                  src_iter != src_end; ++src_iter, ++dest_iter, ++last)
             {
@@ -199,12 +199,12 @@ public:
             return;
 
         // 動的メモリ確保をする
-        auto ptr = allocate(sz);
+        pointer ptr = allocate(sz);
 
         // 古いストレージの情報を保存
-        auto old_first    = first;
-        auto old_last     = last;
-        auto old_capacity = capacity();
+        pointer old_first    = first;
+        pointer old_last     = last;
+        size_type old_capacity = capacity();
 
         first         = ptr;
         last          = first;
@@ -212,7 +212,7 @@ public:
 
         // 古いストレージから新しいストレージに要素をコピー構築
         //  実際にはムーブ構築
-        for (auto old_iter = old_first; old_iter != old_last;
+        for (pointer old_iter = old_first; old_iter != old_last;
              ++old_iter, ++last)
         {
             // このコピーの理解にはムーブせマンティクスの理解が必要
@@ -222,7 +222,7 @@ public:
 
         // 新しいストレージにコピーし終えたので
         // 古いストレージの値は破棄
-        for (auto riter = reverse_iterator(old_last),
+        for (reverse_iterator riter = reverse_iterator(old_last),
                   rend  = reverse_iterator(old_first);
              riter != rend; ++riter)
         {
@@ -238,7 +238,7 @@ public:
         // 現在の要素数より少ない
         if (sz < size())
         {
-            auto diff = size() - sz;
+            difference_type diff = size() - sz;
             // 破棄する要素数だけ末尾から破棄
             destroy_until(rbegin() + diff);
             last = first + sz;
@@ -257,7 +257,7 @@ public:
     {
         if (sz < size())
         {
-            auto diff = size() - sz;
+            difference_type diff = size() - sz;
             destroy_until(rbegin() + diff);
             last = first + sz;
         }
@@ -276,7 +276,7 @@ public:
         if (size() + 1 > capacity())
         {
             // 現在のストレージサイズ
-            auto c = size();
+            size_type c = size();
             // 0の場合は1に
             if (c == 0)
                 c = 1;
@@ -333,7 +333,7 @@ private:
     }
     void destroy_until(reverse_iterator rend)
     {
-        for (auto riter = rbegin(); riter != rend; ++riter, --last)
+        for (reverse_iterator riter = rbegin(); riter != rend; ++riter, --last)
         {
             destroy(&*riter);
         }

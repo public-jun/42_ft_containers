@@ -40,7 +40,7 @@ void tutorial_test()
     {
         ft::vector<int> v(1);
         // ft::vector<int>::const_iterator
-        auto i = v.cbegin();
+        ft::vector<int>::const_iterator i = v.begin();
         cout << *i << endl;
     }
 

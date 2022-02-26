@@ -30,7 +30,9 @@ public:
     // コンストラクタ
     // cppreference(https://en.cppreference.com/w/cpp/container/vector/vector)
     // (1)
-    vector() : vector(allocator_type()) {}
+    vector()
+        : first(NULL), last(NULL), reserved_last(NULL), alloc(allocator_type())
+    {}
     // (2)
     explicit vector(const allocator_type& alloc) noexcept : first(NULL),
                                                             last(NULL),
@@ -177,8 +179,6 @@ public:
     iterator end() noexcept { return last; }
     iterator begin() const noexcept { return first; }
     iterator end() const noexcept { return last; }
-    const_iterator cbegin() const noexcept { return first; }
-    const_iterator cend() const noexcept { return last; }
     // リバースイテレータアクセス
     reverse_iterator rbegin() noexcept { return reverse_iterator(last); }
     reverse_iterator rend() noexcept { return reverse_iterator(first); }
@@ -216,8 +216,6 @@ public:
         for (pointer old_iter = old_first; old_iter != old_last;
              ++old_iter, ++last)
         {
-            // このコピーの理解にはムーブせマンティクスの理解が必要
-            // construct(last, std::move(*old_iter));
             construct(last, *old_iter);
         }
 

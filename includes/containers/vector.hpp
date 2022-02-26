@@ -69,7 +69,8 @@ public:
     // コピーコンストラクタ
     // コンテナのコピーにあたってアロケータをコピーすべきかどうかは、アロケータの実装が選べるようになっている
     vector(const vector& r)
-        : alloc(std::allocator_traits<allocator_type>::select_on_container_copy_construction(r.alloc))
+        : alloc(std::allocator_traits<
+                allocator_type>::select_on_container_copy_construction(r.alloc))
     {
         // コピー処理
         // 1. コピー元の要素数を保持できるだけのストレージを確保
@@ -105,7 +106,8 @@ public:
             // 有効な要素はコピー
             std::copy(r.begin(), r.begin() + r.size(), begin());
             // 残りはコピー構築
-            for (const_iterator src_iter = r.begin() + r.size(), src_end = r.end();
+            for (const_iterator src_iter = r.begin() + r.size(),
+                                src_end  = r.end();
                  src_iter != src_end; ++src_iter, ++last)
             {
                 construct(last, *src_iter);
@@ -120,7 +122,7 @@ public:
             reserve(r.size());
             // コピー構築
             for (const_iterator src_iter = r.begin(), src_end = r.end(),
-                      dest_iter = begin();
+                                dest_iter = begin();
                  src_iter != src_end; ++src_iter, ++dest_iter, ++last)
             {
                 construct(dest_iter, *src_iter);
@@ -179,8 +181,8 @@ public:
     const_iterator cbegin() const noexcept { return first; }
     const_iterator cend() const noexcept { return last; }
     // リバースイテレータアクセス
-    reverse_iterator rbegin() noexcept { return reverse_iterator{ last }; }
-    reverse_iterator rend() noexcept { return reverse_iterator{ first }; }
+    reverse_iterator rbegin() noexcept { return reverse_iterator(last); }
+    reverse_iterator rend() noexcept { return reverse_iterator(first); }
     const_reverse_iterator rbegin() const noexcept
     {
         return reverse_iterator{ last };
@@ -202,8 +204,8 @@ public:
         pointer ptr = allocate(sz);
 
         // 古いストレージの情報を保存
-        pointer old_first    = first;
-        pointer old_last     = last;
+        pointer old_first      = first;
+        pointer old_last       = last;
         size_type old_capacity = capacity();
 
         first         = ptr;
@@ -223,7 +225,7 @@ public:
         // 新しいストレージにコピーし終えたので
         // 古いストレージの値は破棄
         for (reverse_iterator riter = reverse_iterator(old_last),
-                  rend  = reverse_iterator(old_first);
+                              rend  = reverse_iterator(old_first);
              riter != rend; ++riter)
         {
             destroy(&*riter);
@@ -305,22 +307,24 @@ private:
     // ユーザーからは使えないヘルパー関数
 
     // allocate/deallocate
-    pointer allocate(size_type n) {
+    pointer allocate(size_type n)
+    {
         return std::allocator_traits<allocator_type>::allocate(alloc, n);
     }
-    void deallocate() {
+    void deallocate()
+    {
         std::allocator_traits<allocator_type>::deallocate(alloc, first,
-                                                                capacity());
+                                                          capacity());
     }
 
     // construct/destroy
-    void construct(pointer ptr) {
+    void construct(pointer ptr)
+    {
         std::allocator_traits<allocator_type>::construct(alloc, ptr);
     }
     void construct(pointer ptr, const_reference value)
     {
-        std::allocator_traits<allocator_type>::construct(alloc, ptr,
-                                                               value);
+        std::allocator_traits<allocator_type>::construct(alloc, ptr, value);
     }
     // move version
     void construct(pointer ptr, value_type&& value)
@@ -328,7 +332,8 @@ private:
         std::allocator_traits<allocator_type>::construct(alloc, ptr,
                                                          std::move(value));
     }
-    void destroy(pointer ptr) {
+    void destroy(pointer ptr)
+    {
         std::allocator_traits<allocator_type>::destroy(alloc, ptr);
     }
     void destroy_until(reverse_iterator rend)

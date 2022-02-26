@@ -69,8 +69,7 @@ public:
     // コピーコンストラクタ
     // コンテナのコピーにあたってアロケータをコピーすべきかどうかは、アロケータの実装が選べるようになっている
     vector(const vector& r)
-        : alloc(std::allocator_traits<
-                allocator_type>::select_on_container_copy_construction(r.alloc))
+        : first(NULL), last(NULL), reserved_last(NULL), alloc(r.alloc)
     {
         // コピー処理
         // 1. コピー元の要素数を保持できるだけのストレージを確保
@@ -307,35 +306,16 @@ private:
     // ユーザーからは使えないヘルパー関数
 
     // allocate/deallocate
-    pointer allocate(size_type n)
-    {
-        return std::allocator_traits<allocator_type>::allocate(alloc, n);
-    }
-    void deallocate()
-    {
-        std::allocator_traits<allocator_type>::deallocate(alloc, first,
-                                                          capacity());
-    }
+    pointer allocate(size_type n) { return alloc.allocate(n); }
+    void deallocate() { alloc.deallocate(first, capacity()); }
 
     // construct/destroy
-    void construct(pointer ptr)
-    {
-        std::allocator_traits<allocator_type>::construct(alloc, ptr);
-    }
+    void construct(pointer ptr) { alloc.construct(ptr, 0); }
     void construct(pointer ptr, const_reference value)
     {
-        std::allocator_traits<allocator_type>::construct(alloc, ptr, value);
+        alloc.construct(ptr, value);
     }
-    // move version
-    void construct(pointer ptr, value_type&& value)
-    {
-        std::allocator_traits<allocator_type>::construct(alloc, ptr,
-                                                         std::move(value));
-    }
-    void destroy(pointer ptr)
-    {
-        std::allocator_traits<allocator_type>::destroy(alloc, ptr);
-    }
+    void destroy(pointer ptr) { alloc.destroy(ptr); }
     void destroy_until(reverse_iterator rend)
     {
         for (reverse_iterator riter = rbegin(); riter != rend; ++riter, --last)

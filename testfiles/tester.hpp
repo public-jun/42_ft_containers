@@ -42,6 +42,7 @@ namespace ft = std;
 /*     tutorial.cpp   */
 /**********************/
 void tutorial_test(void);
+void vector_test();
 
 //// helper
 

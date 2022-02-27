@@ -8,9 +8,9 @@ NAME_FT := ft_container
 #	Compile option				 	#
 #####################################
 CXX := clang++
-#CXXFLAGS := -Wall -Wextra -Werror -std=c++98 -pedantic
+CXXFLAGS := -Wall -Wextra -Werror -std=c++98 -pedantic
 # CXXFLAGS := -Wall -Wextra -Werror
-CXXFLAGS := -Wall -Wextra -g
+# CXXFLAGS := -Wall -Wextra -g -std=c++98
 
 #####################################
 #	Include header				 	#

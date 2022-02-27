@@ -96,6 +96,6 @@ struct enable_if<true, _Tp> {
 };
 
 /* enabel_if PART END */
-}; // namespace ft
+} // namespace ft
 
 #endif /* UTILS_HPP */

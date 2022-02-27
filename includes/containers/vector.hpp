@@ -3,7 +3,13 @@
 
 #include <iostream>
 #include <iterator>
+#include <vector>
+#include <list>
 #include <limits>
+
+
+#include <wrap_iter.hpp>
+#include <reverse_iterator.hpp>
 
 namespace ft {
 
@@ -13,8 +19,8 @@ class vector
 public:
     // value_type などのネストされた型名
     typedef T value_type;
-    typedef T* pointer;
-    typedef const pointer const_pointer;
+    typedef typename Allocator::pointer pointer;
+    typedef typename Allocator::const_pointer const_pointer;
     typedef value_type& reference;
     typedef const value_type& const_reference;
     typedef Allocator allocator_type;
@@ -22,10 +28,10 @@ public:
     typedef std::ptrdiff_t difference_type;
 
     // イテレータのエイリアス
-    typedef pointer iterator;
-    typedef const_pointer const_iterator;
-    typedef std::reverse_iterator<iterator> reverse_iterator;
-    typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+    typedef wrap_iter<pointer> iterator;
+    typedef wrap_iter<const_pointer> const_iterator;
+    typedef ft::reverse_iterator<iterator> reverse_iterator;
+    typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
     // コンストラクタ
     // cppreference(https://en.cppreference.com/w/cpp/container/vector/vector)
@@ -34,10 +40,8 @@ public:
         : first(NULL), last(NULL), reserved_last(NULL), alloc(allocator_type())
     {}
     // (2)
-    explicit vector(const allocator_type& alloc) noexcept : first(NULL),
-                                                            last(NULL),
-                                                            reserved_last(NULL),
-                                                            alloc(alloc)
+    explicit vector(const allocator_type& alloc)
+        : first(NULL), last(NULL), reserved_last(NULL), alloc(alloc)
     {}
     // c++11なので除外
     // explicit vector(size_type size,
@@ -49,7 +53,7 @@ public:
     // (3)
     vector(size_type count, const T& value = T(),
            const allocator_type& alloc = allocator_type())
-        : vector(alloc)
+        : first(NULL), last(NULL), reserved_last(NULL), alloc(alloc)
     {
         resize(count, value);
     }
@@ -62,7 +66,7 @@ public:
         : first(NULL), last(NULL), reserved_last(NULL), alloc(allocator)
     {
         reserve(std::distance(first, last));
-        for (pointer i = first; i != last; ++i)
+        for (InputIterator i = first; i != last; ++i)
         {
             push_back(*i);
         }
@@ -79,7 +83,8 @@ public:
         // 2. コピー元の要素をコピー構築
         // dest はコピー先
         // [src, last) はコピー元
-        for (pointer dest = first, src = r.begin(), last = r.end(); src != last;
+        pointer dest = first;
+        for (const_iterator src = r.begin(), last = r.end(); src != last;
              ++dest, ++src)
         {
             construct(dest, *src);
@@ -148,9 +153,9 @@ public:
     //   メンバ関数       //
     //********************//
     // 容量確認
-    size_type size() const noexcept { return end() - begin(); }
-    bool empty() const noexcept { return begin() == end(); }
-    size_type capacity() const noexcept { return reserved_last - first; }
+    size_type size() const { return end() - begin(); }
+    bool empty() const { return begin() == end(); }
+    size_type capacity() const { return reserved_last - first; }
 
     // 要素アクセス
     reference operator[](size_type i) { return first[i]; }
@@ -171,27 +176,21 @@ public:
     const_reference front() const { return *first; }
     reference back() { return *(last - 1); }
     const_reference back() const { return *(last - 1); }
-    pointer data() noexcept { return first; }
-    const_pointer data() const noexcept { return first; }
+    pointer data() { return first; }
+    const_pointer data() const { return first; }
 
     // イテレータアクセス
-    iterator begin() noexcept { return first; }
-    iterator end() noexcept { return last; }
-    iterator begin() const noexcept { return first; }
-    iterator end() const noexcept { return last; }
+    iterator begin() { return iterator(first); }
+    iterator end() { return iterator(last); }
+    const_iterator begin() const { return const_iterator(first); }
+    const_iterator end() const { return const_iterator(last); }
     // リバースイテレータアクセス
-    reverse_iterator rbegin() noexcept { return reverse_iterator(last); }
-    reverse_iterator rend() noexcept { return reverse_iterator(first); }
-    const_reverse_iterator rbegin() const noexcept
-    {
-        return reverse_iterator{ last };
-    }
-    const_reverse_iterator rend() const noexcept
-    {
-        return reverse_iterator{ first };
-    }
+    reverse_iterator rbegin() { return reverse_iterator(end()); }
+    reverse_iterator rend() { return reverse_iterator(begin()); }
+    const_reverse_iterator rbegin() const { return const_reverse_iterator(begin()); }
+    const_reverse_iterator rend() const { return const_reverse_iterator(end()); }
 
-    void clear() noexcept { destroy_until(rend()); }
+    void clear() { destroy_until(rend()); }
 
     void reserve(size_type sz)
     {
@@ -202,6 +201,8 @@ public:
         // 動的メモリ確保をする
         pointer ptr = allocate(sz);
 
+        // 古い vector
+        vector old_vector = *this;
         // 古いストレージの情報を保存
         pointer old_first      = first;
         pointer old_last       = last;
@@ -221,8 +222,11 @@ public:
 
         // 新しいストレージにコピーし終えたので
         // 古いストレージの値は破棄
-        for (reverse_iterator riter = reverse_iterator(old_last),
-                              rend  = reverse_iterator(old_first);
+        // for (reverse_iterator riter = reverse_iterator(old_last),
+        //                       rend  = reverse_iterator(old_first);
+        //      riter != rend; ++riter)
+        for (reverse_iterator riter = old_vector.rbegin(),
+                              rend  = old_vector.rend();
              riter != rend; ++riter)
         {
             destroy(&*riter);
@@ -322,6 +326,6 @@ private:
         }
     }
 };
-}; // namespace ft
+} // namespace ft
 
 #endif

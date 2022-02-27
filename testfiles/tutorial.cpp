@@ -50,11 +50,11 @@ void tutorial_test()
             v.push_back(i);
 
         // イテレーター
-        auto i = v.begin();
+        ft::vector<int>::iterator i = v.begin();
         cout << *i << endl; // 1
 
         // リバースイテレーター
-        auto r = v.rbegin();
+        ft::vector<int>::reverse_iterator r = v.rbegin();
         cout << *r << endl; // 5
     }
 
@@ -68,10 +68,10 @@ void tutorial_test()
         bool b = v.empty();
         cout << b << endl;
         // 1、現在の要素数
-        auto s = v.size();
+        ft::vector<int>::size_type s = v.size();
         cout << s << endl;
         // 実装依存、追加の動的メモリー確保をせずに格納できる要素の最大数
-        auto c = v.capacity();
+        ft::vector<int>::size_type c = v.capacity();
         cout << c << endl;
     }
 
@@ -269,8 +269,13 @@ void tutorial_test()
     }
 
     {
-        std::array<int, 5> a{ 1, 2, 3, 4, 5 };
-        ft::vector<int> v(std::begin(a), std::end(a));
+        // std::array<int, 5> a  = {1, 2, 3, 4, 5};
+        ft::vector<int> a;
+        for (int i = 1; i <= 5; ++i)
+            a.push_back(i);
+        ft::vector<int> v(a.begin(), a.end());
+        for (ft::vector<int>::const_iterator it = v.begin(), itend = v.end(); it != itend; ++it)
+            cout << *it << endl;
         // vは{1,2,3,4,5}
     }
 

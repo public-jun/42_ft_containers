@@ -160,6 +160,6 @@ operator-(const reverse_iterator<Iterator>& lhs,
     return rhs.base() - lhs.base();
 }
 
-}; /* namespace ft */
+} /* namespace ft */
 
 #endif /* ITERATOR_HPP */

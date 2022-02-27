@@ -17,14 +17,17 @@ public:
     typedef typename traits_type::difference_type difference_type;
     typedef typename traits_type::pointer pointer;
     typedef typename traits_type::reference reference;
-    typedef typename traits_type::iterator_category category;
+    typedef typename traits_type::iterator_category iterator_category;
 
     // Member functions
     //// constructor
-    wrap_iter() : current_() {}
-    wrap_iter(iterator_type x) : current_(x) {}
+    wrap_iter() : current_(NULL) {}
+    explicit wrap_iter(iterator_type x) : current_(x) {}
     //// copy constructor
-    wrap_iter(const wrap_iter& other) : current_(other.base()) {}
+    template <class U>
+    wrap_iter(const wrap_iter<U>& other) : current_(other.base())
+    {}
+
     //// assignment operator
     template <class U>
     wrap_iter& operator=(const wrap_iter<U>& other)
@@ -38,7 +41,7 @@ public:
 
     iterator_type base() const { return current_; }
     reference operator*() const { return *current_; }
-    pointer operator->() const { return &(operator*()); }
+    pointer operator->() const { return &current_; }
     reference operator[](difference_type n) const { return *(*this + n); }
     wrap_iter& operator++()
     {
@@ -176,6 +179,6 @@ operator-(const wrap_iter<Iterator1>& lhs, const wrap_iter<Iterator2>& rhs)
     return lhs.base() - rhs.base();
 }
 
-}; // namespace ft
+} // namespace ft
 
 #endif /* WRAP_ITER_HPP */

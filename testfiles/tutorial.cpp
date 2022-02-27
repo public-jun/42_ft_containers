@@ -36,6 +36,16 @@ void tutorial_test()
         // // const_iteratorを参照した先には代入できない
         // cout << *ci << endl;
     }
+    {
+        ft::vector<int> v;
+        for (int i = 1; i <= 5; ++i)
+            v.push_back(i);
+        ft::vector<int>::iterator begin = v.begin();
+        ft::vector<int>::const_iterator const_begin;
+        const_begin = begin;
+        cout << *const_begin << endl;
+        cout << "ya" << endl;
+    }
 
     {
         ft::vector<int> v(1);

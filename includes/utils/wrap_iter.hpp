@@ -32,7 +32,8 @@ public:
     template <class U>
     wrap_iter& operator=(const wrap_iter<U>& other)
     {
-        if (this != &other)
+        // std::cout << "assignment called" << std::endl;
+        if (current_ != other.base())
             current_ = other.base();
         return *this;
     }

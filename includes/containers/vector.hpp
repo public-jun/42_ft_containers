@@ -34,16 +34,17 @@ public:
     */
     // constructor
     vector()
-        : first_(NULL), last_(NULL), reserved_last_(NULL), alloc_(allocator_type())
+        : first_(NULL), last_(NULL), capacity_last_(NULL),
+          alloc_(allocator_type())
     {}
 
     explicit vector(const allocator_type& alloc)
-        : first_(NULL), last_(NULL), reserved_last_(NULL), alloc_(alloc)
+        : first_(NULL), last_(NULL), capacity_last_(NULL), alloc_(alloc)
     {}
 
     vector(size_type count, const T& value = T(),
            const allocator_type& alloc = allocator_type())
-        : first_(NULL), last_(NULL), reserved_last_(NULL), alloc_(alloc)
+        : first_(NULL), last_(NULL), capacity_last_(NULL), alloc_(alloc)
     {
         resize(count, value);
     }
@@ -53,7 +54,7 @@ public:
            const Allocator& allocator                    = Allocator(),
            typename std::enable_if<!std::is_integral<InputIterator>::value,
                                    InputIterator>::type* = NULL)
-        : first_(NULL), last_(NULL), reserved_last_(NULL), alloc_(allocator)
+        : first_(NULL), last_(NULL), capacity_last_(NULL), alloc_(allocator)
     {
         reserve(std::distance(first, last));
         for (InputIterator i = first; i != last; ++i)
@@ -63,7 +64,7 @@ public:
     }
 
     vector(const vector& r)
-        : first_(NULL), last_(NULL), reserved_last_(NULL), alloc_(r.alloc_)
+        : first_(NULL), last_(NULL), capacity_last_(NULL), alloc_(r.alloc_)
     {
         reserve(r.size());
         pointer dest = first_;
@@ -128,11 +129,10 @@ public:
         deallocate();
     }
 
-
     // 容量確認
     size_type size() const { return end() - begin(); }
     bool empty() const { return begin() == end(); }
-    size_type capacity() const { return reserved_last_ - first_; }
+    size_type capacity() const { return capacity_last_ - first_; }
 
     // 要素アクセス
     reference operator[](size_type i) { return first_[i]; }
@@ -175,47 +175,24 @@ public:
 
     void clear() { destroy_until(rend()); }
 
+    // Increase the capacity of the vector, when less that
     void reserve(size_type sz)
     {
-        // すでに指定された要素数以上に予約されているなら何もしない
         if (sz <= capacity())
             return;
-
-        // 動的メモリ確保をする
-        pointer ptr = allocate(sz);
-
-        // 古い vector
-        vector old_vector = *this;
-        // 古いストレージの情報を保存
         pointer old_first      = first_;
         pointer old_last       = last_;
         size_type old_capacity = capacity();
-
-        first_         = ptr;
-        last_          = first_;
-        reserved_last_ = first_ + sz;
-
-        // 古いストレージから新しいストレージに要素をコピー構築
-        //  実際にはムーブ構築
+        allocate(sz);
         for (pointer old_iter = old_first; old_iter != old_last;
              ++old_iter, ++last_)
         {
             construct(last_, *old_iter);
         }
-
-        // 新しいストレージにコピーし終えたので
-        // 古いストレージの値は破棄
-        // for (reverse_iterator riter = reverse_iterator(old_last),
-        //                       rend  = reverse_iterator(old_first);
-        //      riter != rend; ++riter)
-        for (reverse_iterator riter = old_vector.rbegin(),
-                              rend  = old_vector.rend();
-             riter != rend; ++riter)
+        for (pointer riter = old_first; riter != old_last; ++riter)
         {
-            destroy(&*riter);
+            destroy(riter);
         }
-        // scope_exit
-        // によって自動的にストレージが破棄され亡くなるので、deallocate を追記
         alloc_.deallocate(old_first, old_capacity);
     }
 
@@ -233,7 +210,7 @@ public:
         else if (sz > size())
         {
             reserve(sz);
-            for (; last_ != reserved_last_; ++last_)
+            for (; last_ != capacity_last_; ++last_)
             {
                 construct(last_);
             }
@@ -250,7 +227,7 @@ public:
         else if (sz > size())
         {
             reserve(sz);
-            for (; last_ != reserved_last_; ++last_)
+            for (; last_ != capacity_last_; ++last_)
             {
                 construct(last_, value);
             }
@@ -275,6 +252,7 @@ public:
         construct(last_, value);
         // 有効な要素数を更新
         ++last_;
+        // std::cout << "push_back called" << std::endl;
     }
 
 private:
@@ -283,7 +261,7 @@ private:
     // 最後の要素の一つ前方のポインタ
     pointer last_;
     // 確保したストレージの終端
-    pointer reserved_last_;
+    pointer capacity_last_;
     // アロケータの値
     allocator_type alloc_;
 
@@ -291,7 +269,12 @@ private:
     // ユーザーからは使えないヘルパー関数
 
     // allocate/deallocate
-    pointer allocate(size_type n) { return alloc_.allocate(n); }
+    void allocate(size_type n)
+    {
+        first_         = alloc_.allocate(n);
+        last_          = first_;
+        capacity_last_ = last_ + n;
+    }
     void deallocate() { alloc_.deallocate(first_, capacity()); }
 
     // construct/destroy

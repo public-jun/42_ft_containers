@@ -3,13 +3,12 @@
 
 #include <iostream>
 #include <iterator>
-#include <vector>
-#include <list>
 #include <limits>
+#include <list>
+#include <vector>
 
-
-#include <wrap_iter.hpp>
 #include <reverse_iterator.hpp>
+#include <wrap_iter.hpp>
 
 namespace ft {
 
@@ -17,24 +16,23 @@ template <typename T, typename Allocator = std::allocator<T> >
 class vector
 {
 public:
-    // value_type などのネストされた型名
+    /*
+    ** Member type
+    */
     typedef T value_type;
-    typedef typename Allocator::pointer pointer;
-    typedef typename Allocator::const_pointer const_pointer;
-    typedef value_type& reference;
-    typedef const value_type& const_reference;
     typedef Allocator allocator_type;
     typedef std::size_t size_type;
     typedef std::ptrdiff_t difference_type;
-
-    // イテレータのエイリアス
+    typedef value_type& reference;
+    typedef const value_type& const_reference;
+    typedef typename Allocator::pointer pointer;
+    typedef typename Allocator::const_pointer const_pointer;
     typedef wrap_iter<pointer> iterator;
     typedef wrap_iter<const_pointer> const_iterator;
     typedef ft::reverse_iterator<iterator> reverse_iterator;
     typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
     // コンストラクタ
-    // cppreference(https://en.cppreference.com/w/cpp/container/vector/vector)
     // (1)
     vector()
         : first(NULL), last(NULL), reserved_last(NULL), alloc(allocator_type())
@@ -187,8 +185,14 @@ public:
     // リバースイテレータアクセス
     reverse_iterator rbegin() { return reverse_iterator(end()); }
     reverse_iterator rend() { return reverse_iterator(begin()); }
-    const_reverse_iterator rbegin() const { return const_reverse_iterator(begin()); }
-    const_reverse_iterator rend() const { return const_reverse_iterator(end()); }
+    const_reverse_iterator rbegin() const
+    {
+        return const_reverse_iterator(begin());
+    }
+    const_reverse_iterator rend() const
+    {
+        return const_reverse_iterator(end());
+    }
 
     void clear() { destroy_until(rend()); }
 

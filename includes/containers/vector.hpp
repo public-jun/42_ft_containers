@@ -140,13 +140,14 @@ public:
     reference at(size_type i)
     {
         if (i >= size())
-            throw std::out_of_range("index is out of range.");
+            throw std::out_of_range("vector");
         return first_[i];
     }
     const_reference at(size_type i) const
     {
+        std::cout << "const_ref called" << std::endl;
         if (i >= size())
-            throw std::out_of_range("index is out of range.");
+            throw std::out_of_range("vector");
         return first_[i];
     }
     reference front() { return *first_; }

@@ -47,10 +47,24 @@ void alloc_constructor_test()
     // std::vector<int> v;
 }
 
-void count_value_constructor_test()
-{
-    pout("vector(size, value)");
+void count_value_constructor_test() { pout("vector(size, value)"); }
 
+void at_test()
+{
+    pout("vector::at");
+
+    ft::vector<int> v;
+    for (int i = 1; i <= 5; ++i)
+        v.push_back(i);
+    for (ft::vector<int>::size_type i = 0; i < v.size(); ++i)
+        cout << v.at(i) << endl;
+    try
+    {
+        v.at(5);
+    } catch (const std::exception& e)
+    {
+        cerr << e.what() << endl;
+    }
 }
 
 void vector_test()
@@ -58,4 +72,5 @@ void vector_test()
     cout << "Vector TEST" << endl;
     def_constructor_test();
     alloc_constructor_test();
+    at_test();
 }

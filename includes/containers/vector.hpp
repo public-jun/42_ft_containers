@@ -2,10 +2,10 @@
 #define VECTOR_HPP
 
 #include <reverse_iterator.hpp>
+#include <utils.hpp>
 #include <wrap_iter.hpp>
 
 #include <iostream>
-#include <iterator>
 
 namespace ft {
 
@@ -51,9 +51,9 @@ public:
 
     template <typename InputIterator>
     vector(InputIterator first, InputIterator last,
-           const Allocator& allocator                    = Allocator(),
-           typename std::enable_if<!std::is_integral<InputIterator>::value,
-                                   InputIterator>::type* = NULL)
+           const Allocator& allocator                   = Allocator(),
+           typename ft::enable_if<!ft::is_integral<InputIterator>::value,
+                                  InputIterator>::type* = NULL)
         : first_(NULL), last_(NULL), capacity_last_(NULL), alloc_(allocator)
     {
         reserve(std::distance(first, last));

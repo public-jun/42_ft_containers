@@ -10,10 +10,7 @@
 namespace ft = std;
 #else    // -DTEST=0
 #include <vector.hpp>
-#include <iterator_traits.hpp>
-#include <reverse_iterator.hpp>
 #include <utils.hpp>
-#include <wrap_iter.hpp>
 #endif
 
 
@@ -31,6 +28,7 @@ namespace ft = std;
 #include <numeric>
 #include <string>
 #include <typeinfo>  //typeid
+#include <memory>
 
 #define cout std::cout
 #define endl std::endl

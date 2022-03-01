@@ -4,6 +4,14 @@
 #include <vector>
 
 template <typename T>
+void put_test_function(T s)
+{
+    cout << "\n\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << endl;
+    cout << std::setw(25) << s << endl;
+    cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n" << endl;
+}
+
+template <typename T>
 void pout(T s)
 {
     static int no;
@@ -86,8 +94,7 @@ void copy_constructor_test()
 
 void operator_assign_test()
 {
-    cout << "\n"
-         << BOLD << "vector::operator=(const vector&) TEST" << END << endl;
+    put_test_function("TEST vector::operator=");
 
     {
         pout("assign self");
@@ -148,14 +155,50 @@ void at_test()
     }
 }
 
+void assign_test()
+{
+    put_test_function("TEST vector::assign()");
+
+    {
+        pout("capacity >= size >= assign size");
+        ft::vector<int> v;
+        for (int i = 1; i <= 10; ++i)
+            v.push_back(i);
+        vdebug(v);
+        v.assign(5, 42);
+        vdebug(v);
+    }
+
+    {
+        pout("capacity >= assign size > size");
+        ft::vector<int> v;
+        for (int i = 1; i <= 10; ++i)
+            v.push_back(i);
+        vdebug(v);
+        v.assign(12, 42);
+        vdebug(v);
+    }
+
+    {
+        pout("capacity is less than assign size");
+        ft::vector<int> v;
+        for (int i = 1; i <= 5; ++i)
+            v.push_back(i);
+        vdebug(v);
+        v.assign(10, 42);
+        vdebug(v);
+    }
+}
+
 void vector_test()
 {
     cout << "Vector TEST" << endl;
-    def_constructor_test();
-    alloc_constructor_test();
-    count_value_constructor_test();
-    inputiterator_constructor_test();
-    copy_constructor_test();
-    operator_assign_test();
-    at_test();
+    // def_constructor_test();
+    // alloc_constructor_test();
+    // count_value_constructor_test();
+    // inputiterator_constructor_test();
+    // copy_constructor_test();
+    // operator_assign_test();
+    // at_test();
+    assign_test();
 }

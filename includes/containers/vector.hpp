@@ -8,6 +8,7 @@
 #include <wrap_iter.hpp>
 
 #include <iostream>
+#include <memory> // uninitialized_fill_n
 
 namespace ft {
 
@@ -80,7 +81,7 @@ public:
 
     vector& operator=(const vector& r)
     {
-        if (this != &r)
+        if (this == &r)
             return *this;
         if (size() == r.size())
         {
@@ -111,6 +112,26 @@ public:
         clear();
         // 2. 生のメモリーを解放する
         deallocate();
+    }
+
+    // assign
+    void assign(size_type n, const T& value)
+    {
+        if (capacity() >= n)
+        {
+            size_type sz = size();
+            if (size() > n)
+                destroy_until(rbegin() + (sz - n));
+            std::fill_n(first_, n, value);
+        }
+        else
+        {
+            clear();
+            deallocate();
+            allocate(n);
+            std::uninitialized_fill_n(first_, n, value);
+        }
+        last_ = first_ + n;
     }
 
     // 容量確認

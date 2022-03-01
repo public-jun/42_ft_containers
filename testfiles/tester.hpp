@@ -13,6 +13,7 @@ namespace ft = std;
 #include <utils.hpp>
 #endif
 
+#include <color.hpp>
 
 #include <stdlib.h>
 #include <time.h> // clock()

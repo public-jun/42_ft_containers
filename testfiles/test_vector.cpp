@@ -1,5 +1,8 @@
 #include <tester.hpp>
 
+#include <array>
+#include <vector>
+
 template <typename T>
 void pout(T s)
 {
@@ -31,23 +34,101 @@ void alloc_constructor_test()
     std::allocator<int> alloc;
     ft::vector<int> v1(alloc);
     vdebug(v1);
+}
 
+void count_value_constructor_test()
+{
+    pout("vector(size, value)");
+
+    std::allocator<int> alloc;
     ft::vector<int> v3(5, 123, alloc);
     vdebug(v3);
+
     ft::vector<int> v4(v3);
     v4[0] = 100;
     vdebug(v4);
     vdebug(v3);
+
     ft::vector<int> v5;
     v5 = v3;
+    vdebug(v3);
     vdebug(v5);
     v3[0] = 42;
     vdebug(v3);
     vdebug(v5);
-    // std::vector<int> v;
 }
 
-void count_value_constructor_test() { pout("vector(size, value)"); }
+void inputiterator_constructor_test()
+{
+    pout("vector::vector(Iterator, Iterator)");
+
+    // std::array<int, 3> a = {0, 1, 2};
+    std::vector<int> a;
+    for (int i = 1; i <= 5; ++i)
+        a.push_back(i);
+    ft::vector<int> v(a.begin(), a.end());
+    vdebug(a);
+    vdebug(v);
+}
+
+void copy_constructor_test()
+{
+    pout("vector::vector(const vector& r)");
+
+    ft::vector<int> a;
+    for (int i = 1; i <= 5; ++i)
+        a.push_back(i);
+    vdebug(a);
+    ft::vector<int> v = a;
+    vdebug(a);
+    vdebug(v);
+}
+
+void operator_assign_test()
+{
+    cout << "\n"
+         << BOLD << "vector::operator=(const vector&) TEST" << END << endl;
+
+    {
+        pout("assign self");
+        ft::vector<int> a;
+        ft::vector<int>& ref_a = a;
+        ref_a                  = a;
+    }
+
+    {
+        pout("equal size");
+        ft::vector<int> a(5, 1);
+        ft::vector<int> b(5, -1);
+        vdebug(a);
+        vdebug(b);
+        b = a;
+        vdebug(a);
+        vdebug(b);
+    }
+
+    {
+        pout("capacity is more than other's size");
+        ft::vector<int> a(20, 3);
+        ft::vector<int> b(5, 1);
+        vdebug(a);
+        vdebug(b);
+        a = b;
+        vdebug(a);
+        vdebug(b);
+    }
+
+    {
+        pout("capacity is less than other's size");
+        ft::vector<int> a(2, 1);
+        ft::vector<int> b(4, 2);
+        vdebug(a);
+        vdebug(b);
+        a = b;
+        vdebug(a);
+        vdebug(b);
+    }
+}
 
 void at_test()
 {
@@ -72,5 +153,9 @@ void vector_test()
     cout << "Vector TEST" << endl;
     def_constructor_test();
     alloc_constructor_test();
+    count_value_constructor_test();
+    inputiterator_constructor_test();
+    copy_constructor_test();
+    operator_assign_test();
     at_test();
 }

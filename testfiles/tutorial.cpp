@@ -103,7 +103,7 @@ void tutorial_test()
 
             v[0] = 0; // OK
             v[3] = 0; // OK
-            v[5] = 0; // エラー
+            // v[5] = 0; // エラー
         }
         catch (std::out_of_range e)
         {

@@ -1,6 +1,8 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
+#define CALLED std::cout << "called" << std::endl;
+
 #include <reverse_iterator.hpp>
 #include <utils.hpp>
 #include <wrap_iter.hpp>
@@ -76,41 +78,23 @@ public:
         last_ = first_ + r.size();
     }
 
-    // コピー代入演算子
     vector& operator=(const vector& r)
     {
-        // 1. 自分自身への代入なら何もしない
-        if (this == &r)
+        if (this != &r)
             return *this;
-
-        // 2. 要素数が同じならば
         if (size() == r.size())
         {
-            // 要素ごとにコピー代入
             std::copy(r.begin(), r.end(), begin());
         }
-        // 3. それ以外の場合で
-        // 予約数が十分ならば、
         else if (capacity() >= r.size())
         {
-            // 有効な要素はコピー
             std::copy(r.begin(), r.begin() + r.size(), begin());
-            // 残りはコピー構築
-            for (const_iterator src_iter = r.begin() + r.size(),
-                                src_end  = r.end();
-                 src_iter != src_end; ++src_iter, ++last_)
-            {
-                construct(last_, *src_iter);
-            }
+            last_ = first_ + r.size();
         }
-        // 4. 予約数が不十分ならば
         else
         {
-            // 要素を全て破棄
-            destroy_until(rbegin()); // destroy_all()
-            // 予約
+            destroy_until(rend()); // destroy_all()
             reserve(r.size());
-            // コピー構築
             pointer dest_pointer = first_;
             for (const_iterator src_iter = r.begin(), src_end = r.end();
                  src_iter != src_end; ++src_iter, ++dest_pointer, ++last_)

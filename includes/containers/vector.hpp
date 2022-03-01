@@ -173,6 +173,9 @@ public:
         }
     }
 
+    // get_allocator
+    allocator_type get_allocator() const { return (allocator_type(alloc_)); }
+
     // 容量確認
     size_type size() const { return end() - begin(); }
     bool empty() const { return begin() == end(); }

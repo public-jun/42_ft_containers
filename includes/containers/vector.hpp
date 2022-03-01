@@ -8,6 +8,7 @@
 #include <wrap_iter.hpp>
 
 #include <iostream>
+#include <iterator>
 #include <memory> // uninitialized_fill_n
 
 namespace ft {
@@ -132,6 +133,44 @@ public:
             std::uninitialized_fill_n(first_, n, value);
         }
         last_ = first_ + n;
+    }
+
+    template <class InputIterator>
+    void assign(InputIterator first, InputIterator last,
+                typename ft::enable_if<!ft::is_integral<InputIterator>::value,
+                                       InputIterator>::type* = NULL)
+    {
+        size_type new_size = static_cast<size_type>(std::distance(first, last));
+        if (new_size <= capacity())
+        {
+            InputIterator mid = last;
+            bool growing      = false;
+            if (new_size > size())
+            {
+                growing = true;
+                mid     = first;
+                std::advance(mid, size());
+            }
+            std::copy(first, mid, begin());
+            if (growing)
+            {
+                for (InputIterator it = mid; it != last; ++it)
+                    construct(last_++, *it);
+            }
+            else
+            {
+                difference_type diff = new_size - size();
+                destroy_until(reverse_iterator(rbegin() + diff));
+            }
+        }
+        else
+        {
+            clear();
+            deallocate();
+            allocate(new_size);
+            for (InputIterator it = first; it != last; ++it)
+                construct(last_++, *it);
+        }
     }
 
     // 容量確認

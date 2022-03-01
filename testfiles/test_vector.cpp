@@ -227,6 +227,27 @@ void assign_test()
     }
 }
 
+void get_allocator_test()
+{
+    put_test_function("TEST vector::get_allocator");
+
+    {
+        pout("Get allocator");
+        ft::vector<int> v;
+        int *p;
+        int i = 0;
+        p = v.get_allocator().allocate(5);
+        for (i = 0; i < 5; i++)
+            v.get_allocator().construct(&p[i], i);
+        for (i = 0; i < 5; i++)
+            cout << ' ' << p[i];
+        cout << '\n';
+        for (i = 0; i < 5; i++)
+            v.get_allocator().destroy(&p[i]);
+        v.get_allocator().deallocate(p, 5);
+    }
+}
+
 void vector_test()
 {
     cout << "Vector TEST" << endl;
@@ -238,4 +259,5 @@ void vector_test()
     operator_assign_test();
     at_test();
     assign_test();
+    get_allocator_test();
 }

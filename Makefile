@@ -9,6 +9,7 @@ NAME_FT := ft_container
 #####################################
 CXX := clang++
 CXXFLAGS := -Wall -Wextra -Werror -std=c++98 -pedantic -g
+# CXXFLAGS := -Wall -Wextra -Werror -std=c++98 -pedantic -g -fsanitize=leak,undefined,address
 # CXXFLAGS := -Wall -Wextra -Werror
 # CXXFLAGS := -Wall -Wextra -g -std=c++98
 

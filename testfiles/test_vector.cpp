@@ -188,17 +188,54 @@ void assign_test()
         v.assign(10, 42);
         vdebug(v);
     }
+
+    put_test_function("TEST vector::assign<Iterator>");
+
+    {
+        pout("capacity >= size >= assign size");
+        std::vector<int> v(10);
+        std::vector<int> a;
+        for (int i = 1; i <= 5; ++i)
+            a.push_back(i);
+        vdebug(v);
+        v.assign(a.begin(), a.end());
+        vdebug(v);
+    }
+
+    {
+        pout("capacity >= assign size > size");
+        std::vector<int> v;
+        for (int i = -1; i >= -10; --i)
+            v.push_back(i);
+        std::vector<int> a(12, 3);
+        vdebug(v);
+        vdebug(a);
+        v.assign(a.begin(), a.end());
+        vdebug(v);
+    }
+
+    {
+        pout("capacity is less than assign size");
+        ft::vector<int> v;
+        for (int i = 1; i <= 5; ++i)
+            v.push_back(i);
+        std::vector<int> a(12, 3);
+        vdebug(v);
+        vdebug(a);
+        v.assign(a.begin(), a.end());
+        vdebug(v);
+    }
 }
 
 void vector_test()
 {
     cout << "Vector TEST" << endl;
-    // def_constructor_test();
-    // alloc_constructor_test();
-    // count_value_constructor_test();
-    // inputiterator_constructor_test();
-    // copy_constructor_test();
-    // operator_assign_test();
-    // at_test();
+    def_constructor_test();
+    alloc_constructor_test();
+    count_value_constructor_test();
+    inputiterator_constructor_test();
+    copy_constructor_test();
+    operator_assign_test();
+    at_test();
     assign_test();
 }

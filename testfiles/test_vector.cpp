@@ -29,6 +29,19 @@ void vdebug(T& V)
     cout << "}" << endl;
 }
 
+template <class T>
+void print_is_empty(T& v)
+{
+    if (v.empty())
+    {
+        cout << "vector is empty" << endl;
+    }
+    else
+    {
+        cout << "vector is not empty" << endl;
+    }
+}
+
 void def_constructor_test()
 {
     pout("vector()");
@@ -381,12 +394,26 @@ void data_test()
         vdebug(v);
 
         ft::vector<int>::const_pointer c_p = v.data();
-        ft::vector<int>::pointer p = v.data();
+        ft::vector<int>::pointer p         = v.data();
 
         cout << *c_p << endl;
         ++(*p);
         cout << *c_p << endl;
         vdebug(v);
+    }
+}
+
+void empty_test()
+{
+
+    put_test_function("TEST vector::empty");
+    {
+        pout("const_pointer change by other pointer");
+        ft::vector<int> v;
+        print_is_empty(v);
+
+        v.push_back(1);
+        print_is_empty(v);
     }
 }
 
@@ -405,4 +432,5 @@ void vector_test()
     front_test();
     back_test();
     data_test();
+    empty_test();
 }

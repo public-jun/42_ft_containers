@@ -146,7 +146,7 @@ public:
             InputIterator mid = last;
             if (new_size > size())
             {
-                mid     = first;
+                mid = first;
                 std::advance(mid, size());
                 std::copy(first, mid, begin());
                 for (InputIterator it = mid; it != last; ++it)

@@ -193,21 +193,22 @@ void assign_test()
 
     {
         pout("capacity >= size >= assign size");
-        std::vector<int> v(10);
-        std::vector<int> a;
+        ft::vector<int> v(10);
+        ft::vector<int> a;
         for (int i = 1; i <= 5; ++i)
             a.push_back(i);
         vdebug(v);
+        vdebug(a);
         v.assign(a.begin(), a.end());
         vdebug(v);
     }
 
     {
         pout("capacity >= assign size > size");
-        std::vector<int> v;
+        ft::vector<int> v;
         for (int i = -1; i >= -10; --i)
             v.push_back(i);
-        std::vector<int> a(12, 3);
+        ft::vector<int> a(12, 3);
         vdebug(v);
         vdebug(a);
         v.assign(a.begin(), a.end());
@@ -219,7 +220,7 @@ void assign_test()
         ft::vector<int> v;
         for (int i = 1; i <= 5; ++i)
             v.push_back(i);
-        std::vector<int> a(12, 3);
+        ft::vector<int> a(12, 3);
         vdebug(v);
         vdebug(a);
         v.assign(a.begin(), a.end());
@@ -248,6 +249,19 @@ void get_allocator_test()
     }
 }
 
+void front_test()
+{
+    put_test_function("TEST vector::front");
+    {
+        pout("reference");
+        std::vector<int> v;
+    }
+    {
+        pout("const_reference");
+
+    }
+}
+
 void vector_test()
 {
     cout << "Vector TEST" << endl;
@@ -260,4 +274,5 @@ void vector_test()
     at_test();
     assign_test();
     get_allocator_test();
+    front_test();
 }

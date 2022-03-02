@@ -155,8 +155,8 @@ public:
             else
             {
                 std::copy(first, mid, begin());
-                difference_type diff = new_size - size();
-                destroy_until(reverse_iterator(rbegin() + diff));
+                difference_type diff = size() - new_size;
+                destroy_until(rbegin() + diff);
             }
         }
         else

@@ -501,6 +501,29 @@ void max_size_test()
     }
 }
 
+void capacity_test()
+{
+    put_test_function("TEST vector::capacity");
+    {
+        std::vector<int> v;
+        vdebug(v);
+
+        v.reserve(1);
+        vdebug(v);
+
+        v.push_back(1);
+        v.push_back(2);
+        v.push_back(3);
+        vdebug(v);
+
+        v.reserve(1);
+        vdebug(v);
+
+        v.reserve(500);
+        vdebug(v);
+    }
+}
+
 void vector_test()
 {
     cout << "Vector TEST" << endl;
@@ -519,4 +542,5 @@ void vector_test()
     empty_test();
     size_test();
     max_size_test();
+    capacity_test();
 }

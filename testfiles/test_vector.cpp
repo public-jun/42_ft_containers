@@ -405,7 +405,6 @@ void data_test()
 
 void empty_test()
 {
-
     put_test_function("TEST vector::empty");
     {
         pout("const_pointer change by other pointer");
@@ -414,6 +413,91 @@ void empty_test()
 
         v.push_back(1);
         print_is_empty(v);
+    }
+}
+
+void size_test()
+{
+    put_test_function("TEST vector::size");
+    {
+        pout("size");
+        ft::vector<int> v;
+        cout << "size: " << v.size() << endl;
+
+        // simple
+        for (int i = 1; i <= 5; ++i)
+            v.push_back(i);
+        vdebug(v);
+        cout << "size: " << v.size() << endl;
+
+        for (int i = 6; i <= 1000; ++i)
+            v.push_back(i);
+        cout << "size: " << v.size() << endl;
+
+        v.reserve(10000);
+        cout << "size: " << v.size() << endl;
+
+        for (int i = 6; i <= 1000; ++i)
+            v.push_back(i);
+        cout << "size: " << v.size() << endl;
+    }
+}
+
+void max_size_test()
+{
+    put_test_function("TEST vector::max_size");
+    {
+        pout("get vector<int> maximum size");
+        std::vector<int> v;
+        cout << "max_size: " << v.max_size() << endl;
+    }
+
+    {
+        pout("get vector<char> maximum size");
+        ft::vector<char> v;
+        cout << "max_size: " << v.max_size() << endl;
+    }
+
+    {
+        pout("get vector<wchar_t> maximum size");
+        ft::vector<wchar_t> v;
+        cout << "max_size: " << v.max_size() << endl;
+    }
+
+    {
+        pout("get vector<short> maximum size");
+        ft::vector<short> v;
+        cout << "max_size: " << v.max_size() << endl;
+    }
+
+    {
+        pout("get vector<long> maximum size");
+        ft::vector<long> v;
+        cout << "max_size: " << v.max_size() << endl;
+    }
+
+    {
+        pout("get vector<float> maximum size");
+        ft::vector<float> v;
+        cout << "max_size: " << v.max_size() << endl;
+    }
+
+    {
+        pout("get vector<double> maximum size");
+        ft::vector<double> v;
+        cout << "max_size: " << v.max_size() << endl;
+    }
+
+    {
+        pout("get vector<long doule> maximum size");
+        ft::vector<long double> v;
+        cout << "max_size: " << v.max_size() << endl;
+    }
+
+    {
+        pout("get vector<std::string> maximum size");
+        ft::vector<std::string> v;
+        cout << "max_size: " << v.max_size() << endl;
     }
 }
 
@@ -433,4 +517,6 @@ void vector_test()
     back_test();
     data_test();
     empty_test();
+    size_test();
+    max_size_test();
 }

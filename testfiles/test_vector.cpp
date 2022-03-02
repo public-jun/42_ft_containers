@@ -292,6 +292,49 @@ void front_test()
     }
 }
 
+void back_test()
+{
+    put_test_function("TEST vector::back");
+    {
+        pout("reference");
+        ft::vector<int> v;
+        for (int i = 1; i <= 5; ++i)
+            v.push_back(i);
+        vdebug(v);
+        ft::vector<int>::reference ref = v.back();
+        cout << ref << endl;
+        ref = 42;
+        vdebug(v);
+    }
+
+    {
+        pout("const_reference");
+        ft::vector<int> v;
+        for (int i = 1; i <= 5; ++i)
+            v.push_back(i);
+        vdebug(v);
+        ft::vector<int>::const_reference c_ref = v.back();
+        cout << c_ref << endl;
+        // c_ref = 42; error
+        vdebug(v);
+    }
+
+    {
+        pout("const_reference change by other ref");
+        ft::vector<int> v;
+        for (int i = 1; i <= 5; ++i)
+            v.push_back(i);
+        vdebug(v);
+        ft::vector<int>::const_reference c_ref = v.back();
+        ft::vector<int>::reference ref         = v.back();
+        cout << c_ref << endl;
+        vdebug(v);
+        ref = 55;
+        vdebug(v);
+        cout << c_ref << endl;
+    }
+}
+
 void vector_test()
 {
     cout << "Vector TEST" << endl;
@@ -305,4 +348,5 @@ void vector_test()
     assign_test();
     get_allocator_test();
     front_test();
+    back_test();
 }

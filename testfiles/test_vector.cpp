@@ -405,7 +405,6 @@ void data_test()
 
 void empty_test()
 {
-
     put_test_function("TEST vector::empty");
     {
         pout("const_pointer change by other pointer");
@@ -414,6 +413,33 @@ void empty_test()
 
         v.push_back(1);
         print_is_empty(v);
+    }
+}
+
+void size_test()
+{
+    put_test_function("TEST vector::size");
+    {
+        pout("size");
+        ft::vector<int> v;
+        cout << "size: " << v.size() << endl;
+
+        // simple
+        for (int i = 1; i <= 5; ++i)
+            v.push_back(i);
+        vdebug(v);
+        cout << "size: " << v.size() << endl;
+
+        for (int i = 6; i <= 1000; ++i)
+            v.push_back(i);
+        cout << "size: " << v.size() << endl;
+
+        v.reserve(10000);
+        cout << "size: " << v.size() << endl;
+
+        for (int i = 6; i <= 1000; ++i)
+            v.push_back(i);
+        cout << "size: " << v.size() << endl;
     }
 }
 
@@ -433,4 +459,5 @@ void vector_test()
     back_test();
     data_test();
     empty_test();
+    size_test();
 }

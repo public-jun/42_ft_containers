@@ -10,6 +10,8 @@
 #include <iostream>
 #include <iterator>
 #include <memory> // uninitialized_fill_n
+#include <limits> // std::numeric_limits
+#include <algorithm> // std::min
 
 namespace ft {
 
@@ -171,6 +173,12 @@ public:
 
     // get_allocator
     allocator_type get_allocator() const { return (allocator_type(alloc_)); }
+
+    // max_size
+    size_type max_size() const
+    {
+        return std::min<size_type>(alloc_.max_size(), std::numeric_limits<difference_type>::max());
+    }
 
     // 容量確認
     size_type size() const { return end() - begin(); }

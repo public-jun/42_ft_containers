@@ -524,6 +524,27 @@ void capacity_test()
     }
 }
 
+void clear_test()
+{
+    put_test_function("TEST vector::clear");
+    {
+        pout("Erases all elements from the container.");
+        ft::vector<int> v;
+        v.push_back(1);
+        vdebug(v);
+        v.clear();
+        vdebug(v);
+        v.reserve(100);
+        vdebug(v);
+        v.clear();
+        for (int i = 1; i <= 10; ++i)
+            v.push_back(i);
+        vdebug(v);
+        v.clear();
+        vdebug(v);
+    }
+}
+
 void vector_test()
 {
     cout << "Vector TEST" << endl;
@@ -543,4 +564,5 @@ void vector_test()
     size_test();
     max_size_test();
     capacity_test();
+    clear_test();
 }

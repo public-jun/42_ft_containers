@@ -235,9 +235,9 @@ void get_allocator_test()
     {
         pout("Get allocator");
         ft::vector<int> v;
-        int *p;
+        int* p;
         int i = 0;
-        p = v.get_allocator().allocate(5);
+        p     = v.get_allocator().allocate(5);
         for (i = 0; i < 5; i++)
             v.get_allocator().construct(&p[i], i);
         for (i = 0; i < 5; i++)
@@ -254,11 +254,41 @@ void front_test()
     put_test_function("TEST vector::front");
     {
         pout("reference");
-        std::vector<int> v;
+        ft::vector<int> v;
+        for (int i = 1; i <= 5; ++i)
+            v.push_back(i);
+        vdebug(v);
+        ft::vector<int>::reference ref = v.front();
+        cout << ref << endl;
+        ref = 42;
+        vdebug(v);
     }
+
     {
         pout("const_reference");
+        ft::vector<int> v;
+        for (int i = 1; i <= 5; ++i)
+            v.push_back(i);
+        vdebug(v);
+        ft::vector<int>::const_reference c_ref = v.front();
+        cout << c_ref << endl;
+        // c_ref = 42;
+        vdebug(v);
+    }
 
+    {
+        pout("const_reference change by other ref");
+        ft::vector<int> v;
+        for (int i = 1; i <= 5; ++i)
+            v.push_back(i);
+        vdebug(v);
+        ft::vector<int>::const_reference c_ref = v.front();
+        ft::vector<int>::reference ref         = v.front();
+        cout << c_ref << endl;
+        vdebug(v);
+        ref = 55;
+        vdebug(v);
+        cout << c_ref << endl;
     }
 }
 

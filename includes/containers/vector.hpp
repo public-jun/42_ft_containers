@@ -144,21 +144,17 @@ public:
         if (new_size <= capacity())
         {
             InputIterator mid = last;
-            bool growing      = false;
             if (new_size > size())
             {
-                growing = true;
                 mid     = first;
                 std::advance(mid, size());
-            }
-            std::copy(first, mid, begin());
-            if (growing)
-            {
+                std::copy(first, mid, begin());
                 for (InputIterator it = mid; it != last; ++it)
                     construct(last_++, *it);
             }
             else
             {
+                std::copy(first, mid, begin());
                 difference_type diff = new_size - size();
                 destroy_until(reverse_iterator(rbegin() + diff));
             }

@@ -505,7 +505,7 @@ void capacity_test()
 {
     put_test_function("TEST vector::capacity");
     {
-        std::vector<int> v;
+        ft::vector<int> v;
         vdebug(v);
 
         v.reserve(1);
@@ -545,24 +545,98 @@ void clear_test()
     }
 }
 
+void insert_test()
+{
+    put_test_function("TEST vector::insert");
+    // {
+    //     pout("insert elements before first iterator");
+    //     std::vector<int> v(3, 100);
+    //     vdebug(v);
+
+    //     std::vector<int>::iterator it = v.begin();
+    //     it = v.insert(it, 200);
+    //     vdebug(v);
+    // }
+
+    {
+        pout("insert elements before last iterator");
+        ft::vector<int> v;
+        for (int i = 1; i <= 5; ++i)
+            v.push_back(i);
+        vdebug(v);
+
+        ft::vector<int>::iterator it = v.end();
+        it = v.insert(it, 200);
+        vdebug(v);
+    }
+
+    // {
+    //     pout("inserts count copies of the value before pos");
+    //     std::vector<int> v(3, 100);
+    //     vdebug(v);
+
+    //     std::vector<int>::iterator it = v.begin();
+    //     v.insert(it, 2, 300);
+    //     vdebug(v);
+
+    //     // "it" is no longer invalid, get new one.
+    //     it = v.begin();
+    //     cout << *it << endl;
+    // }
+
+    // {
+    //     pout("inserts elements from range [first, last) before pos.");
+    //     std::vector<int> v(3, 100);
+    //     vdebug(v);
+    //     std::vector<int> v2(2, 400);
+    //     vdebug(v2);
+
+    //     // begin
+    //     std::vector<int>::iterator it = v.begin();
+    //     v.insert(it + 2, v2.begin(), v2.end());
+    //     vdebug(v);
+
+    //     // end
+    //     it = v.end();
+    //     v.insert(it, v2.begin(), v2.end());
+    //     vdebug(v);
+    // }
+
+    // {
+    //     pout("inserts elements from string array before pos.");
+    //     std::vector<std::string> v(2, "aaa");
+    //     vdebug(v);
+
+    //     std::string arr[3];
+    //     arr[0] = "xxx";
+    //     arr[1] = "yyy";
+    //     arr[2] = "zzz";
+
+    //     // "xxx" "yyy" "aaa" "aaa"
+    //     v.insert(v.begin(), arr, arr + 2);
+    //     vdebug(v);
+    // }
+}
+
 void vector_test()
 {
     cout << "Vector TEST" << endl;
-    def_constructor_test();
-    alloc_constructor_test();
-    count_value_constructor_test();
-    inputiterator_constructor_test();
-    copy_constructor_test();
-    operator_assign_test();
-    at_test();
-    assign_test();
-    get_allocator_test();
-    front_test();
-    back_test();
-    data_test();
-    empty_test();
-    size_test();
-    max_size_test();
-    capacity_test();
-    clear_test();
+    // def_constructor_test();
+    // alloc_constructor_test();
+    // count_value_constructor_test();
+    // inputiterator_constructor_test();
+    // copy_constructor_test();
+    // operator_assign_test();
+    // at_test();
+    // assign_test();
+    // get_allocator_test();
+    // front_test();
+    // back_test();
+    // data_test();
+    // empty_test();
+    // size_test();
+    // max_size_test();
+    // capacity_test();
+    // clear_test();
+    insert_test();
 }

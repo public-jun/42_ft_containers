@@ -529,7 +529,7 @@ void clear_test()
     put_test_function("TEST vector::clear");
     {
         pout("Erases all elements from the container.");
-        ft::vector<int> v;
+        std::vector<int> v;
         v.push_back(1);
         vdebug(v);
         v.clear();
@@ -585,26 +585,44 @@ void insert_test()
         vdebug(v);
     }
 
-    // {
-    //     pout("inserts count copies of the value before pos");
-    //     std::vector<int> v(3, 100);
-    //     vdebug(v);
+    {
+        pout("When enough capacity, inserts count copies of the value before pos");
+        ft::vector<int> v;
+        for (int i = 1; i <= 10; ++i)
+            v.push_back(i);
+        vdebug(v);
 
-    //     std::vector<int>::iterator it = v.begin();
-    //     v.insert(it, 2, 300);
-    //     vdebug(v);
+        ft::vector<int>::iterator it = v.begin();
+        v.insert(it, 2, 300);
+        vdebug(v);
 
-    //     // "it" is no longer invalid, get new one.
-    //     it = v.begin();
-    //     cout << *it << endl;
-    // }
+        // "it" is no longer invalid, get new one.
+        it = v.end();
+        v.insert(it, 2, 400);
+        vdebug(v);
+    }
 
-    // {
-    //     pout("inserts elements from range [first, last) before pos.");
-    //     std::vector<int> v(3, 100);
-    //     vdebug(v);
-    //     std::vector<int> v2(2, 400);
-    //     vdebug(v2);
+    {
+        pout("When less capacity, inserts count copies of the value before pos");
+        ft::vector<int> v(3, 100);
+        vdebug(v);
+
+        ft::vector<int>::iterator it = v.begin();
+        v.insert(it, 10, 300);
+        vdebug(v);
+
+        // "it" is no longer invalid, get new one.
+        it = v.end();
+        v.insert(it, 100, 400);
+        vdebug(v);
+    }
+
+    {
+        pout("inserts elements from range [first, last) before pos.");
+        ft::vector<int> v(3, 100);
+        vdebug(v);
+        ft::vector<int> v2(2, 400);
+        vdebug(v2);
 
     //     // begin
     //     std::vector<int>::iterator it = v.begin();
@@ -615,7 +633,7 @@ void insert_test()
     //     it = v.end();
     //     v.insert(it, v2.begin(), v2.end());
     //     vdebug(v);
-    // }
+    }
 
     // {
     //     pout("inserts elements from string array before pos.");
@@ -636,22 +654,22 @@ void insert_test()
 void vector_test()
 {
     cout << "Vector TEST" << endl;
-    // def_constructor_test();
-    // alloc_constructor_test();
-    // count_value_constructor_test();
-    // inputiterator_constructor_test();
-    // copy_constructor_test();
-    // operator_assign_test();
-    // at_test();
-    // assign_test();
-    // get_allocator_test();
-    // front_test();
-    // back_test();
-    // data_test();
-    // empty_test();
-    // size_test();
-    // max_size_test();
-    // capacity_test();
-    // clear_test();
+    def_constructor_test();
+    alloc_constructor_test();
+    count_value_constructor_test();
+    inputiterator_constructor_test();
+    copy_constructor_test();
+    operator_assign_test();
+    at_test();
+    assign_test();
+    get_allocator_test();
+    front_test();
+    back_test();
+    data_test();
+    empty_test();
+    size_test();
+    max_size_test();
+    capacity_test();
+    clear_test();
     insert_test();
 }

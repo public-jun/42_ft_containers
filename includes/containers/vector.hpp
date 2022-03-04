@@ -10,8 +10,9 @@
 #include <algorithm> // std::min
 #include <iostream>
 #include <iterator>
-#include <limits> // std::numeric_limits
-#include <memory> // uninitialized_fill_n
+#include <limits>    // std::numeric_limits
+#include <memory>    // std::uninitialized_fill_n
+#include <stdexcept> // std::length_error
 
 namespace ft {
 
@@ -237,13 +238,12 @@ public:
         {
             if (p_pos == last_)
             {
-                construct(last_, value);
-                last_++;
+                construct_at_end(1, value);
             }
             else
             {
                 move_range(p_pos, 1);
-                construct(p_pos, value);
+                *p_pos = value;
             }
         }
         else
@@ -251,9 +251,36 @@ public:
             extend_capacity(1);
             p_pos = first_ + diff;
             move_range(p_pos, 1);
-            construct(p_pos, value);
+            *p_pos = value;
         }
         return iterator(p_pos);
+    }
+
+    void insert(iterator pos, size_type count, const_reference value)
+    {
+        difference_type diff = pos - begin();
+        pointer p_pos        = first_ + diff;
+        size_type new_size   = size() + count;
+
+        if (new_size < capacity())
+        {
+            if (p_pos == last_)
+            {
+                construct_at_end(count, value);
+            }
+            else
+            {
+                move_range(p_pos, count);
+                insert_n_range(p_pos, count, value);
+            }
+        }
+        else
+        {
+            extend_capacity(count);
+            p_pos = first_ + diff;
+            move_range(p_pos, count);
+            insert_n_range(p_pos, count, value);
+        }
     }
 
     // Increase the capacity of the vector, when less that
@@ -362,19 +389,45 @@ private:
         }
     }
 
+    //  Precondition:  __new_size > capacity()
+    size_type calc_new_size(size_type new_size) const
+    {
+        const size_type ms = max_size();
+        if (new_size > ms)
+            throw std::length_error("too long new_size");
+        const size_type cap = capacity();
+        if (cap >= ms / 2)
+            return ms;
+        return std::max<size_type>(2 * cap, new_size);
+    }
+
     void extend_capacity(size_type amount_of_increase)
     {
-        // 予約メモリーが足りなければ拡張
-        if (size() + amount_of_increase > capacity())
+        size_type want_size = size() + amount_of_increase;
+
+        if (want_size > capacity())
         {
-            // 現在のストレージサイズ
-            size_type c = size();
-            // 0の場合は1に
-            if (c == 0)
-                c = 1;
-            else
-                c *= 2;
-            reserve(c);
+            size_type new_size = calc_new_size(want_size);
+            reserve(new_size);
+        }
+    }
+
+    // 末尾の未初期化部分に追加
+    void construct_at_end(size_type count, const_reference value)
+    {
+        for (std::size_t i = 0; i < count; ++i)
+        {
+            construct(last_, value);
+            last_++;
+        }
+    }
+
+    // 初期化済みの要素 n 個に対して value 設定
+    void insert_n_range(pointer pos, size_type count, const_reference value)
+    {
+        for (std::size_t i = 0; i < count; ++i, ++pos)
+        {
+            *pos = value;
         }
     }
 
@@ -383,6 +436,7 @@ private:
     {
         pointer old_tail = last_ - 1;
         pointer tmp_p    = old_tail + n;
+
         for (; tmp_p != p_from + n - 1; --tmp_p)
         {
             if (tmp_p >= old_tail)

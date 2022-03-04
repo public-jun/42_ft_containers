@@ -7,11 +7,11 @@
 #include <utils.hpp>
 #include <wrap_iter.hpp>
 
+#include <algorithm> // std::min
 #include <iostream>
 #include <iterator>
-#include <memory> // uninitialized_fill_n
 #include <limits> // std::numeric_limits
-#include <algorithm> // std::min
+#include <memory> // uninitialized_fill_n
 
 namespace ft {
 
@@ -177,7 +177,8 @@ public:
     // max_size
     size_type max_size() const
     {
-        return std::min<size_type>(alloc_.max_size(), std::numeric_limits<difference_type>::max());
+        return std::min<size_type>(alloc_.max_size(),
+                                   std::numeric_limits<difference_type>::max());
     }
 
     // 容量確認
@@ -230,22 +231,29 @@ public:
     // insert
     iterator insert(iterator pos, const_reference value)
     {
-        pointer p = first_ + (pos - begin());
-        // capacity に余裕がある
+        difference_type diff = pos - begin();
+        pointer p_pos        = first_ + diff;
         if (last_ < capacity_last_)
         {
-            if (p == last_)
+            if (p_pos == last_)
             {
-                construct(last_++, value);
+                construct(last_, value);
+                last_++;
             }
             else
             {
-                // construct(last_++);
-
+                move_range(p_pos, 1);
+                construct(p_pos, value);
             }
-
         }
-        return iterator(p);
+        else
+        {
+            extend_capacity(1);
+            p_pos = first_ + diff;
+            move_range(p_pos, 1);
+            construct(p_pos, value);
+        }
+        return iterator(p_pos);
     }
 
     // Increase the capacity of the vector, when less that
@@ -306,21 +314,10 @@ public:
             }
         }
     }
+
     void push_back(const_reference value)
     {
-        // 予約メモリーが足りなければ拡張
-        if (size() + 1 > capacity())
-        {
-            // 現在のストレージサイズ
-            size_type c = size();
-            // 0の場合は1に
-            if (c == 0)
-                c = 1;
-            else
-                c *= 2;
-
-            reserve(c);
-        }
+        extend_capacity(1);
         // 要素を末尾に追加
         construct(last_, value);
         // 有効な要素数を更新
@@ -363,6 +360,41 @@ private:
         {
             destroy(&*riter);
         }
+    }
+
+    void extend_capacity(size_type amount_of_increase)
+    {
+        // 予約メモリーが足りなければ拡張
+        if (size() + amount_of_increase > capacity())
+        {
+            // 現在のストレージサイズ
+            size_type c = size();
+            // 0の場合は1に
+            if (c == 0)
+                c = 1;
+            else
+                c *= 2;
+            reserve(c);
+        }
+    }
+
+    // capacity に余裕があるとき、任意の pos 以降を右に n ずらす
+    void move_range(pointer p_from, size_type n)
+    {
+        pointer old_tail = last_ - 1;
+        pointer tmp_p    = old_tail + n;
+        for (; tmp_p != p_from + n - 1; --tmp_p)
+        {
+            if (tmp_p >= old_tail)
+            {
+                construct(tmp_p, *(tmp_p - n));
+            }
+            else
+            {
+                *tmp_p = *(tmp_p - n);
+            }
+        }
+        last_ += n;
     }
 };
 } // namespace ft

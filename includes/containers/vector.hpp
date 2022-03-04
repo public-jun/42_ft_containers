@@ -227,6 +227,27 @@ public:
 
     void clear() { destroy_until(rend()); }
 
+    // insert
+    iterator insert(iterator pos, const_reference value)
+    {
+        pointer p = first_ + (pos - begin());
+        // capacity に余裕がある
+        if (last_ < capacity_last_)
+        {
+            if (p == last_)
+            {
+                construct(last_++, value);
+            }
+            else
+            {
+                // construct(last_++);
+
+            }
+
+        }
+        return iterator(p);
+    }
+
     // Increase the capacity of the vector, when less that
     void reserve(size_type sz)
     {

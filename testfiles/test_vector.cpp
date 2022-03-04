@@ -548,15 +548,16 @@ void clear_test()
 void insert_test()
 {
     put_test_function("TEST vector::insert");
-    // {
-    //     pout("insert elements before first iterator");
-    //     std::vector<int> v(3, 100);
-    //     vdebug(v);
+    {
+        pout("insert elements before first iterator");
+        ft::vector<int> v(3, 100);
+        vdebug(v);
 
-    //     std::vector<int>::iterator it = v.begin();
-    //     it = v.insert(it, 200);
-    //     vdebug(v);
-    // }
+        ft::vector<int>::iterator it = v.begin();
+        it = v.insert(it, 200);
+        cout << *it << endl;
+        vdebug(v);
+    }
 
     {
         pout("insert elements before last iterator");
@@ -567,6 +568,20 @@ void insert_test()
 
         ft::vector<int>::iterator it = v.end();
         it = v.insert(it, 200);
+        cout << *it << endl;
+        vdebug(v);
+    }
+
+    {
+        pout("insert elements before n iterator");
+        ft::vector<int> v;
+        for (int i = 1; i <= 5; ++i)
+            v.push_back(i);
+        vdebug(v);
+
+        ft::vector<int>::iterator it = v.begin();
+        it = v.insert(it + 1, 200);
+        cout << *it << endl;
         vdebug(v);
     }
 

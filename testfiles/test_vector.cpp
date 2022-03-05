@@ -554,7 +554,7 @@ void insert_test()
         vdebug(v);
 
         ft::vector<int>::iterator it = v.begin();
-        it = v.insert(it, 200);
+        it                           = v.insert(it, 200);
         cout << *it << endl;
         vdebug(v);
     }
@@ -567,7 +567,7 @@ void insert_test()
         vdebug(v);
 
         ft::vector<int>::iterator it = v.end();
-        it = v.insert(it, 200);
+        it                           = v.insert(it, 200);
         cout << *it << endl;
         vdebug(v);
     }
@@ -580,13 +580,14 @@ void insert_test()
         vdebug(v);
 
         ft::vector<int>::iterator it = v.begin();
-        it = v.insert(it + 1, 200);
+        it                           = v.insert(it + 1, 200);
         cout << *it << endl;
         vdebug(v);
     }
 
     {
-        pout("When enough capacity, inserts count copies of the value before pos");
+        pout("When enough capacity, inserts count copies of the value before "
+             "pos");
         ft::vector<int> v;
         for (int i = 1; i <= 10; ++i)
             v.push_back(i);
@@ -603,7 +604,8 @@ void insert_test()
     }
 
     {
-        pout("When less capacity, inserts count copies of the value before pos");
+        pout(
+            "When less capacity, inserts count copies of the value before pos");
         ft::vector<int> v(3, 100);
         vdebug(v);
 
@@ -619,20 +621,21 @@ void insert_test()
 
     {
         pout("inserts elements from range [first, last) before pos.");
-        ft::vector<int> v(3, 100);
+        std::vector<int> v(3, 100);
         vdebug(v);
-        ft::vector<int> v2(2, 400);
+        std::vector<int> v2(2, 400);
         vdebug(v2);
 
-    //     // begin
-    //     std::vector<int>::iterator it = v.begin();
-    //     v.insert(it + 2, v2.begin(), v2.end());
-    //     vdebug(v);
+        v.reserve(50);
+        // begin
+        std::vector<int>::iterator it = v.begin();
+        v.insert(it + 1, v2.begin(), v2.end());
+        vdebug(v);
 
-    //     // end
-    //     it = v.end();
-    //     v.insert(it, v2.begin(), v2.end());
-    //     vdebug(v);
+        // end
+        it = v.end();
+        v.insert(it, v2.begin(), v2.end());
+        vdebug(v);
     }
 
     // {
@@ -654,22 +657,22 @@ void insert_test()
 void vector_test()
 {
     cout << "Vector TEST" << endl;
-    def_constructor_test();
-    alloc_constructor_test();
-    count_value_constructor_test();
-    inputiterator_constructor_test();
-    copy_constructor_test();
-    operator_assign_test();
-    at_test();
-    assign_test();
-    get_allocator_test();
-    front_test();
-    back_test();
-    data_test();
-    empty_test();
-    size_test();
-    max_size_test();
-    capacity_test();
-    clear_test();
+    // def_constructor_test();
+    // alloc_constructor_test();
+    // count_value_constructor_test();
+    // inputiterator_constructor_test();
+    // copy_constructor_test();
+    // operator_assign_test();
+    // at_test();
+    // assign_test();
+    // get_allocator_test();
+    // front_test();
+    // back_test();
+    // data_test();
+    // empty_test();
+    // size_test();
+    // max_size_test();
+    // capacity_test();
+    // clear_test();
     insert_test();
 }

@@ -11,7 +11,7 @@
 #include <iostream>
 #include <iterator>
 #include <limits>    // std::numeric_limits
-#include <memory>    // std::uninitialized_fill_n
+#include <memory>    // std::uninitialized_fill_n std::uninitialized_copy
 #include <stdexcept> // std::length_error
 
 namespace ft {
@@ -280,6 +280,31 @@ public:
             p_pos = first_ + diff;
             move_range(p_pos, count);
             insert_n_range(p_pos, count, value);
+        }
+    }
+
+    template <class InputIterator>
+    typename ft::enable_if<!ft::is_integral<InputIterator>::value,
+                           void>::type // void
+    insert(iterator pos, InputIterator first, InputIterator last)
+    {
+        difference_type diff = pos - begin();
+        pointer p_pos        = first_ + diff;
+        difference_type count = std::distance(first, last);
+        size_type new_size    = size() + count;
+
+        if (new_size < capacity())
+        {
+            if (pos == end())
+            {
+                std::uninitialized_copy(first, last, pos);
+                last_ += count;
+            }
+            else
+            {
+                move_range(p_pos, count);
+                std::copy(first, last, pos);
+            }
         }
     }
 

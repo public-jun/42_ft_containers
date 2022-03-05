@@ -42,7 +42,7 @@ public:
 
     iterator_type base() const { return current_; }
     reference operator*() const { return *current_; }
-    pointer operator->() const { return &current_; }
+    pointer operator->() const { return current_; }
     reference operator[](difference_type n) const { return *(*this + n); }
     wrap_iter& operator++()
     {

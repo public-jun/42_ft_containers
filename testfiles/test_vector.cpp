@@ -589,17 +589,25 @@ void insert_test()
         pout("When enough capacity, inserts count copies of the value before "
              "pos");
         ft::vector<int> v;
-        for (int i = 1; i <= 10; ++i)
+        for (int i = 1; i <= 200; ++i)
             v.push_back(i);
         vdebug(v);
 
         ft::vector<int>::iterator it = v.begin();
-        v.insert(it, 2, 300);
+        v.insert(it, 5, 30);
+        vdebug(v);
+
+        it = v.begin();
+        v.insert(it, 10, 40);
+        vdebug(v);
+
+        it = v.begin();
+        v.insert(it + 42, 10, 50);
         vdebug(v);
 
         // "it" is no longer invalid, get new one.
         it = v.end();
-        v.insert(it, 2, 400);
+        v.insert(it, 20, 60);
         vdebug(v);
     }
 
@@ -610,46 +618,79 @@ void insert_test()
         vdebug(v);
 
         ft::vector<int>::iterator it = v.begin();
-        v.insert(it, 10, 300);
+        v.insert(it, 10, 200);
+        vdebug(v);
+
+        it = v.begin();
+        v.insert(it + 10, 20, 300);
         vdebug(v);
 
         // "it" is no longer invalid, get new one.
         it = v.end();
-        v.insert(it, 100, 400);
-        vdebug(v);
-    }
-
-    {
-        pout("inserts elements from range [first, last) before pos.");
-        std::vector<int> v(3, 100);
-        vdebug(v);
-        std::vector<int> v2(2, 400);
-        vdebug(v2);
-
-        v.reserve(50);
-        // begin
-        std::vector<int>::iterator it = v.begin();
-        v.insert(it + 1, v2.begin(), v2.end());
-        vdebug(v);
-
-        // end
-        it = v.end();
-        v.insert(it, v2.begin(), v2.end());
+        v.insert(it, 30, 400);
         vdebug(v);
     }
 
     // {
-    //     pout("inserts elements from string array before pos.");
-    //     std::vector<std::string> v(2, "aaa");
+    //     pout("When enough capacity, inserts elements from range [first, last) "
+    //          "before pos.");
+    //     ft::vector<int> v(3, 100);
+    //     vdebug(v);
+    //     ft::vector<int> v2(2, 400);
+    //     vdebug(v2);
+
+    //     v.reserve(50);
+    //     // begin
+    //     ft::vector<int>::iterator it = v.begin();
+    //     v.insert(it + 1, v2.begin(), v2.end());
     //     vdebug(v);
 
-    //     std::string arr[3];
+    //     // end
+    //     it = v.end();
+    //     v.insert(it, v2.begin(), v2.end());
+    //     vdebug(v);
+    // }
+    // {
+    //     pout("When less capacity, inserts elements from range [first, last) "
+    //          "before pos.");
+    //     ft::vector<int> v(3, 100);
+    //     vdebug(v);
+    //     ft::vector<int> v2(2, 200);
+    //     vdebug(v2);
+    //     ft::vector<int> v3(3, 300);
+    //     vdebug(v3);
+    //     ft::vector<int> v4(4, 400);
+    //     vdebug(v4);
+
+    //     // begin
+    //     ft::vector<int>::iterator it = v.begin();
+    //     v.insert(it, v2.begin(), v2.end());
+    //     vdebug(v);
+
+    //     // mid
+    //     it = v.begin();
+    //     v.insert(it + 4, v3.begin(), v3.end());
+    //     vdebug(v);
+
+    //     // end
+    //     it = v.end();
+    //     v.insert(it, v4.begin(), v4.end());
+    //     vdebug(v);
+    // }
+
+    // {
+    //     pout("inserts elements from string array before pos.");
+    //     ft::vector<std::string> v(2, "aaa");
+    //     vdebug(v);
+
+    //     std::string arr[4];
     //     arr[0] = "xxx";
     //     arr[1] = "yyy";
     //     arr[2] = "zzz";
+    //     arr[3] = "end";
 
     //     // "xxx" "yyy" "aaa" "aaa"
-    //     v.insert(v.begin(), arr, arr + 2);
+    //     v.insert(v.begin(), arr, arr + 3);
     //     vdebug(v);
     // }
 }
@@ -657,22 +698,22 @@ void insert_test()
 void vector_test()
 {
     cout << "Vector TEST" << endl;
-    // def_constructor_test();
-    // alloc_constructor_test();
-    // count_value_constructor_test();
-    // inputiterator_constructor_test();
-    // copy_constructor_test();
-    // operator_assign_test();
-    // at_test();
-    // assign_test();
-    // get_allocator_test();
-    // front_test();
-    // back_test();
-    // data_test();
-    // empty_test();
-    // size_test();
-    // max_size_test();
-    // capacity_test();
-    // clear_test();
+    def_constructor_test();
+    alloc_constructor_test();
+    count_value_constructor_test();
+    inputiterator_constructor_test();
+    copy_constructor_test();
+    operator_assign_test();
+    at_test();
+    assign_test();
+    get_allocator_test();
+    front_test();
+    back_test();
+    data_test();
+    empty_test();
+    size_test();
+    max_size_test();
+    capacity_test();
+    clear_test();
     insert_test();
 }

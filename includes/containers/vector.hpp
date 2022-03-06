@@ -14,6 +14,17 @@
 #include <memory>    // std::uninitialized_fill_n std::uninitialized_copy
 #include <stdexcept> // std::length_error
 
+template <class T>
+void debug(T& V)
+{
+    std::cout << "size:" << V.size() << " capacity:" << V.capacity()
+              << std::endl;
+    std::cout << "{ ";
+    for (typename T::iterator it = V.begin(); it != V.end(); ++it)
+        std::cout << *it << " ";
+    std::cout << "}" << std::endl;
+}
+
 namespace ft {
 
 template <typename T, typename Allocator = std::allocator<T> >
@@ -233,53 +244,41 @@ public:
     iterator insert(iterator pos, const_reference value)
     {
         difference_type diff = pos - begin();
-        pointer p_pos        = first_ + diff;
-        if (last_ < capacity_last_)
-        {
-            if (p_pos == last_)
-            {
-                construct_at_end(1, value);
-            }
-            else
-            {
-                move_range(p_pos, 1);
-                *p_pos = value;
-            }
-        }
-        else
-        {
-            extend_capacity(1);
-            p_pos = first_ + diff;
-            move_range(p_pos, 1);
-            *p_pos = value;
-        }
+        insert(pos, 1, value);
+        pointer p_pos = first_ + diff;
         return iterator(p_pos);
     }
 
     void insert(iterator pos, size_type count, const_reference value)
     {
-        difference_type diff = pos - begin();
-        pointer p_pos        = first_ + diff;
-        size_type new_size   = size() + count;
+        difference_type offset = pos - begin();
+        size_type new_size     = size() + count;
 
-        if (new_size < capacity())
+        if (count > 0)
         {
-            if (p_pos == last_)
+            if (new_size >= capacity())
             {
-                construct_at_end(count, value);
+                extend_capacity(count);
             }
-            else
+
+            pointer p_pos    = first_ + offset;
+            pointer old_last = last_;
+
+            size_type after_pos_size = static_cast<size_type>(last_ - p_pos);
+            size_type left_count     = count;
+
+            move_range(p_pos, old_last, count);
+            if (count > after_pos_size)
             {
-                move_range(p_pos, count);
-                insert_n_range(p_pos, count, value);
+                size_type unini_size = count - after_pos_size;
+                std::uninitialized_fill_n(old_last, unini_size, value);
+                left_count -= unini_size;
             }
-        }
-        else
-        {
-            extend_capacity(count);
-            p_pos = first_ + diff;
-            move_range(p_pos, count);
-            insert_n_range(p_pos, count, value);
+            if (left_count > 0)
+            {
+                std::fill_n(p_pos, left_count, value);
+            }
+            last_ += count;
         }
     }
 
@@ -288,23 +287,26 @@ public:
                            void>::type // void
     insert(iterator pos, InputIterator first, InputIterator last)
     {
-        difference_type diff = pos - begin();
-        pointer p_pos        = first_ + diff;
+        difference_type diff  = pos - begin();
+        pointer p_pos         = first_ + diff;
         difference_type count = std::distance(first, last);
         size_type new_size    = size() + count;
 
-        if (new_size < capacity())
+        if (new_size >= capacity())
         {
-            if (pos == end())
-            {
-                std::uninitialized_copy(first, last, pos);
-                last_ += count;
-            }
-            else
-            {
-                move_range(p_pos, count);
-                std::copy(first, last, pos);
-            }
+            extend_capacity(count);
+            p_pos = first_ + diff;
+            pos   = iterator(p_pos);
+        }
+
+        if (pos == end())
+        {
+            construct_at_end(first, last);
+        }
+        else
+        {
+            move_range(p_pos, count);
+            std::copy(first, last, pos);
         }
     }
 
@@ -447,6 +449,18 @@ private:
         }
     }
 
+    // 末尾の未初期化部分にイテレータコピーで追加
+    template <class InputIterator>
+    typename ft::enable_if<!ft::is_integral<InputIterator>::value,
+                           void>::type // void
+    construct_at_end(InputIterator first, InputIterator last)
+    {
+        difference_type count = std::distance(first, last);
+
+        std::uninitialized_copy(first, last, end());
+        last_ += count;
+    }
+
     // 初期化済みの要素 n 個に対して value 設定
     void insert_n_range(pointer pos, size_type count, const_reference value)
     {
@@ -457,6 +471,53 @@ private:
     }
 
     // capacity に余裕があるとき、任意の pos 以降を右に n ずらす
+    /*
+    ** pos = | 2 | , last_ = | 4
+    ** | 0 | 1 | 2 | 3 | 4   -> +2
+    **           |   |
+    **  tmp_p  | 4 | 5 |    construt(tmp_p, *(tmp_p) - 2)
+    */
+
+    /*
+    ** pos = | 2 | , last_ = | 4
+    **          | 0 | 1 | 2 | 3 | 4   -> +100
+    **                    |   |
+    **                | 102 | 103 |  construt(tmp_p, *(tmp_p) - 100)
+    **    | 100 | 101 |              construct(tmp_p)
+    */
+
+    /*
+    ** pos = | 2 | , last_ = | 4
+    **          | 0 | 1 | 2 | 3 | 4   -> +1
+    **                    |   |
+    **                    | | 4 |  construct(tmp_p, *(tmp_p) - 1)
+    **                  | 3 |      *tmp_p =  *(tmp_p - 1)
+    */
+
+    void move_range(pointer from_s, pointer from_e, size_type amount_move)
+    {
+        difference_type range_size = from_e - from_s;
+        pointer old_tail           = from_e - 1;
+        pointer new_tail           = old_tail + amount_move;
+        pointer tmp_p              = new_tail;
+
+        if (from_s != last_)
+        {
+            for (size_type i = 0; i < static_cast<size_type>(range_size);
+                 ++i, --tmp_p)
+            {
+                if (tmp_p >= from_e)
+                {
+                    construct(tmp_p, *(old_tail - i));
+                }
+                else
+                {
+                    *tmp_p = *(old_tail - i);
+                }
+            }
+        }
+    }
+
     void move_range(pointer p_from, size_type n)
     {
         pointer old_tail = last_ - 1;
@@ -466,7 +527,10 @@ private:
         {
             if (tmp_p >= old_tail)
             {
-                construct(tmp_p, *(tmp_p - n));
+                if (tmp_p >= p_from + n)
+                    construct(tmp_p, *(tmp_p - n));
+                else
+                    construct(tmp_p);
             }
             else
             {

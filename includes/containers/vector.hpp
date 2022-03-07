@@ -292,34 +292,6 @@ public:
             typename iterator_traits<InputIterator>::iterator_category());
     }
 
-    // template <class InputIterator>
-    // typename ft::enable_if<!ft::is_integral<InputIterator>::value,
-    //                        void>::type // void
-    // insert(iterator pos, InputIterator first, InputIterator last)
-    // {
-    //     difference_type diff  = pos - begin();
-    //     pointer p_pos         = first_ + diff;
-    //     difference_type count = std::distance(first, last);
-    //     size_type new_size    = size() + count;
-
-    //     if (new_size >= capacity())
-    //     {
-    //         extend_capacity(count);
-    //         p_pos = first_ + diff;
-    //         pos   = iterator(p_pos);
-    //     }
-
-    //     if (pos == end())
-    //     {
-    //         construct_at_end(first, last);
-    //     }
-    //     else
-    //     {
-    //         move_range(p_pos, count);
-    //         std::copy(first, last, pos);
-    //     }
-    // }
-
     // Increase the capacity of the vector, when less that
     void reserve(size_type sz)
     {
@@ -361,6 +333,7 @@ public:
             }
         }
     }
+
     void resize(size_type sz, const_reference value)
     {
         if (sz < size())
@@ -465,10 +438,7 @@ private:
                            void>::type // void
     construct_at_end(InputIterator first, InputIterator last)
     {
-        // difference_type count = std::distance(first, last);
-
         std::uninitialized_copy(first, last, end());
-        // last_ += count;
     }
 
     // 初期化済みの要素 n 個に対して value 設定
@@ -479,30 +449,6 @@ private:
             *pos = value;
         }
     }
-
-    // capacity に余裕があるとき、任意の pos 以降を右に n ずらす
-    /*
-    ** pos = | 2 | , last_ = | 4
-    ** | 0 | 1 | 2 | 3 | 4   -> +2
-    **           |   |
-    **  tmp_p  | 4 | 5 |    construt(tmp_p, *(tmp_p) - 2)
-    */
-
-    /*
-    ** pos = | 2 | , last_ = | 4
-    **          | 0 | 1 | 2 | 3 | 4   -> +100
-    **                    |   |
-    **                | 102 | 103 |  construt(tmp_p, *(tmp_p) - 100)
-    **    | 100 | 101 |              construct(tmp_p)
-    */
-
-    /*
-    ** pos = | 2 | , last_ = | 4
-    **          | 0 | 1 | 2 | 3 | 4   -> +1
-    **                    |   |
-    **                    | | 4 |  construct(tmp_p, *(tmp_p) - 1)
-    **                  | 3 |      *tmp_p =  *(tmp_p - 1)
-    */
 
     void move_range(pointer from_s, pointer from_e, size_type amount_move)
     {
@@ -526,28 +472,6 @@ private:
                 }
             }
         }
-    }
-
-    void move_range(pointer p_from, size_type n)
-    {
-        pointer old_tail = last_ - 1;
-        pointer tmp_p    = old_tail + n;
-
-        for (; tmp_p != p_from + n - 1; --tmp_p)
-        {
-            if (tmp_p >= old_tail)
-            {
-                if (tmp_p >= p_from + n)
-                    construct(tmp_p, *(tmp_p - n));
-                else
-                    construct(tmp_p);
-            }
-            else
-            {
-                *tmp_p = *(tmp_p - n);
-            }
-        }
-        last_ += n;
     }
 
     // input_iterator_tag ver
@@ -584,12 +508,12 @@ private:
                 extend_capacity(insert_size);
             }
 
-            pointer p_pos                  = first_ + offset;
-            pointer old_last               = last_;
+            pointer p_pos    = first_ + offset;
+            pointer old_last = last_;
 
             difference_type after_pos_size = last_ - p_pos;
-            size_type left_insert_size = insert_size;
-            ForwardIterator m_it = last_it;
+            size_type left_insert_size     = insert_size;
+            ForwardIterator m_it           = last_it;
 
             if (insert_size > after_pos_size)
             {

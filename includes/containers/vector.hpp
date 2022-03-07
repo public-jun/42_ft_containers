@@ -287,28 +287,38 @@ public:
                            void>::type // void
     insert(iterator pos, InputIterator first, InputIterator last)
     {
-        difference_type diff  = pos - begin();
-        pointer p_pos         = first_ + diff;
-        difference_type count = std::distance(first, last);
-        size_type new_size    = size() + count;
-
-        if (new_size >= capacity())
-        {
-            extend_capacity(count);
-            p_pos = first_ + diff;
-            pos   = iterator(p_pos);
-        }
-
-        if (pos == end())
-        {
-            construct_at_end(first, last);
-        }
-        else
-        {
-            move_range(p_pos, count);
-            std::copy(first, last, pos);
-        }
+        range_insert(
+            pos, first, last,
+            typename iterator_traits<InputIterator>::iterator_category());
     }
+
+    // template <class InputIterator>
+    // typename ft::enable_if<!ft::is_integral<InputIterator>::value,
+    //                        void>::type // void
+    // insert(iterator pos, InputIterator first, InputIterator last)
+    // {
+    //     difference_type diff  = pos - begin();
+    //     pointer p_pos         = first_ + diff;
+    //     difference_type count = std::distance(first, last);
+    //     size_type new_size    = size() + count;
+
+    //     if (new_size >= capacity())
+    //     {
+    //         extend_capacity(count);
+    //         p_pos = first_ + diff;
+    //         pos   = iterator(p_pos);
+    //     }
+
+    //     if (pos == end())
+    //     {
+    //         construct_at_end(first, last);
+    //     }
+    //     else
+    //     {
+    //         move_range(p_pos, count);
+    //         std::copy(first, last, pos);
+    //     }
+    // }
 
     // Increase the capacity of the vector, when less that
     void reserve(size_type sz)
@@ -455,10 +465,10 @@ private:
                            void>::type // void
     construct_at_end(InputIterator first, InputIterator last)
     {
-        difference_type count = std::distance(first, last);
+        // difference_type count = std::distance(first, last);
 
         std::uninitialized_copy(first, last, end());
-        last_ += count;
+        // last_ += count;
     }
 
     // 初期化済みの要素 n 個に対して value 設定
@@ -538,6 +548,63 @@ private:
             }
         }
         last_ += n;
+    }
+
+    // input_iterator_tag ver
+    template <class InputIterator>
+    void range_insert(iterator pos, InputIterator first, InputIterator last,
+                      std::input_iterator_tag)
+    {
+        if (pos == end())
+        {
+            for (; first != last; ++first)
+            {
+                insert(end(), *first);
+            }
+        }
+        if (first != last)
+        {
+            vector tmp_v(first, last, get_allocator());
+            insert(pos, tmp_v.begin(), tmp_v.end());
+        }
+    }
+
+    // forward_iterator_tag ver
+    template <class ForwardIterator>
+    void range_insert(iterator pos, ForwardIterator first_it,
+                      ForwardIterator last_it, std::forward_iterator_tag)
+    {
+        difference_type offset      = pos - begin();
+        difference_type insert_size = std::distance(first_it, last_it);
+
+        if (insert_size > 0)
+        {
+            if (insert_size > capacity_last_ - last_)
+            {
+                extend_capacity(insert_size);
+            }
+
+            pointer p_pos                  = first_ + offset;
+            pointer old_last               = last_;
+
+            difference_type after_pos_size = last_ - p_pos;
+            size_type left_insert_size = insert_size;
+            ForwardIterator m_it = last_it;
+
+            if (insert_size > after_pos_size)
+            {
+                m_it = first_it;
+                std::advance(m_it, after_pos_size);
+                construct_at_end(m_it, last_it);
+                left_insert_size = after_pos_size;
+            }
+            if (left_insert_size > 0)
+            {
+                move_range(p_pos, old_last, insert_size);
+                std::copy(first_it, m_it, p_pos);
+            }
+            last_ += insert_size;
+        }
     }
 };
 } // namespace ft

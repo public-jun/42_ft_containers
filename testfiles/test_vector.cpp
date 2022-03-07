@@ -631,68 +631,68 @@ void insert_test()
         vdebug(v);
     }
 
-    // {
-    //     pout("When enough capacity, inserts elements from range [first, last) "
-    //          "before pos.");
-    //     ft::vector<int> v(3, 100);
-    //     vdebug(v);
-    //     ft::vector<int> v2(2, 400);
-    //     vdebug(v2);
+    {
+        pout("When enough capacity, inserts elements from range [first, last) "
+             "before pos.");
+        ft::vector<int> v(3, 100);
+        vdebug(v);
+        ft::vector<int> v2(2, 400);
+        vdebug(v2);
 
-    //     v.reserve(50);
-    //     // begin
-    //     ft::vector<int>::iterator it = v.begin();
-    //     v.insert(it + 1, v2.begin(), v2.end());
-    //     vdebug(v);
+        v.reserve(50);
+        // begin
+        ft::vector<int>::iterator it = v.begin();
+        v.insert(it + 1, v2.begin(), v2.end());
+        // vdebug(v);
 
-    //     // end
-    //     it = v.end();
-    //     v.insert(it, v2.begin(), v2.end());
-    //     vdebug(v);
-    // }
-    // {
-    //     pout("When less capacity, inserts elements from range [first, last) "
-    //          "before pos.");
-    //     ft::vector<int> v(3, 100);
-    //     vdebug(v);
-    //     ft::vector<int> v2(2, 200);
-    //     vdebug(v2);
-    //     ft::vector<int> v3(3, 300);
-    //     vdebug(v3);
-    //     ft::vector<int> v4(4, 400);
-    //     vdebug(v4);
+        // end
+        it = v.end();
+        v.insert(it, v2.begin(), v2.end());
+        // vdebug(v);
+    }
+    {
+        pout("When less capacity, inserts elements from range [first, last) "
+             "before pos.");
+        ft::vector<int> v(3, 100);
+        vdebug(v);
+        ft::vector<int> v2(2, 200);
+        vdebug(v2);
+        ft::vector<int> v3(3, 300);
+        vdebug(v3);
+        ft::vector<int> v4(4, 400);
+        vdebug(v4);
 
-    //     // begin
-    //     ft::vector<int>::iterator it = v.begin();
-    //     v.insert(it, v2.begin(), v2.end());
-    //     vdebug(v);
+        // begin
+        ft::vector<int>::iterator it = v.begin();
+        v.insert(it, v2.begin(), v2.end());
+        vdebug(v);
 
-    //     // mid
-    //     it = v.begin();
-    //     v.insert(it + 4, v3.begin(), v3.end());
-    //     vdebug(v);
+        // mid
+        it = v.begin();
+        v.insert(it + 4, v3.begin(), v3.end());
+        vdebug(v);
 
-    //     // end
-    //     it = v.end();
-    //     v.insert(it, v4.begin(), v4.end());
-    //     vdebug(v);
-    // }
+        // end
+        it = v.end();
+        v.insert(it, v4.begin(), v4.end());
+        vdebug(v);
+    }
 
-    // {
-    //     pout("inserts elements from string array before pos.");
-    //     ft::vector<std::string> v(2, "aaa");
-    //     vdebug(v);
+    {
+        pout("inserts elements from string array before pos.");
+        ft::vector<std::string> v(2, "aaa");
+        vdebug(v);
 
-    //     std::string arr[4];
-    //     arr[0] = "xxx";
-    //     arr[1] = "yyy";
-    //     arr[2] = "zzz";
-    //     arr[3] = "end";
+        std::string arr[4];
+        arr[0] = "xxx";
+        arr[1] = "yyy";
+        arr[2] = "zzz";
+        arr[3] = "end";
 
-    //     // "xxx" "yyy" "aaa" "aaa"
-    //     v.insert(v.begin(), arr, arr + 3);
-    //     vdebug(v);
-    // }
+        // "xxx" "yyy" "aaa" "aaa"
+        v.insert(v.begin(), arr, arr + 3);
+        vdebug(v);
+    }
 }
 
 void vector_test()

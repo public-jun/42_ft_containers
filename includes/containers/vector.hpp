@@ -290,6 +290,25 @@ public:
             typename iterator_traits<InputIterator>::iterator_category());
     }
 
+    // erase
+    iterator erase(iterator pos)
+    {
+        if (pos != end())
+        {
+            std::copy(pos + 1, end(), pos);
+            --last_;
+            destroy(last_);
+        }
+        return (pos);
+    }
+
+    // iterator erase(iterator first, iterator last)
+    // {
+    //     if (first == last)
+    //         return last;
+
+    // }
+
     // Increase the capacity of the vector, when less that
     void reserve(size_type sz)
     {

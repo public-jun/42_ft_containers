@@ -680,7 +680,6 @@ void insert_test()
         vdebug(v);
     }
 
-
     {
         pout("When less capacity, inserts elements from range [first, last) "
              "before pos.");
@@ -754,6 +753,60 @@ void insert_test()
     }
 }
 
+void erase_test()
+{
+    put_test_function("TEST vector::erase");
+    {
+        pout("Remove the element at pos");
+        ft::vector<int> v;
+        for (int i = 0; i < 10; ++i)
+            v.push_back(i);
+        vdebug(v);
+
+        ft::vector<int>::iterator it = v.begin();
+        it                            = v.erase(it);
+        cout << "it: " << *it << endl;
+        vdebug(v);
+
+        it = v.end() - 1;
+        it = v.erase(it);
+        vdebug(v);
+
+        // try
+        // {
+        //     it = v.end();
+        //     it = v.erase(it);
+        //     vdebug(v);
+        // } catch (const std::exception& e)
+        // {
+        //     cerr << e.what() << '\n';
+        // }
+    }
+
+    {
+        pout("Remove the element in the range [first, last)");
+        std::vector<int> v;
+        for (int i = 0; i < 10; ++i)
+            v.push_back(i);
+        vdebug(v);
+
+        std::vector<int>::iterator it = v.begin();
+        it                            = v.erase(it, it + 2);
+        cout << "it: " << *it << endl;
+        vdebug(v);
+
+        it = v.end() - 1;
+        it = v.erase(it, v.end());
+        cout << "it: " << *it << endl;
+        vdebug(v);
+
+        it = v.begin();
+        it = v.erase(it, it);
+        cout << "it: " << *it << endl;
+        vdebug(v);
+    }
+}
+
 void vector_test()
 {
     cout << "Vector TEST" << endl;
@@ -775,4 +828,5 @@ void vector_test()
     capacity_test();
     clear_test();
     insert_test();
+    // erase_test();
 }

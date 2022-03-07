@@ -74,11 +74,9 @@ public:
                                   InputIterator>::type* = NULL)
         : first_(NULL), last_(NULL), capacity_last_(NULL), alloc_(allocator)
     {
-        reserve(std::distance(first, last));
-        for (InputIterator i = first; i != last; ++i)
-        {
-            push_back(*i);
-        }
+        range_initialize(
+            first, last,
+            typename iterator_traits<InputIterator>::iterator_category());
     }
 
     vector(const vector& r)
@@ -396,6 +394,27 @@ private:
         for (reverse_iterator riter = rbegin(); riter != rend; ++riter, --last_)
         {
             destroy(&*riter);
+        }
+    }
+
+    template <class InputIterator>
+    void range_initialize(InputIterator first, InputIterator last,
+                          std::input_iterator_tag)
+    {
+        for (; first != last; ++first)
+        {
+            push_back(*first);
+        }
+    }
+
+    template <class ForwardIterator>
+    void range_initialize(ForwardIterator first, ForwardIterator last,
+                          std::forward_iterator_tag)
+    {
+        reserve(std::distance(first, last));
+        for (ForwardIterator i = first; i != last; ++i)
+        {
+            push_back(*i);
         }
     }
 

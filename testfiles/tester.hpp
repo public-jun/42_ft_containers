@@ -19,17 +19,18 @@ namespace ft = std;
 #include <time.h> // clock()
 
 #include <algorithm> //std::copy
-#include <cmath> //hypot set
+#include <cmath>     //hypot set
 #include <cstddef>   // size_t
 #include <ctime>
 #include <deque>
 #include <iomanip>
-#include <iostream>  // cout
-#include <list>      // std::list
-#include <numeric>
-#include <string>
-#include <typeinfo>  //typeid
+#include <iostream> // cout
+#include <list>     // std::list
 #include <memory>
+#include <numeric>
+#include <sstream>
+#include <string>
+#include <typeinfo> //typeid
 
 #define cout std::cout
 #define endl std::endl

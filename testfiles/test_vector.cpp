@@ -650,6 +650,37 @@ void insert_test()
         v.insert(it, v2.begin(), v2.end());
         // vdebug(v);
     }
+
+    {
+        pout("When enough capacity, inserts input iterator elements from range "
+             "[first, last) "
+             "before pos.");
+
+        std::stringstream ss1;
+        ss1 << 1 << endl << 2 << endl << 3;
+        std::istream_iterator<int> is_it1(ss1);
+        std::istream_iterator<int> is_last1;
+
+        ft::vector<int> v(3, 100);
+        vdebug(v);
+
+        v.reserve(50);
+        // begin
+        ft::vector<int>::iterator it = v.begin();
+        v.insert(it + 1, is_it1, is_last1);
+        vdebug(v);
+
+        // end
+        std::stringstream ss2;
+        ss2 << 1 << endl << 2 << endl << 3;
+        std::istream_iterator<int> is_it2(ss2);
+        std::istream_iterator<int> is_last2;
+        it = v.end();
+        v.insert(it, is_it2, is_last2);
+        vdebug(v);
+    }
+
+
     {
         pout("When less capacity, inserts elements from range [first, last) "
              "before pos.");
@@ -675,6 +706,34 @@ void insert_test()
         // end
         it = v.end();
         v.insert(it, v4.begin(), v4.end());
+        vdebug(v);
+    }
+
+    {
+        pout("When less capacity, inserts input iterator elements from range "
+             "[first, last) "
+             "before pos.");
+
+        std::stringstream ss1;
+        ss1 << 1 << endl << 2 << endl << 3;
+        std::istream_iterator<int> is_it1(ss1);
+        std::istream_iterator<int> is_last1;
+
+        ft::vector<int> v(3, 100);
+        vdebug(v);
+
+        // begin
+        ft::vector<int>::iterator it = v.begin();
+        v.insert(it + 1, is_it1, is_last1);
+        vdebug(v);
+
+        // end
+        std::stringstream ss2;
+        ss2 << 1 << endl << 2 << endl << 3;
+        std::istream_iterator<int> is_it2(ss2);
+        std::istream_iterator<int> is_last2;
+        it = v.end();
+        v.insert(it, is_it2, is_last2);
         vdebug(v);
     }
 

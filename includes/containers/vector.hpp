@@ -342,6 +342,11 @@ public:
         ++last_;
     }
 
+    void pop_back()
+    {
+        destroy_until(rbegin() + 1);
+    }
+
     void resize(size_type sz)
     {
         // 現在の要素数より少ない
@@ -473,15 +478,6 @@ private:
     construct_at_end(InputIterator first, InputIterator last)
     {
         std::uninitialized_copy(first, last, end());
-    }
-
-    // 初期化済みの要素 n 個に対して value 設定
-    void insert_n_range(pointer pos, size_type count, const_reference value)
-    {
-        for (std::size_t i = 0; i < count; ++i, ++pos)
-        {
-            *pos = value;
-        }
     }
 
     void move_range(pointer from_s, pointer from_e, size_type amount_move)

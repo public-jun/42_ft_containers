@@ -342,10 +342,7 @@ public:
         ++last_;
     }
 
-    void pop_back()
-    {
-        destroy_until(rbegin() + 1);
-    }
+    void pop_back() { destroy_until(rbegin() + 1); }
 
     void resize(size_type count, value_type value = value_type())
     {
@@ -357,6 +354,13 @@ public:
         {
             insert(end(), count - size(), value);
         }
+    }
+
+    void swap(vector& other)
+    {
+        std::swap(first_, other.first_);
+        std::swap(last_, other.last_);
+        std::swap(capacity_last_, other.capacity_last_);
     }
 
 private:

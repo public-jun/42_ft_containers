@@ -784,7 +784,7 @@ void erase_test()
         vdebug(v);
 
         ft::vector<int>::iterator it = v.begin();
-        it                            = v.erase(it, it + 2);
+        it                           = v.erase(it, it + 2);
         cout << "it: " << *it << endl;
         vdebug(v);
 
@@ -795,7 +795,7 @@ void erase_test()
             cout << "succsess" << endl;
         vdebug(v);
 
-        it                             = v.begin();
+        it                            = v.begin();
         ft::vector<int>::iterator it2 = v.erase(it, it);
         // first == last だと last が返る
         if (it2 == it)
@@ -804,26 +804,60 @@ void erase_test()
     }
 }
 
+void push_back_test()
+{
+    put_test_function("TEST vector::push_back");
+    {
+        pout("Appends value to the end of the container");
+        ft::vector<int> v;
+        for (int i = 0; i < 10; ++i)
+        {
+            float value = std::pow(2, i);
+            for (int i = 0; i <= value; ++i)
+                v.push_back(i);
+            cout << v.size() << endl;
+            // vdebug(v);
+            v.resize(0);
+        }
+    }
+    {
+        pout("max_size / 2");
+        ft::vector<int> v;
+        try
+        {
+            cout << "max_size: " << v.max_size() << endl;
+            v.reserve((v.max_size() / 100000000) - 1);
+            v.push_back(1);
+            vdebug(v);
+            cout << *(v.end() - 1) << endl;
+        } catch (const std::exception& e)
+        {
+            cerr << e.what() << '\n';
+        }
+    }
+}
+
 void vector_test()
 {
     cout << "Vector TEST" << endl;
-    // def_constructor_test();
-    // alloc_constructor_test();
-    // count_value_constructor_test();
-    // inputiterator_constructor_test();
-    // copy_constructor_test();
-    // operator_assign_test();
-    // at_test();
-    // assign_test();
-    // get_allocator_test();
-    // front_test();
-    // back_test();
-    // data_test();
-    // empty_test();
-    // size_test();
-    // max_size_test();
-    // capacity_test();
-    // clear_test();
-    // insert_test();
+    def_constructor_test();
+    alloc_constructor_test();
+    count_value_constructor_test();
+    inputiterator_constructor_test();
+    copy_constructor_test();
+    operator_assign_test();
+    at_test();
+    assign_test();
+    get_allocator_test();
+    front_test();
+    back_test();
+    data_test();
+    empty_test();
+    size_test();
+    max_size_test();
+    capacity_test();
+    clear_test();
+    insert_test();
     erase_test();
+    push_back_test();
 }

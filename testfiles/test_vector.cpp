@@ -837,6 +837,27 @@ void push_back_test()
     }
 }
 
+void pop_back_test()
+{
+    put_test_function("TEST vector::pop_back");
+    {
+        ft::vector<int> v;
+        for (int i = 0; i < 3; ++i)
+            v.push_back(i);
+        vdebug(v);
+        v.pop_back();
+        vdebug(v);
+        v.pop_back();
+        vdebug(v);
+        v.pop_back();
+        vdebug(v);
+
+        // undifined
+        // v.pop_back();
+        // vdebug(v);
+    }
+}
+
 void vector_test()
 {
     cout << "Vector TEST" << endl;
@@ -860,4 +881,5 @@ void vector_test()
     insert_test();
     erase_test();
     push_back_test();
+    pop_back_test();
 }

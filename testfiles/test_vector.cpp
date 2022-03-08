@@ -841,6 +841,7 @@ void pop_back_test()
 {
     put_test_function("TEST vector::pop_back");
     {
+        pout("simple pop back");
         ft::vector<int> v;
         for (int i = 0; i < 3; ++i)
             v.push_back(i);
@@ -855,6 +856,80 @@ void pop_back_test()
         // undifined
         // v.pop_back();
         // vdebug(v);
+    }
+}
+
+void resize_test()
+{
+    put_test_function("TEST vector::resize");
+
+    {
+        pout("resize up to");
+        ft::vector<int> v(3, 100);
+
+        vdebug(v);
+        v.resize(5);
+        vdebug(v);
+
+        ft::vector<std::string> v_str(3, "hoge");
+
+        vdebug(v_str);
+        v_str.resize(5);
+        vdebug(v_str);
+    }
+
+    {
+        pout("resize up to, initialize gave value");
+        ft::vector<int> v(3, 100);
+
+        vdebug(v);
+        v.resize(5, 42);
+        vdebug(v);
+
+        ft::vector<std::string> v_str(3, "hoge");
+
+        vdebug(v_str);
+        v_str.resize(5, "42tokyo");
+        vdebug(v_str);
+    }
+
+    {
+        pout("resize down to");
+        ft::vector<int> v(7, 100);
+
+        vdebug(v);
+        v.resize(5);
+        vdebug(v);
+
+        ft::vector<std::string> v_str(7, "hoge");
+
+        vdebug(v_str);
+        v_str.resize(5);
+        vdebug(v_str);
+    }
+
+    {
+        pout("resize down to, initialize gave value");
+        ft::vector<int> v(7, 100);
+
+        vdebug(v);
+        v.resize(5, 24);
+        vdebug(v);
+
+        ft::vector<std::string> v_str(7, "hoge");
+
+        vdebug(v_str);
+        v_str.resize(5, "42tokyo");
+        vdebug(v_str);
+    }
+
+    {
+        pout("No change");
+        ft::vector<int> v(5, 100);
+
+        vdebug(v);
+        v.resize(5);
+        vdebug(v);
     }
 }
 
@@ -882,4 +957,5 @@ void vector_test()
     erase_test();
     push_back_test();
     pop_back_test();
+    resize_test();
 }

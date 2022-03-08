@@ -347,42 +347,15 @@ public:
         destroy_until(rbegin() + 1);
     }
 
-    void resize(size_type sz)
+    void resize(size_type count, value_type value = value_type())
     {
-        // 現在の要素数より少ない
-        if (sz < size())
+        if (count < size())
         {
-            difference_type diff = size() - sz;
-            // 破棄する要素数だけ末尾から破棄
-            destroy_until(rbegin() + diff);
-            last_ = first_ + sz;
+            erase(end() - (size() - count), end());
         }
-        // 現在の要素数より大きい
-        else if (sz > size())
+        else if (count > size())
         {
-            reserve(sz);
-            for (; last_ != capacity_last_; ++last_)
-            {
-                construct(last_);
-            }
-        }
-    }
-
-    void resize(size_type sz, const_reference value)
-    {
-        if (sz < size())
-        {
-            difference_type diff = size() - sz;
-            destroy_until(rbegin() + diff);
-            last_ = first_ + sz;
-        }
-        else if (sz > size())
-        {
-            reserve(sz);
-            for (; last_ != capacity_last_; ++last_)
-            {
-                construct(last_, value);
-            }
+            insert(end(), count - size(), value);
         }
     }
 

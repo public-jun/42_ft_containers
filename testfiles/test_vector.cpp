@@ -548,6 +548,7 @@ void clear_test()
 void insert_test()
 {
     put_test_function("TEST vector::insert");
+
     {
         pout("insert elements before first iterator");
         ft::vector<int> v(3, 100);
@@ -653,8 +654,7 @@ void insert_test()
 
     {
         pout("When enough capacity, inserts input iterator elements from range "
-             "[first, last) "
-             "before pos.");
+             "[first, last) before pos.");
 
         std::stringstream ss1;
         ss1 << 1 << endl << 2 << endl << 3;
@@ -750,6 +750,21 @@ void insert_test()
         // "xxx" "yyy" "aaa" "aaa"
         v.insert(v.begin(), arr, arr + 3);
         vdebug(v);
+    }
+
+    {
+        pout("input iterator ");
+        size_t size = 10;
+        ft::vector<int> v3(10);
+        std::stringstream ss3;
+        for (size_t i = 0; i < size; ++i)
+        {
+            ss3 << i << " ";
+        }
+        std::istream_iterator<int> ii(ss3);
+        std::istream_iterator<int> eos;
+        v3.insert(v3.begin(), ii, eos);
+        vdebug(v3);
     }
 }
 
@@ -933,6 +948,55 @@ void resize_test()
     }
 }
 
+void swap_test()
+{
+    put_test_function("TEST vector::swap");
+    {
+        pout("simple swap");
+        ft::vector<int> v1;
+        for (int i = 1; i < 20; ++i)
+            v1.push_back(i);
+        vdebug(v1);
+
+        ft::vector<int> v2;
+        for (int i = -1; i > -10; --i)
+            v2.push_back(i);
+        vdebug(v2);
+
+        v1.swap(v2);
+        vdebug(v1);
+        vdebug(v2);
+
+        v1.push_back(42);
+        vdebug(v1);
+    }
+
+    {
+        pout("after swap");
+        ft::vector<int> v1;
+        for (int i = 1; i < 20; ++i)
+            v1.push_back(i);
+        vdebug(v1);
+        ft::vector<int>::iterator it_v1 = v1.begin();
+
+        ft::vector<int> v2;
+        for (int i = -1; i > -10; --i)
+            v2.push_back(i);
+        vdebug(v2);
+        // ft::vector<int>::iterator it_v2 = v2.begin();
+
+        v1.swap(v2);
+
+        // it_v1 is v2 iterator
+        vdebug(v1);
+        vdebug(v2);
+        cout << "v2 iterator: ";
+        for (; it_v1 != v2.end(); ++it_v1)
+            cout << *it_v1 << " ";
+        cout << endl;
+    }
+}
+
 void vector_test()
 {
     cout << "Vector TEST" << endl;
@@ -958,4 +1022,5 @@ void vector_test()
     push_back_test();
     pop_back_test();
     resize_test();
+    swap_test();
 }

@@ -861,25 +861,25 @@ void pop_back_test()
 void vector_test()
 {
     cout << "Vector TEST" << endl;
-    // def_constructor_test();
-    // alloc_constructor_test();
-    // count_value_constructor_test();
-    // inputiterator_constructor_test();
-    // copy_constructor_test();
-    // operator_assign_test();
-    // at_test();
-    // assign_test();
-    // get_allocator_test();
-    // front_test();
-    // back_test();
-    // data_test();
-    // empty_test();
-    // size_test();
-    // max_size_test();
-    // capacity_test();
-    // clear_test();
-    // insert_test();
-    // erase_test();
-    // push_back_test();
+    def_constructor_test();
+    alloc_constructor_test();
+    count_value_constructor_test();
+    inputiterator_constructor_test();
+    copy_constructor_test();
+    operator_assign_test();
+    at_test();
+    assign_test();
+    get_allocator_test();
+    front_test();
+    back_test();
+    data_test();
+    empty_test();
+    size_test();
+    max_size_test();
+    capacity_test();
+    clear_test();
+    insert_test();
+    erase_test();
+    push_back_test();
     pop_back_test();
 }

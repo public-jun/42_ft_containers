@@ -335,6 +335,13 @@ public:
         alloc_.deallocate(old_first, old_capacity);
     }
 
+    void push_back(const_reference value)
+    {
+        extend_capacity(1);
+        construct(last_, value);
+        ++last_;
+    }
+
     void resize(size_type sz)
     {
         // 現在の要素数より少ない
@@ -374,29 +381,13 @@ public:
         }
     }
 
-    void push_back(const_reference value)
-    {
-        extend_capacity(1);
-        // 要素を末尾に追加
-        construct(last_, value);
-        // 有効な要素数を更新
-        ++last_;
-        // std::cout << "push_back called" << std::endl;
-    }
-
 private:
-    // 先頭の要素へのポインタ
     pointer first_;
-    // 最後の要素の一つ前方のポインタ
     pointer last_;
-    // 確保したストレージの終端
     pointer capacity_last_;
-    // アロケータの値
     allocator_type alloc_;
 
 private:
-    // ユーザーからは使えないヘルパー関数
-
     // allocate/deallocate
     void allocate(size_type n)
     {

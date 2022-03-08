@@ -547,112 +547,118 @@ void clear_test()
 
 void insert_test()
 {
-    put_test_function("TEST vector::insert");
+        put_test_function("TEST vector::insert");
+        {
+            pout("insert elements before first iterator");
+            ft::vector<int> v(3, 100);
+            vdebug(v);
+
+            ft::vector<int>::iterator it = v.begin();
+            it                           = v.insert(it, 200);
+            cout << *it << endl;
+            vdebug(v);
+        }
+
+        {
+            pout("insert elements before last iterator");
+            ft::vector<int> v;
+            for (int i = 1; i <= 5; ++i)
+                v.push_back(i);
+            vdebug(v);
+
+            ft::vector<int>::iterator it = v.end();
+            it                           = v.insert(it, 200);
+            cout << *it << endl;
+            vdebug(v);
+        }
+
+        {
+            pout("insert elements before n iterator");
+            ft::vector<int> v;
+            for (int i = 1; i <= 5; ++i)
+                v.push_back(i);
+            vdebug(v);
+
+            ft::vector<int>::iterator it = v.begin();
+            it                           = v.insert(it + 1, 200);
+            cout << *it << endl;
+            vdebug(v);
+        }
+
+        {
+            pout("When enough capacity, inserts count copies of the value
+            before
+            "
+                 "pos");
+            ft::vector<int> v;
+            for (int i = 1; i <= 200; ++i)
+                v.push_back(i);
+            vdebug(v);
+
+            ft::vector<int>::iterator it = v.begin();
+            v.insert(it, 5, 30);
+            vdebug(v);
+
+            it = v.begin();
+            v.insert(it, 10, 40);
+            vdebug(v);
+
+            it = v.begin();
+            v.insert(it + 42, 10, 50);
+            vdebug(v);
+
+            // "it" is no longer invalid, get new one.
+            it = v.end();
+            v.insert(it, 20, 60);
+            vdebug(v);
+        }
+
+        {
+            pout(
+                "When less capacity, inserts count copies of the value before
+                pos");
+            ft::vector<int> v(3, 100);
+            vdebug(v);
+
+            ft::vector<int>::iterator it = v.begin();
+            v.insert(it, 10, 200);
+            vdebug(v);
+
+            it = v.begin();
+            v.insert(it + 10, 20, 300);
+            vdebug(v);
+
+            // "it" is no longer invalid, get new one.
+            it = v.end();
+            v.insert(it, 30, 400);
+            vdebug(v);
+        }
+
+        {
+            pout("When enough capacity, inserts elements from range [first,
+            last)
+            "
+                 "before pos.");
+            ft::vector<int> v(3, 100);
+            vdebug(v);
+            ft::vector<int> v2(2, 400);
+            vdebug(v2);
+
+            v.reserve(50);
+            // begin
+            ft::vector<int>::iterator it = v.begin();
+            v.insert(it + 1, v2.begin(), v2.end());
+            // vdebug(v);
+
+            // end
+            it = v.end();
+            v.insert(it, v2.begin(), v2.end());
+            // vdebug(v);
+        }
+
     {
-        pout("insert elements before first iterator");
-        ft::vector<int> v(3, 100);
-        vdebug(v);
-
-        ft::vector<int>::iterator it = v.begin();
-        it                           = v.insert(it, 200);
-        cout << *it << endl;
-        vdebug(v);
-    }
-
-    {
-        pout("insert elements before last iterator");
-        ft::vector<int> v;
-        for (int i = 1; i <= 5; ++i)
-            v.push_back(i);
-        vdebug(v);
-
-        ft::vector<int>::iterator it = v.end();
-        it                           = v.insert(it, 200);
-        cout << *it << endl;
-        vdebug(v);
-    }
-
-    {
-        pout("insert elements before n iterator");
-        ft::vector<int> v;
-        for (int i = 1; i <= 5; ++i)
-            v.push_back(i);
-        vdebug(v);
-
-        ft::vector<int>::iterator it = v.begin();
-        it                           = v.insert(it + 1, 200);
-        cout << *it << endl;
-        vdebug(v);
-    }
-
-    {
-        pout("When enough capacity, inserts count copies of the value before "
-             "pos");
-        ft::vector<int> v;
-        for (int i = 1; i <= 200; ++i)
-            v.push_back(i);
-        vdebug(v);
-
-        ft::vector<int>::iterator it = v.begin();
-        v.insert(it, 5, 30);
-        vdebug(v);
-
-        it = v.begin();
-        v.insert(it, 10, 40);
-        vdebug(v);
-
-        it = v.begin();
-        v.insert(it + 42, 10, 50);
-        vdebug(v);
-
-        // "it" is no longer invalid, get new one.
-        it = v.end();
-        v.insert(it, 20, 60);
-        vdebug(v);
-    }
-
-    {
-        pout(
-            "When less capacity, inserts count copies of the value before pos");
-        ft::vector<int> v(3, 100);
-        vdebug(v);
-
-        ft::vector<int>::iterator it = v.begin();
-        v.insert(it, 10, 200);
-        vdebug(v);
-
-        it = v.begin();
-        v.insert(it + 10, 20, 300);
-        vdebug(v);
-
-        // "it" is no longer invalid, get new one.
-        it = v.end();
-        v.insert(it, 30, 400);
-        vdebug(v);
-    }
-
-    {
-        pout("When enough capacity, inserts elements from range [first, last) "
-             "before pos.");
-        ft::vector<int> v(3, 100);
-        vdebug(v);
-        ft::vector<int> v2(2, 400);
-        vdebug(v2);
-
-        v.reserve(50);
-        // begin
-        ft::vector<int>::iterator it = v.begin();
-        v.insert(it + 1, v2.begin(), v2.end());
-        // vdebug(v);
-
-        // end
-        it = v.end();
-        v.insert(it, v2.begin(), v2.end());
-        // vdebug(v);
-    }
-
-    {
-        pout("When enough capacity, inserts input iterator elements from range "
+        pout("When enough capacity, inserts input iterator elements from
+        range "
              "[first, last) "
              "before pos.");
 
@@ -709,7 +715,8 @@ void insert_test()
     }
 
     {
-        pout("When less capacity, inserts input iterator elements from range "
+        pout("When less capacity, inserts input iterator elements from range
+        "
              "[first, last) "
              "before pos.");
 
@@ -736,6 +743,7 @@ void insert_test()
         vdebug(v);
     }
 
+
     {
         pout("inserts elements from string array before pos.");
         ft::vector<std::string> v(2, "aaa");
@@ -750,6 +758,21 @@ void insert_test()
         // "xxx" "yyy" "aaa" "aaa"
         v.insert(v.begin(), arr, arr + 3);
         vdebug(v);
+    }
+
+    {
+        pout("input iterator ");
+        size_t size = 10;
+        ft::vector<int> v3(10);
+        std::stringstream ss3;
+        for (size_t i = 0; i < size; ++i)
+        {
+            ss3 << i << " ";
+        }
+        std::istream_iterator<int> ii(ss3);
+        std::istream_iterator<int> eos;
+        v3.insert(v3.begin(), ii, eos);
+        vdebug(v3);
     }
 }
 
@@ -936,26 +959,26 @@ void resize_test()
 void vector_test()
 {
     cout << "Vector TEST" << endl;
-    def_constructor_test();
-    alloc_constructor_test();
-    count_value_constructor_test();
-    inputiterator_constructor_test();
-    copy_constructor_test();
-    operator_assign_test();
-    at_test();
-    assign_test();
-    get_allocator_test();
-    front_test();
-    back_test();
-    data_test();
-    empty_test();
-    size_test();
-    max_size_test();
-    capacity_test();
-    clear_test();
+    // def_constructor_test();
+    // alloc_constructor_test();
+    // count_value_constructor_test();
+    // inputiterator_constructor_test();
+    // copy_constructor_test();
+    // operator_assign_test();
+    // at_test();
+    // assign_test();
+    // get_allocator_test();
+    // front_test();
+    // back_test();
+    // data_test();
+    // empty_test();
+    // size_test();
+    // max_size_test();
+    // capacity_test();
+    // clear_test();
     insert_test();
-    erase_test();
-    push_back_test();
-    pop_back_test();
-    resize_test();
+    // erase_test();
+    // push_back_test();
+    // pop_back_test();
+    // resize_test();
 }

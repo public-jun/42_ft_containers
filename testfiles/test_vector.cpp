@@ -764,7 +764,7 @@ void erase_test()
         vdebug(v);
 
         ft::vector<int>::iterator it = v.begin();
-        it                            = v.erase(it);
+        it                           = v.erase(it);
         cout << "it: " << *it << endl;
         vdebug(v);
 
@@ -772,37 +772,34 @@ void erase_test()
         it = v.erase(it);
         vdebug(v);
 
-        // try
-        // {
-        //     it = v.end();
-        //     it = v.erase(it);
-        //     vdebug(v);
-        // } catch (const std::exception& e)
-        // {
-        //     cerr << e.what() << '\n';
-        // }
+        it = v.end();
+        // it = v.erase(it);
     }
 
     {
         pout("Remove the element in the range [first, last)");
-        std::vector<int> v;
+        ft::vector<int> v;
         for (int i = 0; i < 10; ++i)
             v.push_back(i);
         vdebug(v);
 
-        std::vector<int>::iterator it = v.begin();
+        ft::vector<int>::iterator it = v.begin();
         it                            = v.erase(it, it + 2);
         cout << "it: " << *it << endl;
         vdebug(v);
 
         it = v.end() - 1;
         it = v.erase(it, v.end());
-        cout << "it: " << *it << endl;
+        // last == end() は 更新後の end() が返る
+        if (it == v.end())
+            cout << "succsess" << endl;
         vdebug(v);
 
-        it = v.begin();
-        it = v.erase(it, it);
-        cout << "it: " << *it << endl;
+        it                             = v.begin();
+        ft::vector<int>::iterator it2 = v.erase(it, it);
+        // first == last だと last が返る
+        if (it2 == it)
+            cout << "succsess" << endl;
         vdebug(v);
     }
 }
@@ -810,23 +807,23 @@ void erase_test()
 void vector_test()
 {
     cout << "Vector TEST" << endl;
-    def_constructor_test();
-    alloc_constructor_test();
-    count_value_constructor_test();
-    inputiterator_constructor_test();
-    copy_constructor_test();
-    operator_assign_test();
-    at_test();
-    assign_test();
-    get_allocator_test();
-    front_test();
-    back_test();
-    data_test();
-    empty_test();
-    size_test();
-    max_size_test();
-    capacity_test();
-    clear_test();
-    insert_test();
-    // erase_test();
+    // def_constructor_test();
+    // alloc_constructor_test();
+    // count_value_constructor_test();
+    // inputiterator_constructor_test();
+    // copy_constructor_test();
+    // operator_assign_test();
+    // at_test();
+    // assign_test();
+    // get_allocator_test();
+    // front_test();
+    // back_test();
+    // data_test();
+    // empty_test();
+    // size_test();
+    // max_size_test();
+    // capacity_test();
+    // clear_test();
+    // insert_test();
+    erase_test();
 }

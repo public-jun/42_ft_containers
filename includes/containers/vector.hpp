@@ -302,12 +302,17 @@ public:
         return (pos);
     }
 
-    // iterator erase(iterator first, iterator last)
-    // {
-    //     if (first == last)
-    //         return last;
-
-    // }
+    iterator erase(iterator first, iterator last)
+    {
+        difference_type erase_size = std::distance(first, last);
+        if (first != last)
+        {
+            if (last != end())
+                std::copy(last, end(), first);
+            destroy_until(rbegin() + erase_size);
+        }
+        return first;
+    }
 
     // Increase the capacity of the vector, when less that
     void reserve(size_type sz)

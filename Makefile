@@ -89,10 +89,8 @@ $(OBJDIR_FT)/%.o: $(srcsdir)/%.cpp  | $(DEPSDIR_FT)
 	$(CXX) $(CXXFLAGS) $(DEPFLAG_FT) -c ./$< $(INCLUDE) -o $@
 
 
-test: $(result)
-	$(CXX) $(CXXFLAGS) -DTEST=0 $(srcs) $(INCLUDE) -o $(NAME_FT)
+test: $(result) $(NAME_FT) $(NAME_STL)
 	@./$(NAME_FT) > $(ft_out) 2>$(ft_err)
-	$(CXX) $(CXXFLAGS) -DTEST=1 $(srcs)  $(INCLUDE) -o $(NAME_STL)
 	@./$(NAME_STL) > $(stl_out) 2>$(stl_err)
 	diff $(ft_out) $(stl_out) ||:
 	@echo "---ft_err---"
@@ -100,14 +98,12 @@ test: $(result)
 	@echo "---stl_err---"
 	@cat $(stl_err)
 
-ft: $(result)
-	$(CXX) $(CXXFLAGS) -DTEST=0 $(srcs) $(INCLUDE) -o $(NAME_FT)
+ft: $(result) $(NAME_FT)
 	@./$(NAME_FT) > $(ft_out) 2>$(ft_err) ||:
 	@cat $(ft_out)
 	@cat $(ft_err)
 
-stl: $(result)
-	$(CXX) $(CXXFLAGS) -DTEST=1 $(srcs)  $(INCLUDE) -o $(NAME_STL)
+stl: $(result) $(NAME_STL)
 	@./$(NAME_STL) > $(stl_out) 2>$(stl_err) ||:
 	@cat $(stl_out)
 	@cat $(stl_err)

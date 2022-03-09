@@ -28,6 +28,21 @@ bool func(int lhs, int rhs)
     return false;
 }
 
+template <class X, class Y>
+void compare_test(const X& x, const Y& y)
+{
+    if (ft::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end()))
+        cout << "x less than y" << endl;
+    else
+        cout << "x not less than y" << endl;
+
+    if (ft::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end(),
+                                     std::greater<char>()))
+        cout << "x less than y" << endl;
+    else
+        cout << "x not less than y" << endl;
+}
+
 void equal_test()
 {
     put_test_function("TEST std::equal");
@@ -145,4 +160,55 @@ void equal_test()
     }
 }
 
-void algorithm_test() { equal_test(); }
+void lexicographical_compare_test()
+{
+    put_test_function("TEST lexicographical_compare");
+
+    {
+        pout("Compare same string");
+        std::string x = "hello";
+        std::string y = "hello";
+        compare_test(x, y);
+    }
+
+    {
+        pout("x is less");
+        std::string x = "hell";
+        std::string y = "hello";
+        compare_test(x, y);
+    }
+
+    {
+        pout("x is long");
+        std::string x = "hello";
+        std::string y = "hell";
+        compare_test(x, y);
+    }
+
+    {
+        pout("x is nothing");
+        std::string x = "";
+        std::string y = "hello";
+        compare_test(x, y);
+    }
+
+    {
+        pout("y is nothing");
+        std::string x = "";
+        std::string y = "hello";
+        compare_test(x, y);
+    }
+
+    {
+        pout("Both nothing");
+        std::string x = "";
+        std::string y = "";
+        compare_test(x, y);
+    }
+}
+
+void algorithm_test()
+{
+    equal_test();
+    lexicographical_compare_test();
+}

@@ -24,6 +24,7 @@ namespace ft = std;
 #include <cstddef>   // size_t
 #include <ctime>
 #include <deque>
+#include <functional>
 #include <iomanip>
 #include <iostream> // cout
 #include <list>     // std::list

@@ -3,45 +3,6 @@
 #include <array>
 #include <vector>
 
-template <typename T>
-void put_test_function(T s)
-{
-    cout << "\n\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << endl;
-    cout << std::setw(25) << s << endl;
-    cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n" << endl;
-}
-
-template <typename T>
-void pout(T s)
-{
-    static int no;
-    cout << endl;
-    cout << "--- [" << ++no << "]:" << s << " ---" << endl;
-}
-
-template <class T>
-void vdebug(T& V)
-{
-    cout << "size:" << V.size() << " capacity:" << V.capacity() << endl;
-    cout << "{ ";
-    for (typename T::iterator it = V.begin(); it != V.end(); ++it)
-        cout << *it << " ";
-    cout << "}" << endl;
-}
-
-template <class T>
-void print_is_empty(T& v)
-{
-    if (v.empty())
-    {
-        cout << "vector is empty" << endl;
-    }
-    else
-    {
-        cout << "vector is not empty" << endl;
-    }
-}
-
 void def_constructor_test()
 {
     pout("vector()");

@@ -1,7 +1,6 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
-#define CALLED std::cout << "called" << std::endl;
 
 #include <reverse_iterator.hpp>
 #include <utils.hpp>

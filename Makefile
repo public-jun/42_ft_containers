@@ -22,7 +22,10 @@ INCLUDE := -I./includes/containers -I./includes/utils
 #####################################
 #	Src							 	#
 #####################################
-srcsname := main.cpp tutorial.cpp test_vector.cpp
+srcsname := main.cpp \
+			tutorial.cpp \
+			test_vector.cpp \
+			test_algorithm.cpp
 srcsdir := ./testfiles
 srcs := $(addprefix $(srcsdir)/,$(srcsname))
 

@@ -4,5 +4,6 @@
 int main() {
     // tutorial_test();
     vector_test();
+    algorithm_test();
     return 0;
 }

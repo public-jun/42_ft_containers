@@ -113,7 +113,11 @@ clean:
 
 .PHONY: fclean
 fclean: clean
-	$(RM) $(NAME_STL) $(NAME_FT) $(result) tester $(gtestdir)
+	$(RM) $(NAME_STL) $(NAME_FT) $(result) tester
+
+.PHONY: cleangtest
+cleangtest:
+	$(RM) $(gtestdir)
 
 .PHONY: re
 re: fclean all

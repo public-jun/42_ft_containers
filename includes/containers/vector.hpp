@@ -1,7 +1,6 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
-
 #include <reverse_iterator.hpp>
 #include <utils.hpp>
 #include <wrap_iter.hpp>
@@ -537,6 +536,66 @@ private:
         }
     }
 };
+
+/*
+** Non Member functions
+*/
+
+template <class _Tp, class _Allocator>
+bool operator==(const ft::vector<_Tp, _Allocator>& __lhs,
+                const ft::vector<_Tp, _Allocator>& __rhs)
+{
+    return __lhs.size() == __rhs.size() &&
+           ft::equal(__lhs.begin(), __lhs.end(), __rhs.begin());
+}
+
+template <class _Tp, class _Allocator>
+bool operator!=(const ft::vector<_Tp, _Allocator>& __lhs,
+                const ft::vector<_Tp, _Allocator>& __rhs)
+{
+    return !(__lhs == __rhs);
+}
+
+template <class _Tp, class _Allocator>
+bool operator<(const ft::vector<_Tp, _Allocator>& __lhs,
+               const ft::vector<_Tp, _Allocator>& __rhs)
+{
+    return ft::lexicographical_compare(__lhs.begin(), __lhs.end(),
+                                       __rhs.begin(), __rhs.end());
+}
+
+template <class _Tp, class _Allocator>
+bool operator<=(const ft::vector<_Tp, _Allocator>& __lhs,
+                const ft::vector<_Tp, _Allocator>& __rhs)
+{
+    return !(__lhs > __rhs);
+}
+
+template <class _Tp, class _Allocator>
+bool operator>(const ft::vector<_Tp, _Allocator>& __lhs,
+               const ft::vector<_Tp, _Allocator>& __rhs)
+{
+    return __rhs < __lhs;
+}
+
+template <class _Tp, class _Allocator>
+bool operator>=(const ft::vector<_Tp, _Allocator>& __lhs,
+                const ft::vector<_Tp, _Allocator>& __rhs)
+{
+    return !(__lhs < __rhs);
+}
+
 } // namespace ft
+
+namespace std {
+
+template <class _Tp, class _Allocator>
+void swap(ft::vector<_Tp, _Allocator>& __lhs,
+          ft::vector<_Tp, _Allocator>& __rhs)
+{
+    __lhs.swap(__rhs);
+}
+
+} // namespace std
 
 #endif

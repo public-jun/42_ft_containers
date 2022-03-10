@@ -3,6 +3,14 @@
 #include <array>
 #include <vector>
 
+ft::vector<int> generate_vector(int first, int last)
+{
+    ft::vector<int> v;
+    for (int i = first; i <= last; ++i)
+        v.push_back(i);
+    return v;
+}
+
 void def_constructor_test()
 {
     pout("vector()");
@@ -956,6 +964,151 @@ void swap_test()
             cout << *it_v1 << " ";
         cout << endl;
     }
+
+    {
+        pout("Non member ver");
+        ft::vector<int> v1 = generate_vector(0, 5);
+        ft::vector<int> v2 = generate_vector(0, 5);
+        vdebug(v1);
+        vdebug(v2);
+        swap(v1, v2);
+        vdebug(v1);
+        vdebug(v2);
+    }
+    {
+        ft::vector<int> v1 = generate_vector(0, 1);
+        ft::vector<int> v2 = generate_vector(0, 10);
+        ft::vector<int> v1_copy = v1;
+        ft::vector<int> v2_copy = v2;
+        swap(v1, v2);
+        if (v1 == v2_copy)
+            cout << "succsess swap" << endl;
+        if (v2 == v1_copy)
+            cout << "succsess swap" << endl;
+    }
+
+    {
+        ft::vector<int> v1 = generate_vector(0, 10);
+        ft::vector<int> v2 = generate_vector(0, 1);
+        ft::vector<int> v1_copy = v1;
+        ft::vector<int> v2_copy = v2;
+        swap(v1, v2);
+        if (v1 == v2_copy)
+            cout << "succsess swap" << endl;
+        if (v2 == v1_copy)
+            cout << "succsess swap" << endl;
+    }
+    {
+        ft::vector<int> v1 = generate_vector(-10, 10);
+        ft::vector<int> v2 = generate_vector(0, 10);
+        ft::vector<int> v1_copy = v1;
+        ft::vector<int> v2_copy = v2;
+        swap(v1, v2);
+        if (v1 == v2_copy)
+            cout << "succsess swap" << endl;
+        if (v2 == v1_copy)
+            cout << "succsess swap" << endl;
+    }
+    {
+        ft::vector<int> v1 = generate_vector(0, 10);
+        ft::vector<int> v2 = generate_vector(-10, 10);
+        ft::vector<int> v1_copy = v1;
+        ft::vector<int> v2_copy = v2;
+        swap(v1, v2);
+        if (v1 == v2_copy)
+            cout << "succsess swap" << endl;
+        if (v2 == v1_copy)
+            cout << "succsess swap" << endl;
+    }
+    {
+        ft::vector<int> v1 = generate_vector(0, 0);
+        ft::vector<int> v2 = generate_vector(0, 0);
+        ft::vector<int> v1_copy = v1;
+        ft::vector<int> v2_copy = v2;
+        swap(v1, v2);
+        if (v1 == v2_copy)
+            cout << "succsess swap" << endl;
+        if (v2 == v1_copy)
+            cout << "succsess swap" << endl;
+    }
+}
+
+template <class T>
+void operator_seq_test(T& v1, T& v2)
+{
+    vdebug(v1);
+    vdebug(v2);
+    if (v1 == v2)
+        cout << "operator==() is true" << endl;
+    else
+        cout << "operator==() is false" << endl;
+
+    if (v1 != v2)
+        cout << "operator!=() is true" << endl;
+    else
+        cout << "operator!=() is false" << endl;
+
+    if (v1 < v2)
+        cout << "operator<() is true" << endl;
+    else
+        cout << "operator<() is false" << endl;
+
+    if (v1 <= v2)
+        cout << "operator<=() is true" << endl;
+    else
+        cout << "operator<=() is false" << endl;
+
+    if (v1 > v2)
+        cout << "operator>() is true" << endl;
+    else
+        cout << "operator>() is false" << endl;
+
+    if (v1 >= v2)
+        cout << "operator>=() is true" << endl;
+    else
+        cout << "operator>=() is false" << endl;
+}
+
+
+void operator_test()
+{
+    put_test_function("TEST vector's operator");
+
+    {
+        ft::vector<int> v1 = generate_vector(0, 5);
+        ft::vector<int> v2 = generate_vector(0, 5);
+        operator_seq_test(v1, v2);
+    }
+
+    {
+        ft::vector<int> v1 = generate_vector(0, 1);
+        ft::vector<int> v2 = generate_vector(0, 10);
+        operator_seq_test(v1, v2);
+    }
+
+    {
+        ft::vector<int> v1 = generate_vector(0, 10);
+        ft::vector<int> v2 = generate_vector(0, 1);
+        operator_seq_test(v1, v2);
+    }
+
+    {
+        ft::vector<int> v1 = generate_vector(-10, 10);
+        ft::vector<int> v2 = generate_vector(0, 10);
+        operator_seq_test(v1, v2);
+    }
+
+    {
+        ft::vector<int> v1 = generate_vector(0, 10);
+        ft::vector<int> v2 = generate_vector(-10, 10);
+        operator_seq_test(v1, v2);
+    }
+
+    {
+        ft::vector<int> v1 = generate_vector(0, 0);
+        ft::vector<int> v2 = generate_vector(0, 0);
+        operator_seq_test(v1, v2);
+    }
 }
 
 void vector_test()
@@ -984,4 +1137,5 @@ void vector_test()
     pop_back_test();
     resize_test();
     swap_test();
+    operator_test();
 }

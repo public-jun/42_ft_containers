@@ -10,7 +10,7 @@
 #include <iterator>
 #include <limits>    // std::numeric_limits
 #include <memory>    // std::uninitialized_fill_n std::uninitialized_copy
-#include <stdexcept> // std::length_error
+#include <stdexcept> // std::length_error, std::out_of_range
 
 template <class T>
 void debug(T& V)
@@ -48,7 +48,6 @@ public:
     /*
     ** Member functions
     */
-    // constructor
     vector()
         : first_(NULL), last_(NULL), capacity_last_(NULL),
           alloc_(allocator_type())
@@ -119,9 +118,7 @@ public:
 
     ~vector()
     {
-        // 1. 要素を末尾から先頭に向かう順番で破棄
         clear();
-        // 2. 生のメモリーを解放する
         deallocate();
     }
 
@@ -179,50 +176,41 @@ public:
         }
     }
 
-    // get_allocator
     allocator_type get_allocator() const { return (allocator_type(alloc_)); }
 
-    // max_size
     size_type max_size() const
     {
         return std::min<size_type>(alloc_.max_size(),
                                    std::numeric_limits<difference_type>::max());
     }
 
-    // 容量確認
     size_type size() const { return end() - begin(); }
     bool empty() const { return begin() == end(); }
     size_type capacity() const { return capacity_last_ - first_; }
 
-    // 要素アクセス
     reference operator[](size_type i) { return first_[i]; }
     const_reference operator[](size_type i) const { return first_[i]; }
     reference at(size_type i)
     {
         if (i >= size())
-            throw std::out_of_range("vector");
+            __throw_out_of_range();
         return first_[i];
     }
     const_reference at(size_type i) const
     {
-        std::cout << "const_ref called" << std::endl;
         if (i >= size())
-            throw std::out_of_range("vector");
+            __throw_out_of_range();
         return first_[i];
     }
     reference front() { return *first_; }
     const_reference front() const { return *first_; }
     reference back() { return *(last_ - 1); }
     const_reference back() const { return *(last_ - 1); }
-    pointer data() { return first_; }
-    const_pointer data() const { return first_; }
 
-    // イテレータアクセス
     iterator begin() { return iterator(first_); }
     iterator end() { return iterator(last_); }
     const_iterator begin() const { return const_iterator(first_); }
     const_iterator end() const { return const_iterator(last_); }
-    // リバースイテレータアクセス
     reverse_iterator rbegin() { return reverse_iterator(end()); }
     reverse_iterator rend() { return reverse_iterator(begin()); }
     const_reverse_iterator rbegin() const
@@ -317,6 +305,8 @@ public:
     {
         if (sz <= capacity())
             return;
+        if (sz > max_size())
+            __throw_length_error();
         pointer old_first      = first_;
         pointer old_last       = last_;
         size_type old_capacity = capacity();
@@ -368,6 +358,8 @@ private:
     allocator_type alloc_;
 
 private:
+    void __throw_out_of_range() const { throw std::out_of_range("vector"); }
+    void __throw_length_error() const { throw std::length_error("vector"); }
     // allocate/deallocate
     void allocate(size_type n)
     {
@@ -436,7 +428,6 @@ private:
         }
     }
 
-    // 末尾の未初期化部分に追加
     void construct_at_end(size_type count, const_reference value)
     {
         for (std::size_t i = 0; i < count; ++i)
@@ -446,7 +437,6 @@ private:
         }
     }
 
-    // 末尾の未初期化部分にイテレータコピーで追加
     template <class InputIterator>
     typename ft::enable_if<!ft::is_integral<InputIterator>::value,
                            void>::type // void

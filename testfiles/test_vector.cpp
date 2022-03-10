@@ -317,61 +317,6 @@ void back_test()
     }
 }
 
-void data_test()
-{
-    put_test_function("TEST vector::data");
-    {
-        pout("pointer");
-        ft::vector<int> v;
-        for (int i = 1; i <= 5; ++i)
-            v.push_back(i);
-        vdebug(v);
-
-        ft::vector<int>::pointer p = v.data();
-        cout << *p << endl;
-        vdebug(v);
-
-        cout << *(++p) << endl;
-        vdebug(v);
-
-        cout << ++(*p) << endl;
-        vdebug(v);
-    }
-    {
-        pout("const_pointer");
-        ft::vector<int> v;
-        for (int i = 1; i <= 5; ++i)
-            v.push_back(i);
-        vdebug(v);
-
-        ft::vector<int>::const_pointer p = v.data();
-        cout << *p << endl;
-        vdebug(v);
-
-        cout << *(++p) << endl;
-        vdebug(v);
-
-        // cout << ++(*p) << endl;
-        // vdebug(v);
-    }
-
-    {
-        pout("const_pointer change by other pointer");
-        ft::vector<int> v;
-        for (int i = 1; i <= 5; ++i)
-            v.push_back(i);
-        vdebug(v);
-
-        ft::vector<int>::const_pointer c_p = v.data();
-        ft::vector<int>::pointer p         = v.data();
-
-        cout << *c_p << endl;
-        ++(*p);
-        cout << *c_p << endl;
-        vdebug(v);
-    }
-}
-
 void empty_test()
 {
     put_test_function("TEST vector::empty");
@@ -1125,7 +1070,6 @@ void vector_test()
     get_allocator_test();
     front_test();
     back_test();
-    data_test();
     empty_test();
     size_test();
     max_size_test();

@@ -81,7 +81,7 @@ void print_is_empty(T& v)
 /**********************/
 /*     tutorial.cpp   */
 /**********************/
-void tutorial_test(void);
+// void tutorial_test(void);
 void vector_test();
 void algorithm_test();
 

@@ -1082,4 +1082,5 @@ void vector_test()
     resize_test();
     swap_test();
     operator_test();
+    std::vector<int> v;
 }

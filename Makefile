@@ -72,6 +72,7 @@ stl_err := $(result)/stl_err
 #####################################
 RM := rm -rf
 
+
 .PHONY: all
 all: $(build) $(NAME_STL) $(NAME_FT)
 
@@ -91,14 +92,6 @@ $(OBJDIR_FT)/%.o: $(srcsdir)/%.cpp  | $(DEPSDIR_FT)
 	$(CXX) $(CXXFLAGS) $(DEPFLAG_FT) -c ./$< $(INCLUDE) -o $@
 
 
-test: $(result) $(NAME_FT) $(NAME_STL)
-	@./$(NAME_FT) > $(ft_out) 2>$(ft_err)
-	@./$(NAME_STL) > $(stl_out) 2>$(stl_err)
-	diff $(ft_out) $(stl_out) ||:
-	@echo "---ft_err---"
-	@cat $(ft_err)
-	@echo "---stl_err---"
-	@cat $(stl_err)
 
 ft: $(result) $(NAME_FT)
 	@./$(NAME_FT) > $(ft_out) 2>$(ft_err) ||:
@@ -120,9 +113,39 @@ clean:
 
 .PHONY: fclean
 fclean: clean
-	$(RM) $(NAME_STL) $(NAME_FT) $(result)
+	$(RM) $(NAME_STL) $(NAME_FT) $(result) tester $(gtestdir)
 
 .PHONY: re
 re: fclean all
+
+test: $(result) $(NAME_FT) $(NAME_STL)
+	@./$(NAME_FT) > $(ft_out) 2>$(ft_err)
+	@./$(NAME_STL) > $(stl_out) 2>$(stl_err)
+	diff $(ft_out) $(stl_out) ||:
+	@echo "---ft_err---"
+	@cat $(ft_err)
+	@echo "---stl_err---"
+	@cat $(stl_err)
+
+gtestdir =    ./test
+gtest    =    $(gtestdir)/gtest $(gtestdir)/googletest-release-1.11.0
+testdir  = ./gtest
+
+$(gtest):
+	mkdir -p $(dir ../test)
+	curl -OL https://github.com/google/googletest/archive/refs/tags/release-1.11.0.tar.gz
+	tar -xvzf release-1.11.0.tar.gz googletest-release-1.11.0
+	$(RM) -rf release-1.11.0.tar.gz
+	python googletest-release-1.11.0/googletest/scripts/fuse_gtest_files.py $(gtestdir)
+	mv googletest-release-1.11.0 $(gtestdir)
+
+test_compile = clang++ -std=c++11 \
+	$(testdir)/gtest.cpp $(gtestdir)/googletest-release-1.11.0/googletest/src/gtest_main.cc $(gtestdir)/gtest/gtest-all.cc \
+	-I$(gtestdir) -I$(INCLUDE) -lpthread -o tester
+
+.PHONY: gtest
+gtest: $(gtest) fclean
+	$(test_compile)
+	./tester # --gtest_filter=Vector.other
 
 -include $(DEPS_STL) $(DEPS_FT)

@@ -4,6 +4,7 @@
 #include <reverse_iterator.hpp>
 #include <utils.hpp>
 #include <wrap_iter.hpp>
+#include <algorithm.hpp>
 
 #include <algorithm> // std::min
 #include <iostream>
@@ -53,61 +54,61 @@ public:
           alloc_(allocator_type())
     {}
 
-    explicit vector(const allocator_type& alloc)
-        : first_(NULL), last_(NULL), capacity_last_(NULL), alloc_(alloc)
+    explicit vector(const allocator_type& __alloc)
+        : first_(NULL), last_(NULL), capacity_last_(NULL), alloc_(__alloc)
     {}
 
-    vector(size_type count, const T& value = T(),
-           const allocator_type& alloc = allocator_type())
-        : first_(NULL), last_(NULL), capacity_last_(NULL), alloc_(alloc)
+    vector(size_type __count, const T& __value = T(),
+           const allocator_type& __alloc = allocator_type())
+        : first_(NULL), last_(NULL), capacity_last_(NULL), alloc_(__alloc)
     {
-        resize(count, value);
+        resize(__count, __value);
     }
 
-    template <typename InputIterator>
-    vector(InputIterator first, InputIterator last,
-           const Allocator& allocator                   = Allocator(),
-           typename ft::enable_if<!ft::is_integral<InputIterator>::value,
-                                  InputIterator>::type* = NULL)
-        : first_(NULL), last_(NULL), capacity_last_(NULL), alloc_(allocator)
+    template <typename _InputIterator>
+    vector(_InputIterator __first, _InputIterator __last,
+           const Allocator& __allocator                   = Allocator(),
+           typename ft::enable_if<!ft::is_integral<_InputIterator>::value,
+                                  _InputIterator>::type* = NULL)
+        : first_(NULL), last_(NULL), capacity_last_(NULL), alloc_(__allocator)
     {
         range_initialize(
-            first, last,
-            typename iterator_traits<InputIterator>::iterator_category());
+            __first, __last,
+            typename iterator_traits<_InputIterator>::iterator_category());
     }
 
-    vector(const vector& r)
-        : first_(NULL), last_(NULL), capacity_last_(NULL), alloc_(r.alloc_)
+    vector(const vector& __r)
+        : first_(NULL), last_(NULL), capacity_last_(NULL), alloc_(__r.alloc_)
     {
-        reserve(r.size());
+        reserve(__r.size());
         pointer dest = first_;
-        for (const_iterator src = r.begin(), last = r.end(); src != last;
+        for (const_iterator src = __r.begin(), last = __r.end(); src != last;
              ++dest, ++src)
         {
             construct(dest, *src);
         }
-        last_ = first_ + r.size();
+        last_ = first_ + __r.size();
     }
 
-    vector& operator=(const vector& r)
+    vector& operator=(const vector& __r)
     {
-        if (this == &r)
+        if (this == &__r)
             return *this;
-        if (size() == r.size())
+        if (size() == __r.size())
         {
-            std::copy(r.begin(), r.end(), begin());
+            std::copy(__r.begin(), __r.end(), begin());
         }
-        else if (capacity() >= r.size())
+        else if (capacity() >= __r.size())
         {
-            std::copy(r.begin(), r.begin() + r.size(), begin());
-            last_ = first_ + r.size();
+            std::copy(__r.begin(), __r.begin() + __r.size(), begin());
+            last_ = first_ + __r.size();
         }
         else
         {
             destroy_until(rend()); // destroy_all()
-            reserve(r.size());
+            reserve(__r.size());
             pointer dest_pointer = first_;
-            for (const_iterator src_iter = r.begin(), src_end = r.end();
+            for (const_iterator src_iter = __r.begin(), src_end = __r.end();
                  src_iter != src_end; ++src_iter, ++dest_pointer, ++last_)
             {
                 construct(dest_pointer, *src_iter);
@@ -123,45 +124,45 @@ public:
     }
 
     // assign
-    void assign(size_type n, const T& value)
+    void assign(size_type __n, const T& __value)
     {
-        if (capacity() >= n)
+        if (capacity() >= __n)
         {
             size_type sz = size();
-            if (size() > n)
-                destroy_until(rbegin() + (sz - n));
-            std::fill_n(first_, n, value);
+            if (size() > __n)
+                destroy_until(rbegin() + (sz - __n));
+            std::fill_n(first_, __n, __value);
         }
         else
         {
             clear();
             deallocate();
-            allocate(n);
-            std::uninitialized_fill_n(first_, n, value);
+            allocate(__n);
+            std::uninitialized_fill_n(first_, __n, __value);
         }
-        last_ = first_ + n;
+        last_ = first_ + __n;
     }
 
-    template <class InputIterator>
-    void assign(InputIterator first, InputIterator last,
-                typename ft::enable_if<!ft::is_integral<InputIterator>::value,
-                                       InputIterator>::type* = NULL)
+    template <class _InputIterator>
+    void assign(_InputIterator __first, _InputIterator __last,
+                typename ft::enable_if<!ft::is_integral<_InputIterator>::value,
+                                       _InputIterator>::type* = NULL)
     {
-        size_type new_size = static_cast<size_type>(std::distance(first, last));
+        size_type new_size = static_cast<size_type>(std::distance(__first, __last));
         if (new_size <= capacity())
         {
-            InputIterator mid = last;
+            _InputIterator mid = __last;
             if (new_size > size())
             {
-                mid = first;
+                mid = __first;
                 std::advance(mid, size());
-                std::copy(first, mid, begin());
-                for (InputIterator it = mid; it != last; ++it)
+                std::copy(__first, mid, begin());
+                for (_InputIterator it = mid; it != __last; ++it)
                     construct(last_++, *it);
             }
             else
             {
-                std::copy(first, mid, begin());
+                std::copy(__first, mid, begin());
                 difference_type diff = size() - new_size;
                 destroy_until(rbegin() + diff);
             }
@@ -171,7 +172,7 @@ public:
             clear();
             deallocate();
             allocate(new_size);
-            for (InputIterator it = first; it != last; ++it)
+            for (_InputIterator it = __first; it != __last; ++it)
                 construct(last_++, *it);
         }
     }
@@ -188,19 +189,19 @@ public:
     bool empty() const { return begin() == end(); }
     size_type capacity() const { return capacity_last_ - first_; }
 
-    reference operator[](size_type i) { return first_[i]; }
-    const_reference operator[](size_type i) const { return first_[i]; }
-    reference at(size_type i)
+    reference operator[](size_type __i) { return first_[__i]; }
+    const_reference operator[](size_type __i) const { return first_[__i]; }
+    reference at(size_type __i)
     {
-        if (i >= size())
+        if (__i >= size())
             __throw_out_of_range();
-        return first_[i];
+        return first_[__i];
     }
-    const_reference at(size_type i) const
+    const_reference at(size_type __i) const
     {
-        if (i >= size())
+        if (__i >= size())
             __throw_out_of_range();
-        return first_[i];
+        return first_[__i];
     }
     reference front() { return *first_; }
     const_reference front() const { return *first_; }
@@ -225,55 +226,55 @@ public:
     void clear() { destroy_until(rend()); }
 
     // insert
-    iterator insert(iterator pos, const_reference value)
+    iterator insert(iterator __pos, const_reference __value)
     {
-        difference_type diff = pos - begin();
-        insert(pos, 1, value);
+        difference_type diff = __pos - begin();
+        insert(__pos, 1, __value);
         pointer p_pos = first_ + diff;
         return iterator(p_pos);
     }
 
-    void insert(iterator pos, size_type count, const_reference value)
+    void insert(iterator __pos, size_type __count, const_reference __value)
     {
-        difference_type offset = pos - begin();
-        size_type new_size     = size() + count;
+        difference_type offset = __pos - begin();
+        size_type new_size     = size() + __count;
 
-        if (count > 0)
+        if (__count > 0)
         {
             if (new_size >= capacity())
             {
-                extend_capacity(count);
+                extend_capacity(__count);
             }
 
             pointer p_pos    = first_ + offset;
             pointer old_last = last_;
 
             size_type after_pos_size = static_cast<size_type>(last_ - p_pos);
-            size_type left_count     = count;
+            size_type left_count     = __count;
 
-            move_range(p_pos, old_last, count);
-            if (count > after_pos_size)
+            move_range(p_pos, old_last, __count);
+            if (__count > after_pos_size)
             {
-                size_type unini_size = count - after_pos_size;
-                std::uninitialized_fill_n(old_last, unini_size, value);
+                size_type unini_size = __count - after_pos_size;
+                std::uninitialized_fill_n(old_last, unini_size, __value);
                 left_count -= unini_size;
             }
             if (left_count > 0)
             {
-                std::fill_n(p_pos, left_count, value);
+                std::fill_n(p_pos, left_count, __value);
             }
-            last_ += count;
+            last_ += __count;
         }
     }
 
-    template <class InputIterator>
-    typename ft::enable_if<!ft::is_integral<InputIterator>::value,
+    template <class _InputIterator>
+    typename ft::enable_if<!ft::is_integral<_InputIterator>::value,
                            void>::type // void
-    insert(iterator pos, InputIterator first, InputIterator last)
+    insert(iterator pos, _InputIterator first, _InputIterator last)
     {
         range_insert(
             pos, first, last,
-            typename iterator_traits<InputIterator>::iterator_category());
+            typename iterator_traits<_InputIterator>::iterator_category());
     }
 
     // erase
@@ -384,8 +385,8 @@ private:
         }
     }
 
-    template <class InputIterator>
-    void range_initialize(InputIterator first, InputIterator last,
+    template <class _InputIterator>
+    void range_initialize(_InputIterator first, _InputIterator last,
                           std::input_iterator_tag)
     {
         for (; first != last; ++first)
@@ -394,12 +395,12 @@ private:
         }
     }
 
-    template <class ForwardIterator>
-    void range_initialize(ForwardIterator first, ForwardIterator last,
+    template <class _ForwardIterator>
+    void range_initialize(_ForwardIterator first, _ForwardIterator last,
                           std::forward_iterator_tag)
     {
         reserve(std::distance(first, last));
-        for (ForwardIterator i = first; i != last; ++i)
+        for (_ForwardIterator i = first; i != last; ++i)
         {
             push_back(*i);
         }
@@ -437,10 +438,10 @@ private:
         }
     }
 
-    template <class InputIterator>
-    typename ft::enable_if<!ft::is_integral<InputIterator>::value,
+    template <class _InputIterator>
+    typename ft::enable_if<!ft::is_integral<_InputIterator>::value,
                            void>::type // void
-    construct_at_end(InputIterator first, InputIterator last)
+    construct_at_end(_InputIterator first, _InputIterator last)
     {
         std::uninitialized_copy(first, last, end());
     }
@@ -470,8 +471,8 @@ private:
     }
 
     // input_iterator_tag ver
-    template <class InputIterator>
-    void range_insert(iterator pos, InputIterator first, InputIterator last,
+    template <class _InputIterator>
+    void range_insert(iterator pos, _InputIterator first, _InputIterator last,
                       std::input_iterator_tag)
     {
         if (pos == end())
@@ -489,9 +490,9 @@ private:
     }
 
     // forward_iterator_tag ver
-    template <class ForwardIterator>
-    void range_insert(iterator pos, ForwardIterator first_it,
-                      ForwardIterator last_it, std::forward_iterator_tag)
+    template <class _ForwardIterator>
+    void range_insert(iterator pos, _ForwardIterator first_it,
+                      _ForwardIterator last_it, std::forward_iterator_tag)
     {
         difference_type offset      = pos - begin();
         difference_type insert_size = std::distance(first_it, last_it);
@@ -508,7 +509,7 @@ private:
 
             difference_type after_pos_size = last_ - p_pos;
             size_type left_insert_size     = insert_size;
-            ForwardIterator m_it           = last_it;
+            _ForwardIterator m_it           = last_it;
 
             if (insert_size > after_pos_size)
             {

@@ -1,8 +1,8 @@
 #ifndef ALGORITHM_HPP
 #define ALGORITHM_HPP
 
-#include <iostream> //std::cout  will remove
-#define CALLED std::cout << "called" << std::endl;
+// #include <iostream> //std::cout  will remove
+// #define CALLED std::cout << "called" << std::endl;
 
 namespace ft {
 

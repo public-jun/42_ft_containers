@@ -7,7 +7,6 @@
 #include <wrap_iter.hpp>
 
 #include <algorithm> // std::min
-#include <iostream>
 #include <iterator>
 #include <limits>    // std::numeric_limits
 #include <memory>    // std::uninitialized_fill_n std::uninitialized_copy

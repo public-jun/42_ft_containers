@@ -3,7 +3,7 @@
 
 #include <algorithm.hpp>
 #include <reverse_iterator.hpp>
-#include <utils.hpp>
+#include <type_traits.hpp>
 #include <wrap_iter.hpp>
 
 #include <algorithm> // std::min

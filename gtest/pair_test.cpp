@@ -272,3 +272,16 @@ TEST(Pair, OperatorMoreThanOrEqual)
     EXPECT_FALSE(p7 >= p8);
     p8.first = "aaab";
 }
+
+TEST(Pair, MakePair)
+{
+    ft::pair<int, double> p1;
+    p1 = ft::make_pair(42, 0.42);
+    EXPECT_EQ(42, p1.first);
+    EXPECT_EQ(0.42, p1.second);
+
+    ft::pair<std::string, float> p2;
+    p2 = ft::make_pair("hoge", 0.42f);
+    EXPECT_EQ("hoge", p2.first);
+    EXPECT_EQ(0.42f, p2.second);
+}

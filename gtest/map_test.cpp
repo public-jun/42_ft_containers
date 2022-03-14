@@ -5,5 +5,4 @@
 
 TEST(Map, Construct)
 {
-    std::pair<std::string, int> p;
 }

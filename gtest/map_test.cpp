@@ -5,4 +5,5 @@
 
 TEST(Map, Construct)
 {
+    std::map<std::string, int> m;
 }

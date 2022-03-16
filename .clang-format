@@ -7,7 +7,7 @@ AlignArrayOfStructures: None
 AlignConsecutiveMacros: None
 AlignConsecutiveAssignments: Consecutive
 AlignConsecutiveBitFields: None
-AlignConsecutiveDeclarations: None
+AlignConsecutiveDeclarations: AcrossEmptyLinesAndComments
 AlignEscapedNewlines: Right
 AlignOperands:   Align
 AlignTrailingComments: true

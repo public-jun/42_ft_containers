@@ -1,6 +1,7 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
+#include <tree.hpp>
 #include <pair.hpp>
 
 #include <functional>
@@ -16,7 +17,7 @@ public:
     map_value_compare() : comp_() {}
     map_value_compare(_Compare c) : comp_(c) {}
     const _Compare& key_comp() const { return comp_; }
-    bool operator()(const _CP& x, const _CP& y) const
+    bool            operator()(const _CP& x, const _CP& y) const
     {
         return comp_(x.first, y.first);
     }
@@ -36,13 +37,13 @@ template <class _Key, class _Tp, class _Compare = std::less<_Key>,
 class map
 {
 public:
-    typedef _Key key_type;
-    typedef _Tp mapped_type;
+    typedef _Key                                  key_type;
+    typedef _Tp                                   mapped_type;
     typedef ft::pair<const key_type, mapped_type> value_type;
-    typedef _Compare key_compare;
-    typedef _Allocator allocator_type;
-    typedef value_type& reference;
-    typedef const value_type& const_reference;
+    typedef _Compare                              key_compare;
+    typedef _Allocator                            allocator_type;
+    typedef value_type&                           reference;
+    typedef const value_type&                     const_reference;
 
 public:
     class value_compare : std::binary_function<value_type, value_type, bool>
@@ -50,7 +51,7 @@ public:
         friend class map;
 
     public:
-        typedef bool result_type;
+        typedef bool       result_type;
         typedef value_type first_argument_type;
         typedef value_type second_argument_type;
 
@@ -66,19 +67,19 @@ public:
 
 private:
     typedef map_value_compare<key_type, value_type, key_compare> vc;
-    typedef tree<value_type, vc, allocator_type> base;
-    base tree_;
+    typedef __tree<value_type, vc, allocator_type>                 base;
+    base                                                         tree_;
 
 public:
     // many of these are specified differently in ISO, but the following are
     // "functionally equivalent"
-    typedef typename allocator_type::pointer pointer;
-    typedef typename allocator_type::const_pointer const_pointer;
-    typedef typename allocator_type::size_type size_type;
+    typedef typename allocator_type::pointer         pointer;
+    typedef typename allocator_type::const_pointer   const_pointer;
+    typedef typename allocator_type::size_type       size_type;
     typedef typename allocator_type::difference_type difference_type;
-    typedef typename base::iterator iterator;
-    typedef typename base::const_iterator const_iterator;
-    typedef typename ft::reverse_iterator<iterator> reverse_iterator;
+    typedef typename base::iterator                  iterator;
+    typedef typename base::const_iterator            const_iterator;
+    typedef typename ft::reverse_iterator<iterator>  reverse_iterator;
     typedef typename ft::const_reverse_iterator<const_iterator>
         const_reverse_iterator;
 
@@ -90,7 +91,7 @@ public:
 
     template <class _InputIterator>
     map(_InputIterator first, _InputIterator last,
-        const key_compare& comp     = key_compare(),
+        const key_compare&    comp  = key_compare(),
         const allocator_type& alloc = allocator_type())
         : tree_(vc(comp), alloc)
     {
@@ -110,18 +111,18 @@ public:
 
     ~map() {}
 
-    iterator begin() { return tree_.begin(); }
-    const_iterator begin() const { return tree_.begin(); }
-    iterator end() { return tree_.end(); }
-    const_iterator end() const { return tree_.end(); }
-    reverse_iterator rbegin() { return tree_.rbegin(); }
-    const_reverse_iterator rbegin() const { return tree_.rbegin(); }
-    reverse_iterator rend() { return tree_.rend(); }
-    const_reverse_iterator rend() const { return tree_.rend(); }
+    iterator                 begin() { return tree_.begin(); }
+    const_iterator           begin() const { return tree_.begin(); }
+    iterator                 end() { return tree_.end(); }
+    const_iterator           end() const { return tree_.end(); }
+    reverse_iterator         rbegin() { return tree_.rbegin(); }
+    const_reverse_iterator   rbegin() const { return tree_.rbegin(); }
+    reverse_iterator         rend() { return tree_.rend(); }
+    const_reverse_iterator   rend() const { return tree_.rend(); }
 
-    bool empty() { return tree_.size() == 0; }
-    size_type size() { return tree_.size(); }
-    size_type max_size() { return tree_.max_size(); }
+    bool                     empty() { return tree_.size() == 0; }
+    size_type                size() { return tree_.size(); }
+    size_type                max_size() { return tree_.max_size(); }
 
     // Modifiers
     ft::pair<iterator, bool> insert(const value_type& v)

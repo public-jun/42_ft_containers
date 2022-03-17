@@ -19,17 +19,17 @@ class vector
 {
 public:
     // Member type
-    typedef T value_type;
-    typedef Allocator allocator_type;
-    typedef std::size_t size_type;
-    typedef std::ptrdiff_t difference_type;
-    typedef value_type& reference;
-    typedef const value_type& const_reference;
-    typedef typename Allocator::pointer pointer;
-    typedef typename Allocator::const_pointer const_pointer;
-    typedef wrap_iter<pointer> iterator;
-    typedef wrap_iter<const_pointer> const_iterator;
-    typedef ft::reverse_iterator<iterator> reverse_iterator;
+    typedef T                                    value_type;
+    typedef Allocator                            allocator_type;
+    typedef std::size_t                          size_type;
+    typedef std::ptrdiff_t                       difference_type;
+    typedef value_type&                          reference;
+    typedef const value_type&                    const_reference;
+    typedef typename Allocator::pointer          pointer;
+    typedef typename Allocator::const_pointer    const_pointer;
+    typedef wrap_iter<pointer>                   iterator;
+    typedef wrap_iter<const_pointer>             const_iterator;
+    typedef ft::reverse_iterator<iterator>       reverse_iterator;
     typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
     // Member functions
@@ -169,12 +169,12 @@ public:
     }
 
     size_type size() const { return end() - begin(); }
-    bool empty() const { return begin() == end(); }
+    bool      empty() const { return begin() == end(); }
     size_type capacity() const { return capacity_last_ - first_; }
 
-    reference operator[](size_type i) { return first_[i]; }
+    reference       operator[](size_type i) { return first_[i]; }
     const_reference operator[](size_type i) const { return first_[i]; }
-    reference at(size_type i)
+    reference       at(size_type i)
     {
         if (i >= size())
             __throw_out_of_range();
@@ -186,17 +186,17 @@ public:
             __throw_out_of_range();
         return first_[i];
     }
-    reference front() { return *first_; }
+    reference       front() { return *first_; }
     const_reference front() const { return *first_; }
-    reference back() { return *(last_ - 1); }
+    reference       back() { return *(last_ - 1); }
     const_reference back() const { return *(last_ - 1); }
 
-    iterator begin() { return iterator(first_); }
-    iterator end() { return iterator(last_); }
-    const_iterator begin() const { return const_iterator(first_); }
-    const_iterator end() const { return const_iterator(last_); }
-    reverse_iterator rbegin() { return reverse_iterator(end()); }
-    reverse_iterator rend() { return reverse_iterator(begin()); }
+    iterator               begin() { return iterator(first_); }
+    iterator               end() { return iterator(last_); }
+    const_iterator         begin() const { return const_iterator(first_); }
+    const_iterator         end() const { return const_iterator(last_); }
+    reverse_iterator       rbegin() { return reverse_iterator(end()); }
+    reverse_iterator       rend() { return reverse_iterator(begin()); }
     const_reverse_iterator rbegin() const
     {
         return const_reverse_iterator(begin());
@@ -218,8 +218,8 @@ public:
 
     void insert(iterator pos, size_type count, const_reference value)
     {
-        difference_type offset = pos - begin();
-        size_type new_size     = size() + count;
+        difference_type offset   = pos - begin();
+        size_type       new_size = size() + count;
 
         if (count > 0)
         {
@@ -288,8 +288,8 @@ public:
             return;
         if (sz > max_size())
             __throw_length_error();
-        pointer old_first      = first_;
-        pointer old_last       = last_;
+        pointer   old_first    = first_;
+        pointer   old_last     = last_;
         size_type old_capacity = capacity();
         __allocate(sz);
         for (pointer old_iter = old_first; old_iter != old_last;
@@ -333,9 +333,9 @@ public:
     }
 
 private:
-    pointer first_;
-    pointer last_;
-    pointer capacity_last_;
+    pointer        first_;
+    pointer        last_;
+    pointer        capacity_last_;
     allocator_type alloc_;
 
 private:
@@ -419,9 +419,9 @@ private:
     void __move_range(pointer from_s, pointer from_e, size_type amount_move)
     {
         difference_type range_size = from_e - from_s;
-        pointer old_tail           = from_e - 1;
-        pointer new_tail           = old_tail + amount_move;
-        pointer tmp_p              = new_tail;
+        pointer         old_tail   = from_e - 1;
+        pointer         new_tail   = old_tail + amount_move;
+        pointer         tmp_p      = new_tail;
 
         if (from_s != last_)
         {
@@ -475,9 +475,9 @@ private:
             pointer p_pos    = first_ + offset;
             pointer old_last = last_;
 
-            difference_type after_pos_size = last_ - p_pos;
-            size_type left_insert_size     = insert_size;
-            _ForwardIterator m_it          = last_it;
+            difference_type  after_pos_size   = last_ - p_pos;
+            size_type        left_insert_size = insert_size;
+            _ForwardIterator m_it             = last_it;
 
             if (insert_size > after_pos_size)
             {

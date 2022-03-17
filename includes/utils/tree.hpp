@@ -3,6 +3,7 @@
 
 namespace ft {
 
+/*
 template <class _VoidPtr>
 class __tree_node_base_types
 {
@@ -66,6 +67,22 @@ private:
     ~__tree_node() {}
     __tree_node(const __tree_node&) {}
     __tree_node& operator=(const __tree_node&) { return *this; }
+};
+*/
+
+// node
+
+template <class _Tp>
+class tree_node
+{
+public:
+    typedef _Tp                         node_value_type;
+    typedef tree_node<node_value_type>* node_pointer;
+
+    node_value_type value;
+    node_pointer    parent;
+    node_pointer    left;
+    node_pointer    right;
 };
 
 template <class _Tp, class _Compare, class _Allocator>

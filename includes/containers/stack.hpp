@@ -9,11 +9,11 @@ class stack
 {
 public:
     // Member type
-    typedef Container container_type;
-    typedef typename container_type::value_type value_type;
-    typedef typename container_type::reference reference;
+    typedef Container                                container_type;
+    typedef typename container_type::value_type      value_type;
+    typedef typename container_type::reference       reference;
     typedef typename container_type::const_reference const_reference;
-    typedef typename container_type::size_type size_type;
+    typedef typename container_type::size_type       size_type;
 
 protected:
     container_type c_;
@@ -29,7 +29,7 @@ public:
         return *this;
     }
 
-    reference top() { return c_.back(); }
+    reference       top() { return c_.back(); }
     const_reference top() const { return c_.back(); }
 
     bool empty() const { return c_.empty(); }

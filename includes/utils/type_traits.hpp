@@ -7,10 +7,10 @@ namespace ft {
 
 template <class _Tp, _Tp __v>
 struct integral_constant {
-    static const _Tp value = __v;
-    typedef _Tp value_type;
+    static const _Tp                    value = __v;
+    typedef _Tp                         value_type;
     typedef integral_constant<_Tp, __v> type;
-    const value_type operator()() const { return value; }
+    const value_type                    operator()() const { return value; }
 };
 
 // integral_constantの特殊化true_type

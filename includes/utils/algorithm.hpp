@@ -49,7 +49,8 @@ bool lexicographical_compare(_InputIterator1 __first1, _InputIterator1 __last1,
 
 template <class _InputIterator1, class _InputIterator2, class _Compare>
 bool lexicographical_compare(_InputIterator1 __first1, _InputIterator1 __last1,
-                             _InputIterator2 __first2, _InputIterator2 __last2, _Compare __comp)
+                             _InputIterator2 __first2, _InputIterator2 __last2,
+                             _Compare __comp)
 {
     for (; __first1 != __last1 && __first2 != __last2; ++__first1, ++__first2)
     {

@@ -16,17 +16,17 @@ class reverse_iterator
 {
 protected:
     // Member objects
-    Iter current_;
+    Iter                              current_;
     typedef ft::iterator_traits<Iter> traits_type;
 
 public:
     // Member type
-    typedef Iter iterator_type;
+    typedef Iter                                    iterator_type;
     typedef typename traits_type::iterator_category iterator_category;
-    typedef typename traits_type::value_type value_type;
-    typedef typename traits_type::difference_type difference_type;
-    typedef typename traits_type::pointer pointer;
-    typedef typename traits_type::reference reference;
+    typedef typename traits_type::value_type        value_type;
+    typedef typename traits_type::difference_type   difference_type;
+    typedef typename traits_type::pointer           pointer;
+    typedef typename traits_type::reference         reference;
 
     // Member functions
     //// constructor
@@ -147,7 +147,7 @@ bool operator>=(const reverse_iterator<Iterator1>& lhs,
 template <class Iter>
 reverse_iterator<Iter>
 operator+(typename reverse_iterator<Iter>::difference_type n,
-          const reverse_iterator<Iter>& it)
+          const reverse_iterator<Iter>&                    it)
 {
     return reverse_iterator<Iter>(it.base() - n);
 }

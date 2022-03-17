@@ -1,8 +1,8 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
-#include <tree.hpp>
 #include <pair.hpp>
+#include <tree.hpp>
 
 #include <functional>
 #include <memory>
@@ -67,7 +67,7 @@ public:
 
 private:
     typedef map_value_compare<key_type, value_type, key_compare> vc;
-    typedef __tree<value_type, vc, allocator_type>                 base;
+    typedef __tree<value_type, vc, allocator_type>               base;
     base                                                         tree_;
 
 public:
@@ -111,18 +111,18 @@ public:
 
     ~map() {}
 
-    iterator                 begin() { return tree_.begin(); }
-    const_iterator           begin() const { return tree_.begin(); }
-    iterator                 end() { return tree_.end(); }
-    const_iterator           end() const { return tree_.end(); }
-    reverse_iterator         rbegin() { return tree_.rbegin(); }
-    const_reverse_iterator   rbegin() const { return tree_.rbegin(); }
-    reverse_iterator         rend() { return tree_.rend(); }
-    const_reverse_iterator   rend() const { return tree_.rend(); }
+    iterator               begin() { return tree_.begin(); }
+    const_iterator         begin() const { return tree_.begin(); }
+    iterator               end() { return tree_.end(); }
+    const_iterator         end() const { return tree_.end(); }
+    reverse_iterator       rbegin() { return tree_.rbegin(); }
+    const_reverse_iterator rbegin() const { return tree_.rbegin(); }
+    reverse_iterator       rend() { return tree_.rend(); }
+    const_reverse_iterator rend() const { return tree_.rend(); }
 
-    bool                     empty() { return tree_.size() == 0; }
-    size_type                size() { return tree_.size(); }
-    size_type                max_size() { return tree_.max_size(); }
+    bool      empty() { return tree_.size() == 0; }
+    size_type size() { return tree_.size(); }
+    size_type max_size() { return tree_.max_size(); }
 
     // Modifiers
     ft::pair<iterator, bool> insert(const value_type& v)

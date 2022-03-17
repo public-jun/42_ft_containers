@@ -8,15 +8,15 @@ template <class Iter>
 class wrap_iter
 {
 protected:
-    Iter current_;
+    Iter                          current_;
     typedef iterator_traits<Iter> traits_type;
 
 public:
-    typedef Iter iterator_type;
-    typedef typename traits_type::value_type value_type;
-    typedef typename traits_type::difference_type difference_type;
-    typedef typename traits_type::pointer pointer;
-    typedef typename traits_type::reference reference;
+    typedef Iter                                    iterator_type;
+    typedef typename traits_type::value_type        value_type;
+    typedef typename traits_type::difference_type   difference_type;
+    typedef typename traits_type::pointer           pointer;
+    typedef typename traits_type::reference         reference;
     typedef typename traits_type::iterator_category iterator_category;
 
     // Member functions
@@ -41,10 +41,10 @@ public:
     ~wrap_iter() {}
 
     iterator_type base() const { return current_; }
-    reference operator*() const { return *current_; }
-    pointer operator->() const { return current_; }
-    reference operator[](difference_type n) const { return *(*this + n); }
-    wrap_iter& operator++()
+    reference     operator*() const { return *current_; }
+    pointer       operator->() const { return current_; }
+    reference     operator[](difference_type n) const { return *(*this + n); }
+    wrap_iter&    operator++()
     {
         ++current_;
         return *this;
@@ -166,7 +166,7 @@ bool operator>=(const wrap_iter<Iterator1>& lhs,
 //// operator+
 template <class Iterator>
 wrap_iter<Iterator> operator+(typename wrap_iter<Iterator>::difference_type n,
-                              wrap_iter<Iterator> it)
+                              wrap_iter<Iterator>                           it)
 {
     it += n;
     return it;

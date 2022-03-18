@@ -3,6 +3,42 @@
 
 namespace ft {
 
+// node
+enum r_b_color { kRed = false, kBlack = true };
+
+template <class _Tp>
+class tree_node
+{
+public:
+    typedef _Tp                        node_value_type;
+    typedef tree_node<node_value_type> node_type;
+    typedef node_type*                 node_pointer;
+
+    node_pointer parent;
+    node_pointer left;
+    node_pointer right;
+
+    bool            color;
+    node_value_type value;
+
+    tree_node() : parent(NULL), left(NULL), right(NULL), color(kBlack) {}
+    tree_node(node_pointer nil, node_value_type v)
+        : parent(nil), left(nil), right(nil), color(kRed), value(v)
+    {}
+};
+
+template <class _Tp, class _Compare, class _Allocator>
+class __tree
+{
+public:
+    typedef _Tp        value_type;
+    typedef _Compare   value_compare;
+    typedef _Allocator allocator_type;
+};
+} // namespace ft
+
+#endif
+
 /*
 template <class _VoidPtr>
 class __tree_node_base_types
@@ -69,30 +105,3 @@ private:
     __tree_node& operator=(const __tree_node&) { return *this; }
 };
 */
-
-// node
-
-template <class _Tp>
-class tree_node
-{
-public:
-    typedef _Tp                         node_value_type;
-    typedef tree_node<node_value_type>* node_pointer;
-
-    node_value_type value;
-    node_pointer    parent;
-    node_pointer    left;
-    node_pointer    right;
-};
-
-template <class _Tp, class _Compare, class _Allocator>
-class __tree
-{
-public:
-    typedef _Tp        value_type;
-    typedef _Compare   value_compare;
-    typedef _Allocator allocator_type;
-};
-} // namespace ft
-
-#endif

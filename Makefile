@@ -145,12 +145,14 @@ $(gtest):
 
 test_compile = clang++ -std=c++11 \
 	$(testdir)/gtest.cpp $(gtestdir)/googletest-release-1.11.0/googletest/src/gtest_main.cc $(gtestdir)/gtest/gtest-all.cc \
+	-g -fsanitize=address -fsanitize=undefined -fsanitize=leak \
 	-I$(gtestdir) $(INCLUDE) -lpthread -o tester
+
 
 .PHONY: gtest
 gtest: $(gtest) fclean
 	$(test_compile)
-	./tester --gtest_filter=Tree.*
+	./tester --gtest_filter=TreeIteratorTest.*
 # ./tester # --gtest_filter=Vector.other
 
 -include $(DEPS_STL) $(DEPS_FT)

@@ -99,7 +99,7 @@ public:
 };
 
 template <class _Tp, class _Compare, class _Allocator>
-class __tree
+class rb_tree
 {
 public:
     typedef _Tp               value_type;
@@ -126,7 +126,25 @@ public:
     // typedef ft::reverse_iterator<iterator>  reverse_iterator;
     // typedef ft::reverse_iterator<const_iterator>  const_reverse_iterator;
 
-private:
+public:
+    rb_tree()
+    {
+        size_ = 0;
+        comp_ = value_compare();
+        node_alloc = node_allocator_type();
+        initialize_node();
+    }
+
+    rb_tree(const value_compare&  comp,
+            const allocator_type& alloc = allocator_type())
+    {
+        size_ = 0;
+        comp_ = comp;
+        node_alloc(node_allocator_type(alloc));
+        initialize_node();
+    }
+
+    // private:
     node_pointer nil_;
     node_pointer begin_;
     node_pointer end_;
@@ -134,6 +152,54 @@ private:
     node_allocator_type node_alloc;
     size_type           size_;
     value_compare       comp_;
+
+private:
+    // node を作成する
+    void initialize_node()
+    {
+        nil_ = node_alloc.allocate(1);
+        node_alloc.construct(nil_);
+        end_ = node_alloc.allocate(1);
+        node_alloc.construct(end_);
+        begin_ = end_;
+    }
+
+public:
+    node_pointer create_node(const value_type& value)
+    {
+        node_pointer new_node = node_alloc.allocate(1);
+        node_alloc.construct(new_node, value);
+        new_node->parent = nil_;
+        new_node->left   = nil_;
+        new_node->right  = nil_;
+        return new_node;
+    }
+
+    void destroy(node_pointer node)
+    {
+        if (node != nil_)
+        {
+            destroy(node->left);
+            destroy(node->right);
+            delete_node(node);
+        }
+    }
+
+    void delete_node(node_pointer node)
+    {
+        node_alloc.destroy(node);
+        node_alloc.deallocate(node, 1);
+    }
+
+    // void clear()
+    void clear(node_pointer node)
+    {
+        // destroy(root);
+        destroy(node);
+        size_       = 0;
+        begin_     = end_;
+        end_->left = NULL;
+    }
 };
 } // namespace ft
 

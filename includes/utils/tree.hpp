@@ -25,10 +25,10 @@ template <class _Tp>
 class tree_node
 {
 public:
-    typedef _Tp                                 node_value_type;
+    typedef _Tp                                          node_value_type;
     typedef typename tree_key_value_types<_Tp>::key_type key_type;
-    typedef tree_node<node_value_type>          node_type;
-    typedef node_type*                          node_pointer;
+    typedef tree_node<node_value_type>                   node_type;
+    typedef node_type*                                   node_pointer;
 
     node_pointer parent;
     node_pointer left;
@@ -116,7 +116,7 @@ public:
     typedef _Compare value_compare;
 
     typedef _Allocator allocator_type;
-    typedef typename  allocator_type::template rebind<node_type>::other
+    typedef typename allocator_type::template rebind<node_type>::other
                                                           node_allocator_type;
     typedef typename node_allocator_type::size_type       size_type;
     typedef typename node_allocator_type::difference_type difference_type;
@@ -125,74 +125,16 @@ public:
     // typedef tree_const_iterator<value_type> const_iterator;
     // typedef ft::reverse_iterator<iterator>  reverse_iterator;
     // typedef ft::reverse_iterator<const_iterator>  const_reverse_iterator;
+
+private:
+    node_pointer nil_;
+    node_pointer begin_;
+    node_pointer end_;
+
+    node_allocator_type node_alloc;
+    size_type           size_;
+    value_compare       comp_;
 };
 } // namespace ft
 
 #endif
-
-/*
-template <class _VoidPtr>
-class __tree_node_base_types
-{
-    typedef _VoidPtr                             __void_pointer;
-
-    typedef __tree_node_base<__void_pointer>     __node_base_type;
-    typedef __node_base_type*                    __node_base_pointer;
-
-    typedef __tree_end_node<__node_base_pointer> __end_node_type;
-    typedef __end_node_type*                     __end_node_pointer;
-
-    typedef __end_node_pointer                   __parent_pointer;
-};
-
-template <class _Pointer>
-class __tree_end_node
-{
-public:
-    typedef _Pointer pointer;
-    pointer          __left_;
-
-    __tree_end_node() : __left_() {}
-};
-
-template <class _VoidPtr>
-class __tree_node_base
-    : public __tree_node_base_types<_VoidPtr>::__end_node_type
-{
-    typedef __tree_node_base_types<_VoidPtr> _NodeBaseTypes;
-
-public:
-    typedef typename _NodeBaseTypes::__node_base_pointer pointer;
-    typedef typename _NodeBaseTypes::__parent_pointer    __parent_pointer;
-
-    pointer                                              __right_;
-    __parent_pointer                                     __parent_;
-    bool                                                 __is_black_;
-
-    pointer __parent_unsafe() const { return static_cast<pointer>(__parent_); }
-
-    void    __set_parent(pointer p)
-    {
-        __parent_ = static_cast<__parent_pointer>(p);
-    }
-
-private:
-    ~__tree_node_base() {}
-    __tree_node_base(const __tree_node_base&) {}
-    __tree_node_base& operator=(const __tree_node_base&) { return *this; }
-};
-
-template <class _Tp, class _VoidPtr>
-class __tree_node : public __tree_node_base<_VoidPtr>
-{
-public:
-    typedef _Tp       __node_value_type;
-
-    __node_value_type __value;
-
-private:
-    ~__tree_node() {}
-    __tree_node(const __tree_node&) {}
-    __tree_node& operator=(const __tree_node&) { return *this; }
-};
-*/

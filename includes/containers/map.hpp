@@ -67,7 +67,7 @@ public:
 
 private:
     typedef map_value_compare<key_type, value_type, key_compare> vc;
-    typedef __tree<value_type, vc, allocator_type>               base;
+    typedef rb_tree<value_type, vc, allocator_type>               base;
     base                                                         tree_;
 
 public:

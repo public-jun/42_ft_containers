@@ -2,6 +2,7 @@
 #define TREE_HPP
 
 #include <pair.hpp>
+#include <tree_utils.hpp>
 
 #include <cstddef>
 #include <iterator>
@@ -94,7 +95,38 @@ public:
 
     tree_iterator& operator++()
     {
-        // ptr_ = tree_next_;
+        ptr_ = tree_next(ptr_, nil_);
+        return *this;
+    }
+
+    tree_iterator operator++(int)
+    {
+        tree_iterator tmp(*this);
+        ++(*this);
+        return tmp;
+    }
+
+    tree_iterator& operator--()
+    {
+        ptr_ = tree_prev(ptr_, nil_);
+        return *this;
+    }
+
+    tree_iterator operator--(int)
+    {
+        tree_iterator tmp(*this);
+        --(*this);
+        return tmp;
+    }
+
+    friend bool operator==(const tree_iterator& lhs, const tree_iterator& rhs)
+    {
+        return lhs.ptr_ == rhs.ptr_;
+    }
+
+    friend bool operator!=(const tree_iterator& lhs, const tree_iterator& rhs)
+    {
+        return !(lhs == rhs);
     }
 };
 
@@ -129,8 +161,8 @@ public:
 public:
     rb_tree()
     {
-        size_ = 0;
-        comp_ = value_compare();
+        size_      = 0;
+        comp_      = value_compare();
         node_alloc = node_allocator_type();
         initialize_node();
     }
@@ -143,6 +175,9 @@ public:
         node_alloc(node_allocator_type(alloc));
         initialize_node();
     }
+
+    iterator begin() { return iterator(begin_, nil_); }
+    iterator end() { return iterator(end_, nil_); }
 
     // private:
     node_pointer nil_;
@@ -159,8 +194,12 @@ private:
     {
         nil_ = node_alloc.allocate(1);
         node_alloc.construct(nil_);
+        nil_->left = nil_;
+        nil_->right = nil_;
+
         end_ = node_alloc.allocate(1);
         node_alloc.construct(end_);
+        end_->left = nil_;
         begin_ = end_;
     }
 
@@ -196,7 +235,7 @@ public:
     {
         // destroy(root);
         destroy(node);
-        size_       = 0;
+        size_      = 0;
         begin_     = end_;
         end_->left = NULL;
     }

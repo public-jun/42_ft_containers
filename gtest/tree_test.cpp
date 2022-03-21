@@ -81,6 +81,40 @@ TEST_F(TreeIteratorTest, PreIncrement)
     EXPECT_EQ(0, tree.begin_->parent->value);
     EXPECT_EQ(1, tree.begin_->parent->right->value);
 
-    iterator it = iterator(tree.begin_, tree.nil_);
+    iterator it = tree.begin();
+    EXPECT_TRUE(tree.begin() == it);
     EXPECT_EQ(-1, *(it));
+    EXPECT_EQ(0, *(++it));
+    EXPECT_EQ(1, *(++it));
+    EXPECT_TRUE(tree.end() == ++it);
+}
+
+TEST_F(TreeIteratorTest, PostIncrement)
+{
+    iterator it = tree.begin();
+    EXPECT_TRUE(tree.begin() == it);
+    EXPECT_EQ(-1, *(it++));
+    EXPECT_EQ(0, *(it++));
+    EXPECT_EQ(1, *(it));
+    EXPECT_TRUE(tree.end() == ++it);
+}
+
+TEST_F(TreeIteratorTest, PreDecrement)
+{
+    iterator it = tree.end();
+    EXPECT_TRUE(tree.end() == it);
+    EXPECT_EQ(1, *(--it));
+    EXPECT_EQ(0, *(--it));
+    EXPECT_EQ(-1, *(--it));
+    EXPECT_TRUE(tree.begin() == it);
+}
+
+TEST_F(TreeIteratorTest, PostDecrement)
+{
+    iterator it = tree.end();
+    EXPECT_EQ(tree.end(), it--);
+    EXPECT_EQ(1, *(it--));
+    EXPECT_EQ(0, *(it--));
+    EXPECT_EQ(-1, *(it));
+    EXPECT_TRUE(tree.begin() == it);
 }

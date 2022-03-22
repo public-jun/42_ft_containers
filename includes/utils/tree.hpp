@@ -160,7 +160,8 @@ public:
         : ptr_(ptr), nil_(nil)
     {}
 
-    tree_const_iterator(const tree_iterator& other) : ptr_(other.base()), nil_(other.get_nil())
+    tree_const_iterator(const tree_iterator& other)
+        : ptr_(other.base()), nil_(other.get_nil())
     {}
 
     self_type operator=(const self_type other)
@@ -192,12 +193,27 @@ public:
         return tmp;
     }
 
-    friend bool operator==(const tree_const_iterator& lhs, const tree_const_iterator& rhs)
+    tree_const_iterator& operator--()
+    {
+        ptr_ = tree_prev(ptr_, nil_);
+        return *this;
+    }
+
+    tree_const_iterator operator--(int)
+    {
+        tree_const_iterator tmp(*this);
+        --(*this);
+        return tmp;
+    }
+
+    friend bool operator==(const tree_const_iterator& lhs,
+                           const tree_const_iterator& rhs)
     {
         return lhs.ptr_ == rhs.ptr_;
     }
 
-    friend bool operator!=(const tree_const_iterator& lhs, const tree_const_iterator& rhs)
+    friend bool operator!=(const tree_const_iterator& lhs,
+                           const tree_const_iterator& rhs)
     {
         return !(lhs == rhs);
     }
@@ -226,7 +242,7 @@ public:
     typedef typename node_allocator_type::size_type       size_type;
     typedef typename node_allocator_type::difference_type difference_type;
 
-    typedef tree_iterator<value_type> iterator;
+    typedef tree_iterator<value_type>       iterator;
     typedef tree_const_iterator<value_type> const_iterator;
     // typedef ft::reverse_iterator<iterator>  reverse_iterator;
     // typedef ft::reverse_iterator<const_iterator>  const_reverse_iterator;
@@ -249,8 +265,8 @@ public:
         initialize_node();
     }
 
-    iterator begin() { return iterator(begin_, nil_); }
-    iterator end() { return iterator(end_, nil_); }
+    iterator       begin() { return iterator(begin_, nil_); }
+    iterator       end() { return iterator(end_, nil_); }
     const_iterator begin() const { return const_iterator(begin_, nil_); }
     const_iterator end() const { return const_iterator(end_, nil_); }
 

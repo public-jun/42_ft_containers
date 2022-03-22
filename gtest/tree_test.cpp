@@ -165,3 +165,23 @@ TEST_F(TreeIteratorTest, ConstPostIncrement)
     EXPECT_EQ(1, *(it));
     EXPECT_TRUE(tree.end() == ++it);
 }
+
+TEST_F(TreeIteratorTest, ConstPreDecrement)
+{
+    const_iterator it = tree.end();
+    EXPECT_TRUE(tree.end() == it);
+    EXPECT_EQ(1, *(--it));
+    EXPECT_EQ(0, *(--it));
+    EXPECT_EQ(-1, *(--it));
+    EXPECT_TRUE(tree.begin() == it);
+}
+
+TEST_F(TreeIteratorTest, ConstPostDecrement)
+{
+    const_iterator it = tree.end();
+    EXPECT_EQ(tree.end(), it--);
+    EXPECT_EQ(1, *(it--));
+    EXPECT_EQ(0, *(it--));
+    EXPECT_EQ(-1, *(it));
+    EXPECT_TRUE(tree.begin() == it);
+}

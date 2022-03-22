@@ -118,3 +118,13 @@ TEST_F(TreeIteratorTest, PostDecrement)
     EXPECT_EQ(-1, *(it));
     EXPECT_TRUE(tree.begin() == it);
 }
+
+TEST_F(TreeIteratorTest, AssignValue)
+{
+    iterator it = tree.begin();
+    EXPECT_EQ(-1, *it);
+    *it = 42;
+    EXPECT_EQ(42, *it);
+    EXPECT_EQ(0, *(++it));
+    EXPECT_EQ(1, *(++it));
+}

@@ -43,9 +43,10 @@ class TreeIteratorTest : public ::testing::Test
 {
 protected:
     typedef typename ft::rb_tree<int, std::less<int>, std::allocator<int> >
-                                        base;
-    typedef typename base::node_pointer node_pointer;
-    typedef typename base::iterator     iterator;
+                                          base;
+    typedef typename base::node_pointer   node_pointer;
+    typedef typename base::iterator       iterator;
+    typedef typename base::const_iterator const_iterator;
 
     virtual void SetUp()
     {
@@ -127,4 +128,40 @@ TEST_F(TreeIteratorTest, AssignValue)
     EXPECT_EQ(42, *it);
     EXPECT_EQ(0, *(++it));
     EXPECT_EQ(1, *(++it));
+}
+
+TEST_F(TreeIteratorTest, ConstAssignValue)
+{
+    const_iterator cit = tree.begin();
+    EXPECT_EQ(-1, *cit);
+    // Error
+    // *cit = -2
+}
+
+TEST_F(TreeIteratorTest, ConstPreIncrement)
+{
+    EXPECT_EQ(-1, tree.begin_->value);
+    EXPECT_EQ(0, tree.begin_->parent->value);
+    EXPECT_EQ(1, tree.begin_->parent->right->value);
+
+    const_iterator it = tree.begin();
+    EXPECT_TRUE(tree.begin() == it);
+    EXPECT_EQ(-1, *(it));
+    EXPECT_EQ(0, *(++it));
+    EXPECT_EQ(1, *(++it));
+    EXPECT_TRUE(tree.end() == ++it);
+
+    EXPECT_EQ(typeid(it),
+              typeid(ft::rb_tree<int, std::less<int>,
+                                 std::allocator<int> >::const_iterator));
+}
+
+TEST_F(TreeIteratorTest, ConstPostIncrement)
+{
+    const_iterator it = tree.begin();
+    EXPECT_TRUE(tree.begin() == it);
+    EXPECT_EQ(-1, *(it++));
+    EXPECT_EQ(0, *(it++));
+    EXPECT_EQ(1, *(it));
+    EXPECT_TRUE(tree.end() == ++it);
 }

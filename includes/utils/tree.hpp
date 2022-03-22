@@ -66,15 +66,16 @@ private:
 
 public:
     node_pointer base() const { return ptr_; }
+    node_pointer get_nil() const { return nil_; }
 
-    tree_iterator() : ptr_(NULL) {}
+    tree_iterator() : ptr_(NULL), nil_(NULL) {}
 
     explicit tree_iterator(node_pointer x, node_pointer nil)
         : ptr_(x), nil_(nil)
     {}
 
     tree_iterator(const tree_iterator& other)
-        : ptr_(other.ptr_), nil_(other.nil_)
+        : ptr_(other.base()), nil_(other.get_nil())
     {}
 
     tree_iterator& operator=(const tree_iterator& other)
@@ -82,7 +83,7 @@ public:
         if (this != &other)
         {
             ptr_ = other.base();
-            nil_ = other.nil_;
+            nil_ = other.get_nil();
         }
         return *this;
     }
@@ -130,6 +131,78 @@ public:
     }
 };
 
+template <class _Tp>
+class tree_const_iterator
+{
+public:
+    typedef _Tp                             value_type;
+    typedef const _Tp&                      reference;
+    typedef const _Tp*                      pointer;
+    typedef std::bidirectional_iterator_tag iterator_category;
+    typedef ptrdiff_t                       difference_type;
+
+    typedef tree_iterator<_Tp> tree_iterator;
+
+private:
+    typedef tree_const_iterator<_Tp> self_type;
+    typedef tree_node<_Tp>*          node_pointer;
+
+    node_pointer ptr_;
+    node_pointer nil_;
+
+public:
+    node_pointer base() const { return ptr_; }
+    node_pointer get_nil() const { return nil_; }
+
+    tree_const_iterator() : ptr_(NULL), nil_(NULL) {}
+
+    explicit tree_const_iterator(node_pointer ptr, node_pointer nil)
+        : ptr_(ptr), nil_(nil)
+    {}
+
+    tree_const_iterator(const tree_iterator& other) : ptr_(other.base()), nil_(other.get_nil())
+    {}
+
+    self_type operator=(const self_type other)
+    {
+        if (this != &other)
+        {
+            ptr_ = other.base();
+            nil_ = other.nil_;
+        }
+        return *this;
+    }
+
+    ~tree_const_iterator() {}
+
+    reference operator*() const { return ptr_->value; }
+
+    pointer operator->() const { return &ptr_->value; }
+
+    tree_const_iterator& operator++()
+    {
+        ptr_ = tree_next(ptr_, nil_);
+        return *this;
+    }
+
+    tree_const_iterator operator++(int)
+    {
+        tree_const_iterator tmp(*this);
+        ++(*this);
+        return tmp;
+    }
+
+    friend bool operator==(const tree_const_iterator& lhs, const tree_const_iterator& rhs)
+    {
+        return lhs.ptr_ == rhs.ptr_;
+    }
+
+    friend bool operator!=(const tree_const_iterator& lhs, const tree_const_iterator& rhs)
+    {
+        return !(lhs == rhs);
+    }
+};
+
 template <class _Tp, class _Compare, class _Allocator>
 class rb_tree
 {
@@ -154,7 +227,7 @@ public:
     typedef typename node_allocator_type::difference_type difference_type;
 
     typedef tree_iterator<value_type> iterator;
-    // typedef tree_const_iterator<value_type> const_iterator;
+    typedef tree_const_iterator<value_type> const_iterator;
     // typedef ft::reverse_iterator<iterator>  reverse_iterator;
     // typedef ft::reverse_iterator<const_iterator>  const_reverse_iterator;
 
@@ -178,6 +251,8 @@ public:
 
     iterator begin() { return iterator(begin_, nil_); }
     iterator end() { return iterator(end_, nil_); }
+    const_iterator begin() const { return const_iterator(begin_, nil_); }
+    const_iterator end() const { return const_iterator(end_, nil_); }
 
     // private:
     node_pointer nil_;
@@ -194,13 +269,13 @@ private:
     {
         nil_ = node_alloc.allocate(1);
         node_alloc.construct(nil_);
-        nil_->left = nil_;
+        nil_->left  = nil_;
         nil_->right = nil_;
 
         end_ = node_alloc.allocate(1);
         node_alloc.construct(end_);
         end_->left = nil_;
-        begin_ = end_;
+        begin_     = end_;
     }
 
 public:

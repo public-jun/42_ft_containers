@@ -45,6 +45,8 @@ public:
     tree_node(node_value_type v)
         : parent(NULL), left(NULL), right(NULL), color(kRed), value(v)
     {}
+
+    void set_parent(node_pointer p) { parent = p; }
 };
 
 template <class _Tp>
@@ -242,10 +244,10 @@ public:
     typedef typename node_allocator_type::size_type       size_type;
     typedef typename node_allocator_type::difference_type difference_type;
 
-    typedef tree_iterator<value_type>       iterator;
-    typedef tree_const_iterator<value_type> const_iterator;
-    // typedef ft::reverse_iterator<iterator>  reverse_iterator;
-    // typedef ft::reverse_iterator<const_iterator>  const_reverse_iterator;
+    typedef tree_iterator<value_type>            iterator;
+    typedef tree_const_iterator<value_type>      const_iterator;
+    typedef ft::reverse_iterator<iterator>       reverse_iterator;
+    typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
 public:
     rb_tree()
@@ -265,10 +267,59 @@ public:
         initialize_node();
     }
 
+    ~rb_tree()
+    {
+        clear();
+        delete_node(nil_);
+        delete_node(end_);
+    }
+
+    size_type     size() { return size_; }
+    value_compare value_comp() { return comp_; }
+
+public:
+    node_pointer  root() const { return end_->left; }
+    node_pointer* root_ptr() const { return &(end_->left); }
+
     iterator       begin() { return iterator(begin_, nil_); }
     iterator       end() { return iterator(end_, nil_); }
     const_iterator begin() const { return const_iterator(begin_, nil_); }
     const_iterator end() const { return const_iterator(end_, nil_); }
+
+    size_type max_size() const
+    {
+        return std::min<size_type>(node_alloc.max_size(),
+                                   std::numeric_limits<difference_type>::max());
+    }
+
+    pair<iterator, bool> insert(const value_type& v)
+    {
+        node_pointer  parent;
+        node_pointer& child = __find_equal(parent, v);
+
+        bool is_inserted = false;
+        if (child == nil_)
+        {
+            child         = create_node(v);
+            child->parent = parent;
+            // __new_node->color is initialized in
+            // __tree_balance_after_insert
+            if (begin_->left != nil_)
+                begin_ = begin_->left;
+            tree_balance_after_insert(root(), child, nil_);
+            ++size_;
+            is_inserted = true;
+        }
+        return pair<iterator, bool>(iterator(child, is_inserted));
+    }
+
+    void clear()
+    {
+        destroy(root());
+        size_      = 0;
+        begin_     = end_;
+        end_->left = NULL;
+    }
 
     // private:
     node_pointer nil_;
@@ -321,14 +372,49 @@ public:
         node_alloc.deallocate(node, 1);
     }
 
-    // void clear()
-    void clear(node_pointer node)
+    inline node_pointer& __find_equal(node_pointer& parent, const value_type& v)
     {
-        // destroy(root);
-        destroy(node);
-        size_      = 0;
-        begin_     = end_;
-        end_->left = NULL;
+        node_pointer  node     = root();
+        node_pointer* node_ptr = root_ptr();
+        if (node != nil_)
+        {
+            while (true)
+            {
+                if (comp_(v, node->value))
+                {
+                    if (node->left != nil_)
+                    {
+                        node_ptr = &(node->left);
+                        node     = node->left;
+                    }
+                    else
+                    {
+                        parent = node;
+                        return parent->left;
+                    }
+                }
+                else if (comp_(node->value, v))
+                {
+                    if (node->right != nil_)
+                    {
+                        node_ptr = node->right;
+                        node     = node->right;
+                    }
+                    else
+                    {
+                        parent = node;
+                        return node->right;
+                    }
+                }
+                else
+                {
+                    parent = node;
+                    return *node_ptr;
+                }
+            }
+        }
+        parent = end_;
+        return parent->left;
     }
 };
 } // namespace ft

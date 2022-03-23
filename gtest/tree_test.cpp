@@ -65,9 +65,9 @@ protected:
 
     virtual void TearDown()
     {
-        tree.clear(root);
-        tree.delete_node(tree.nil_);
-        tree.delete_node(tree.end_);
+        // tree.clear();
+        // tree.delete_node(tree.nil_);
+        // tree.delete_node(tree.end_);
     }
 
     base         tree;

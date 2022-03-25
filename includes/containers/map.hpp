@@ -67,7 +67,7 @@ public:
 
 private:
     typedef map_value_compare<key_type, value_type, key_compare> vc;
-    typedef rb_tree<value_type, vc, allocator_type>               base;
+    typedef rb_tree<value_type, vc, allocator_type>              base;
     base                                                         tree_;
 
 public:
@@ -79,14 +79,13 @@ public:
     typedef typename allocator_type::difference_type difference_type;
     typedef typename base::iterator                  iterator;
     typedef typename base::const_iterator            const_iterator;
-    typedef typename ft::reverse_iterator<iterator>  reverse_iterator;
-    typedef typename ft::const_reverse_iterator<const_iterator>
-        const_reverse_iterator;
+    typedef typename base::reverse_iterator          reverse_iterator;
+    typedef typename base::const_reverse_iterator    const_reverse_iterator;
 
     map() : tree_(vc(key_compare())) {}
 
-    explicit map(const Compare& comp, const Allocator& alloc = Allocator())
-        : tree_(vc(comp), alloc){}
+    explicit map(const _Compare& comp, const _Allocator& alloc = _Allocator())
+        : tree_(vc(comp), alloc)
     {}
 
     template <class _InputIterator>
@@ -127,7 +126,7 @@ public:
     // Modifiers
     ft::pair<iterator, bool> insert(const value_type& v)
     {
-        return tree_.__insert_unique(v);
+        return tree_.insert(v);
     }
 
     iterator lower_bound(const key_type& key) { return tree_.lower_bound(key); }

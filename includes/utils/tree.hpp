@@ -2,6 +2,7 @@
 #define TREE_HPP
 
 #include <pair.hpp>
+#include <reverse_iterator.hpp>
 #include <tree_utils.hpp>
 
 #include <cstddef>
@@ -10,7 +11,7 @@
 namespace ft {
 
 // node
-enum r_b_color { kRed = false, kBlack = true };
+// enum r_b_color { kRed = false, kBlack = true };
 
 template <class _Tp>
 struct tree_key_value_types {
@@ -261,9 +262,9 @@ public:
     rb_tree(const value_compare&  comp,
             const allocator_type& alloc = allocator_type())
     {
-        size_ = 0;
-        comp_ = comp;
-        node_alloc(node_allocator_type(alloc));
+        size_      = 0;
+        comp_      = comp;
+        node_alloc = node_allocator_type(alloc);
         initialize_node();
     }
 
@@ -296,21 +297,22 @@ public:
     {
         node_pointer  parent;
         node_pointer& child = __find_equal(parent, v);
+        node_pointer  res_c = child;
 
         bool is_inserted = false;
         if (child == nil_)
         {
-            child         = create_node(v);
-            child->parent = parent;
-            // __new_node->color is initialized in
-            // __tree_balance_after_insert
+            node_pointer tmp = create_node(v);
+            tmp->parent      = parent;
+            child            = tmp;
             if (begin_->left != nil_)
                 begin_ = begin_->left;
             tree_balance_after_insert(root(), child, nil_);
             ++size_;
+            res_c       = tmp;
             is_inserted = true;
         }
-        return pair<iterator, bool>(iterator(child, is_inserted));
+        return pair<iterator, bool>(iterator(res_c, nil_), is_inserted);
     }
 
     void clear()
@@ -397,7 +399,7 @@ public:
                 {
                     if (node->right != nil_)
                     {
-                        node_ptr = node->right;
+                        node_ptr = &(node->right);
                         node     = node->right;
                     }
                     else

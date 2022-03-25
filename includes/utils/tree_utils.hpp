@@ -2,6 +2,9 @@
 #define TREE_UTILS_HPP
 
 namespace ft {
+
+enum r_b_color { kRed = false, kBlack = true };
+
 template <class node_pointer>
 inline bool tree_is_left_child(node_pointer node) throw()
 {
@@ -91,35 +94,61 @@ inline void tree_right_rotate(node_pointer x, node_pointer nil)
 {
     /*
         x が left_child の時
-                ○100                     ○100
-                /                           /
-            ○10(x)                     ○20(y)
-            /   \         ->            /   \
-        ○5      ○20(y)             ○10(x)  ○25
-                /   \                /    \
-            ○15     ○25         ○5    ○15
-
+                   ○100                  ○100
+                  /                        /
+             ○20(x)                   ○10(y)
+             /   \         ->          /   \
+         ○10(y)  ○25            ○15    ○20(x)
+         /   \                            /    \
+      ○5     ○15                      ○15    ○25
 
         x が right_child の時
-        ○0                          ○0
-           \                            \
-            ○10(x)                     ○20(y)
-            /   \           ->           /   \
-        ○5      ○20(y)              ○10(x)  ○25
-                /   \                /    \
-            ○15     ○25          ○5    ○15
+            ○0                    ○0
+              \                      \
+             ○20(x)                  ○10(y)
+             /   \         ->          /   \
+         ○10(y)  ○25            ○15    ○20(x)
+         /   \                            /    \
+      ○5     ○15                      ○15    ○25
     */
     node_pointer y = x->left;
     x->left        = y->right;
     if (x->left != nil)
         x->left->set_parent(x);
     y->parent = x->parent;
-    if  (tree_is_left_child(x))
+    if (tree_is_left_child(x))
         x->parent->left = y;
     else
         x->parent->right = y;
     y->right = x;
     x->set_parent(y);
+}
+// print_tree
+template <class node_pointer>
+void print_tree(node_pointer __nd, node_pointer nil, size_t __level)
+{
+    if (__nd == nil)
+    {
+        return;
+    }
+    print_tree(__nd->right, nil,__level + 1);
+    for (size_t i = 0; i < __level; i++)
+    {
+        std::cout << "  ";
+    }
+    if (__nd->color == kRed)
+    {
+        std::cout << RED;
+    }
+    std::cout << __nd->value.first << " " << END << std::endl;
+    print_tree(__nd->left, nil, __level + 1);
+}
+
+template <class __node_pointer>
+void print_tree_node(__node_pointer __nd, __node_pointer nil)
+{
+    std::cout << "==========================" << std::endl;
+    print_tree(__nd, nil, 0);
 }
 
 /*
@@ -133,6 +162,7 @@ template <class node_pointer>
 inline void tree_balance_after_insert(node_pointer root, node_pointer x,
                                       node_pointer nil) throw()
 {
+    node_pointer tmp = x;
     if (x == root)
         x->color = kBlack;
     else
@@ -143,7 +173,7 @@ inline void tree_balance_after_insert(node_pointer root, node_pointer x,
     // x はルートではない && 親は赤色でループ
     while (x != root && x->parent->color == kRed)
     {
-        // 親が left_child -> 自身は左挿入
+        // 親が left_child
         if (tree_is_left_child(x->parent))
         {
             // 叔父ノードを取得
@@ -257,7 +287,36 @@ inline void tree_balance_after_insert(node_pointer root, node_pointer x,
                         /   \
                       ○     ○
                 */
-                tree_right_rotate(x);
+                tree_right_rotate(x, nil);
+                break;
+            }
+        }
+        else
+        {
+            node_pointer y = x->parent->parent->left;
+            if (y != nil && y->color == kRed)
+            {
+                x        = x->parent;
+                x->color = kBlack;
+                x        = x->parent;
+                if (x == root)
+                    x->color = kBlack;
+                else
+                    x->color = kRed;
+                y->color = kBlack;
+            }
+            else
+            {
+                if (tree_is_left_child(x))
+                {
+                    x = x->parent;
+                    tree_right_rotate(x, nil);
+                }
+                x        = x->parent;
+                x->color = kBlack;
+                x        = x->parent;
+                x->color = kRed;
+                tree_left_rotate(x, nil);
                 break;
             }
         }

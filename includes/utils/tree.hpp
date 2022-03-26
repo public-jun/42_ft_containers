@@ -268,6 +268,14 @@ public:
         initialize_node();
     }
 
+    rb_tree(const rb_tree& other)
+    {
+        size_ = other.size_;
+        comp_ = other.comp_;
+        node_alloc = other.node_alloc;
+        initialize_node();
+    }
+
     ~rb_tree()
     {
         clear();

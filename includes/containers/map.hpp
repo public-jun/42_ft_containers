@@ -129,6 +129,13 @@ public:
         return tree_.insert(v);
     }
 
+    template <class InputIt>
+    void insert(InputIt first, InputIt last)
+    {
+        for (; first != last; ++first)
+            insert(*first);
+    }
+
     // Lookup
     iterator lower_bound(const key_type& key) { return tree_.lower_bound(key); }
 

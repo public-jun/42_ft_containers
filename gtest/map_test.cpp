@@ -3,8 +3,45 @@
 #include <gtest/gtest.h>
 #include <map>
 #include <time.h>
-
 #define SIZE 1000
+
+TEST(Map, Constructor)
+{
+    // map()
+    // ft::map<int, int> m;
+
+    // explicit map(const Compare& comp, const Allocator& alloc = Allocator()
+    // );
+
+    //  map( InputIt first, InputIt last, const Compare& comp = Compare(), const
+    //  Allocator& alloc = Allocator() )
+    {
+        ft::map<int, int> m;
+        for (int i = 0; i < 10; ++i)
+            m.insert(ft::make_pair(i, i));
+        ft::map<int, int>           m1(m.begin(), m.end());
+        ft::map<int, int>::iterator m1it = m1.begin();
+        for (ft::map<int, int>::iterator mit = m.begin(); mit != m.end(); ++mit)
+        {
+            EXPECT_EQ(*m1it, *mit);
+            ++m1it;
+        }
+    }
+    {
+        ft::map<int, int> m;
+        for (int i = 0; i < 10; ++i)
+            m.insert(ft::make_pair(i, i));
+        const ft::map<int, int>           m1(m.begin(), m.end());
+        ft::map<int, int>::const_iterator m1it = m1.begin();
+        for (ft::map<int, int>::iterator mit = m.begin(); mit != m.end(); ++mit)
+        {
+            EXPECT_EQ(*m1it, *mit);
+            ++m1it;
+        }
+    }
+    // map( const map& other );
+}
+
 TEST(Map, ModifiersInsert)
 {
     // std::pair<iterator,bool> insert( const value_type& value );
@@ -48,12 +85,12 @@ TEST(Map, LookupLowerBound)
     EXPECT_TRUE(m.end() == it);
 
     // Const
-    // const ft::map<int, int>           cm(m);
-    // ft::map<int, int>::const_iterator cit;
-    // cit = cm.lower_bound(0);
-    // EXPECT_EQ(0, (*cit).first);
-    // cit = m.lower_bound(23);
-    // EXPECT_EQ(30, (*cit).first);
-    // cit = cm.lower_bound(53);
-    // EXPECT_TRUE(cm.end() == cit);
+    ft::map<int, int>           cm = m;
+    ft::map<int, int>::const_iterator cit;
+    cit = cm.lower_bound(0);
+    EXPECT_EQ(0, (*cit).first);
+    cit = m.lower_bound(23);
+    EXPECT_EQ(30, (*cit).first);
+    cit = cm.lower_bound(53);
+    EXPECT_TRUE(cm.end() == cit);
 }

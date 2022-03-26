@@ -315,6 +315,43 @@ public:
         return pair<iterator, bool>(iterator(res_c, nil_), is_inserted);
     }
 
+    // Lookup
+    iterator lower_bound(const key_type& key)
+    {
+        node_pointer root_node = root();
+        node_pointer result    = end_;
+        while (root_node != nil_)
+        {
+            // root->value >= key
+            if (!comp_(root_node->value, key))
+            {
+                result    = root_node;
+                root_node = root_node->left;
+            }
+            else
+                root_node = root_node->right;
+        }
+        return iterator(result, nil_);
+    }
+
+    iterator lower_bound(const key_type& key) const
+    {
+        node_pointer root_node = root();
+        node_pointer result    = end_;
+        while (root_node != nil_)
+        {
+            // root->value >= key
+            if (!comp_(root_node->value, key))
+            {
+                result    = root_node;
+                root_node = root_node->left;
+            }
+            else
+                root_node = root_node->right;
+        }
+        return iterator(result, nil_);
+    }
+
     void clear()
     {
         destroy(root());

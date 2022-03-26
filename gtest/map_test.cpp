@@ -4,9 +4,10 @@
 #include <map>
 #include <time.h>
 
-#define SIZE 20
-TEST(Map, Construct)
+#define SIZE 1000
+TEST(Map, ModifiersInsert)
 {
+    // std::pair<iterator,bool> insert( const value_type& value );
     std::vector<int> v;
     std::srand(time(NULL));
     ft::map<int, int> m;
@@ -30,4 +31,29 @@ TEST(Map, Construct)
         EXPECT_EQ((*it).second, v.at(i++));
         ++it;
     }
+}
+
+TEST(Map, LookupLowerBound)
+{
+    // Non const
+    ft::map<int, int> m;
+    for (int i = 0; i < 50; i += 10)
+        m.insert(ft::make_pair(i, i));
+    ft::map<int, int>::iterator it;
+    it = m.lower_bound(0);
+    EXPECT_EQ(0, (*it).first);
+    it = m.lower_bound(23);
+    EXPECT_EQ(30, (*it).first);
+    it = m.lower_bound(53);
+    EXPECT_TRUE(m.end() == it);
+
+    // Const
+    // const ft::map<int, int>           cm(m);
+    // ft::map<int, int>::const_iterator cit;
+    // cit = cm.lower_bound(0);
+    // EXPECT_EQ(0, (*cit).first);
+    // cit = m.lower_bound(23);
+    // EXPECT_EQ(30, (*cit).first);
+    // cit = cm.lower_bound(53);
+    // EXPECT_TRUE(cm.end() == cit);
 }

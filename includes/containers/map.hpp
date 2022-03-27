@@ -33,7 +33,7 @@ public:
 };
 
 template <class _Key, class _Tp, class _Compare = std::less<_Key>,
-          class _Allocator = std::allocator<std::pair<const _Key, _Tp> > >
+          class _Allocator = std::allocator<ft::pair<const _Key, _Tp> > >
 class map
 {
 public:
@@ -115,6 +115,11 @@ public:
     }
 
     ~map() {}
+
+    allocator_type get_allocator() const throw()
+    {
+        return allocator_type(tree_.alloc());
+    }
 
     // Element access
     // Returns a reference to the value that is mapped to a key equivalent to

@@ -283,6 +283,11 @@ public:
         delete_node(end_);
     }
 
+    allocator_type alloc() const
+    {
+        return allocator_type(node_allocator());
+    }
+
     size_type                  size() { return size_; }
     value_compare&             value_comp() { return comp_; }
     const value_compare&       value_comp() const { return comp_; }

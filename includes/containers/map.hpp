@@ -104,7 +104,13 @@ public:
 
     map& operator=(const map& other)
     {
-        tree_ = other.tree_;
+        if (this != &other)
+        {
+            clear();
+            tree_.value_comp()     = other.tree_.value_comp();
+            tree_.node_allocator() = other.tree_.node_allocator();
+            insert(other.begin(), other.end());
+        }
         return *this;
     }
 

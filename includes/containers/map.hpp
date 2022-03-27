@@ -97,10 +97,7 @@ public:
         insert(first, last);
     }
 
-    map(const map& other) : tree_(other.tree_)
-    {
-        insert(other.begin(), other.end());
-    }
+    map(const map& other) : tree_(other.tree_) {}
 
     map& operator=(const map& other)
     {
@@ -139,8 +136,8 @@ public:
     const_reverse_iterator rend() const { return tree_.rend(); }
 
     bool      empty() { return tree_.size() == 0; }
-    size_type size() { return tree_.size(); }
-    size_type max_size() { return tree_.max_size(); }
+    size_type size() const { return tree_.size(); }
+    size_type max_size() const { return tree_.max_size(); }
 
     // Modifiers
     void clear() { tree_.clear(); }
@@ -153,8 +150,7 @@ public:
     template <class InputIt>
     void insert(InputIt first, InputIt last)
     {
-        for (; first != last; ++first)
-            insert(*first);
+        tree_.insert(first, last);
     }
 
     // Lookup

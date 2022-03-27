@@ -270,10 +270,11 @@ public:
 
     rb_tree(const rb_tree& other)
     {
-        size_      = other.size_;
+        size_      = 0;
         comp_      = other.comp_;
         node_alloc = other.node_alloc;
         initialize_node();
+        insert(other.begin(), other.end());
     }
 
     ~rb_tree()
@@ -285,7 +286,7 @@ public:
 
     allocator_type alloc() const { return allocator_type(node_allocator()); }
 
-    size_type                  size() { return size_; }
+    size_type                  size() const { return size_; }
     value_compare&             value_comp() { return comp_; }
     const value_compare&       value_comp() const { return comp_; }
     node_allocator_type&       node_allocator() { return node_alloc; }
@@ -339,6 +340,13 @@ public:
             is_inserted = true;
         }
         return pair<iterator, bool>(iterator(res_c, nil_), is_inserted);
+    }
+
+    template <class InputIt>
+    void insert(InputIt first, InputIt last)
+    {
+        for (; first != last; ++first)
+            insert(*first);
     }
 
     // Lookup

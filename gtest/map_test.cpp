@@ -26,6 +26,7 @@ TEST(Map, Constructor)
             EXPECT_EQ(*m1it, *mit);
             ++m1it;
         }
+        EXPECT_EQ(m.size(), m1.size());
         EXPECT_EQ(m.get_allocator(), m1.get_allocator());
     }
     {
@@ -39,6 +40,8 @@ TEST(Map, Constructor)
             EXPECT_EQ(*m1it, *mit);
             ++m1it;
         }
+        EXPECT_EQ(m.size(), m1.size());
+        EXPECT_EQ(m.get_allocator(), m1.get_allocator());
     }
     // map( const map& other );
 
@@ -51,6 +54,7 @@ TEST(Map, Constructor)
         m1 = m;
         for (int i = 0; i < 10; ++i)
             EXPECT_EQ(m[i], m1[i]);
+        EXPECT_EQ(m.size(), m1.size());
         ft::map<int, int> m2;
         for (int i = 10; i < 20; ++i)
             m2.insert(ft::make_pair(i, i));
@@ -155,6 +159,44 @@ TEST(Map, ReverseIterator)
     {
         EXPECT_EQ(j, crit->first);
         EXPECT_EQ(j, crit->second);
+    }
+}
+
+TEST(Map, CapacitySizeAndEmpty)
+{
+    ft::map<int, int> m;
+    EXPECT_TRUE(m.empty());
+    for (int i = 0; i < 10; ++i)
+    {
+        m.insert(ft::make_pair(i, i));
+        EXPECT_EQ(i + 1, m.size());
+    }
+    EXPECT_FALSE(m.empty());
+    const ft::map<int, int> cm(m);
+    EXPECT_EQ(m.size(), cm.size());
+}
+
+TEST(Map, CapacityMaxSize)
+{
+    {
+        ft::map<int, int>  ft_m;
+        std::map<int, int> stl_m;
+        EXPECT_EQ(stl_m.max_size(), ft_m.max_size());
+    }
+    {
+        ft::map<std::string, int>  ft_m;
+        std::map<std::string, int> stl_m;
+        EXPECT_EQ(stl_m.max_size(), ft_m.max_size());
+    }
+    {
+        ft::map<std::string, char>  ft_m;
+        std::map<std::string, char> stl_m;
+        EXPECT_EQ(stl_m.max_size(), ft_m.max_size());
+    }
+    {
+        ft::map<double, float>  ft_m;
+        std::map<double, float> stl_m;
+        EXPECT_EQ(stl_m.max_size(), ft_m.max_size());
     }
 }
 

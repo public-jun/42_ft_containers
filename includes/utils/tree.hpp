@@ -350,6 +350,14 @@ public:
     }
 
     // Lookup
+    size_type count(const key_type& key) const
+    {
+        const_iterator p = find(key);
+        if (p != end())
+            return 1;
+        return 0;
+    }
+
     iterator find(const key_type& key)
     {
         iterator p = lower_bound(key);

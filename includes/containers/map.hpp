@@ -154,6 +154,10 @@ public:
     }
 
     // Lookup
+    iterator find(const key_type& key) { return tree_.find(key); }
+
+    const_iterator find(const key_type& key) const { return tree_.find(key); }
+
     iterator lower_bound(const key_type& key) { return tree_.lower_bound(key); }
 
     const_iterator lower_bound(const key_type& key) const

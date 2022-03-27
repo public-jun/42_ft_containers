@@ -350,6 +350,22 @@ public:
     }
 
     // Lookup
+    iterator find(const key_type& key)
+    {
+        iterator p = lower_bound(key);
+        if (p != end() && !comp_(key, *p))
+            return p;
+        return end();
+    }
+
+    const_iterator find(const key_type& key) const
+    {
+        const_iterator p = lower_bound(key);
+        if (p != end() && !comp_(key, *p))
+            return p;
+        return end();
+    }
+
     iterator lower_bound(const key_type& key)
     {
         node_pointer root_node = root();

@@ -237,6 +237,23 @@ TEST(Map, ModifiersClear)
     m.clear();
 }
 
+TEST(Map, Lookupfind)
+{
+    ft::map<int, int> m;
+    for (int i = 1; i < 20; i *= 2)
+        m.insert(ft::make_pair(i, i));
+    ft::map<int, int>::iterator it = m.find(2);
+    EXPECT_EQ(2, (*it).first);
+    it = m.find(3);
+    EXPECT_EQ(m.end(), it);
+
+    const ft::map<int, int> cm(m);
+    ft::map<int, int>::const_iterator cit = cm.find(2);
+    EXPECT_EQ(2, (*cit).first);
+    cit = cm.find(3);
+    EXPECT_EQ(cm.end(), cit);
+}
+
 TEST(Map, LookupLowerBound)
 {
     // Non const

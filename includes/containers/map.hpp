@@ -133,6 +133,8 @@ public:
     size_type max_size() { return tree_.max_size(); }
 
     // Modifiers
+    void clear() { tree_.clear(); }
+
     ft::pair<iterator, bool> insert(const value_type& v)
     {
         return tree_.insert(v);

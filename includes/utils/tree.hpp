@@ -365,7 +365,7 @@ public:
         destroy(root());
         size_      = 0;
         begin_     = end_;
-        end_->left = NULL;
+        end_->left = nil_;
     }
 
     // private:

@@ -86,6 +86,15 @@ TEST(Map, ModifiersInsert)
     }
 }
 
+TEST(Map, ModifiersClear)
+{
+    ft::map<int, int> m;
+    for (int i = 0; i < 10; ++i)
+        m.insert(ft::make_pair(i, i));
+    m.clear();
+    m.clear();
+}
+
 TEST(Map, LookupLowerBound)
 {
     // Non const

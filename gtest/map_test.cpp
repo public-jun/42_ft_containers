@@ -78,6 +78,86 @@ TEST(Map, ElementAccess)
     EXPECT_EQ('z', m[0]);
 }
 
+TEST(Map, Iterator)
+{
+    ft::map<int, int> m;
+    for (int i = 0; i < 10; ++i)
+        m.insert(ft::make_pair(i, i));
+
+    // Non const map && Non const iterator
+    ft::map<int, int>::iterator it = m.begin();
+    EXPECT_EQ(0, it->first);
+    EXPECT_EQ(0, it->second);
+    ++it;
+    EXPECT_EQ(1, it->first);
+    EXPECT_EQ(1, it->second);
+    it = m.end();
+    --it;
+    EXPECT_EQ(9, it->first);
+    EXPECT_EQ(9, it->second);
+
+    // Non const map && const iterator
+    ft::map<int, int>::const_iterator cit = m.begin();
+    EXPECT_EQ(0, cit->first);
+    EXPECT_EQ(0, cit->second);
+    ++cit;
+    EXPECT_EQ(1, cit->first);
+    EXPECT_EQ(1, cit->second);
+    cit = m.end();
+    --cit;
+    EXPECT_EQ(9, cit->first);
+    EXPECT_EQ(9, cit->second);
+
+    // const map && const iterator
+    const ft::map<int, int>           cm1(m);
+    ft::map<int, int>::const_iterator cit2 = cm1.begin();
+    EXPECT_EQ(0, cit2->first);
+    EXPECT_EQ(0, cit2->second);
+    const ft::map<int, int> cm2(cm1);
+    cit2 = cm2.begin();
+    EXPECT_EQ(0, cit2->first);
+    EXPECT_EQ(0, cit2->second);
+    ft::map<int, int>::const_iterator cit3;
+    cit3 = cit2;
+    EXPECT_EQ(0, cit3->first);
+    EXPECT_EQ(0, cit3->second);
+    cit3++;
+    EXPECT_EQ(1, cit3->first);
+    EXPECT_EQ(1, cit3->second);
+    cit3 = cm1.end();
+    --cit3;
+    EXPECT_EQ(9, cit3->first);
+    EXPECT_EQ(9, cit3->second);
+}
+
+TEST(Map, ReverseIterator)
+{
+    // reverse_iterator
+    ft::map<int, int> m;
+    for (int i = 0; i < 10; ++i)
+        m.insert(ft::make_pair(i, i));
+    ft::map<int, int>::reverse_iterator rit = m.rbegin();
+
+    int j = 9;
+    for (ft::map<int, int>::reverse_iterator end = m.rend(); rit != end;
+         ++rit, --j)
+    {
+        EXPECT_EQ(j, rit->first);
+        EXPECT_EQ(j, rit->second);
+    }
+
+    // const_reverse_iterator
+    const ft::map<int, int>                   cm(m);
+    ft::map<int, int>::const_reverse_iterator crit = cm.rbegin();
+    j                                              = 9;
+    for (ft::map<int, int>::const_reverse_iterator end = cm.rend(); crit != end;
+         ++crit, --j)
+    {
+        EXPECT_EQ(j, crit->first);
+        EXPECT_EQ(j, crit->second);
+    }
+}
+
 TEST(Map, ModifiersInsert)
 {
     // std::pair<iterator,bool> insert( const value_type& value );

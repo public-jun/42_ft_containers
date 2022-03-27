@@ -283,10 +283,7 @@ public:
         delete_node(end_);
     }
 
-    allocator_type alloc() const
-    {
-        return allocator_type(node_allocator());
-    }
+    allocator_type alloc() const { return allocator_type(node_allocator()); }
 
     size_type                  size() { return size_; }
     value_compare&             value_comp() { return comp_; }
@@ -299,9 +296,22 @@ public:
     node_pointer* root_ptr() const { return &(end_->left); }
 
     iterator       begin() { return iterator(begin_, nil_); }
-    iterator       end() { return iterator(end_, nil_); }
     const_iterator begin() const { return const_iterator(begin_, nil_); }
+
+    iterator       end() { return iterator(end_, nil_); }
     const_iterator end() const { return const_iterator(end_, nil_); }
+
+    reverse_iterator rbegin() { return reverse_iterator(end()); }
+    reverse_iterator rend() { return reverse_iterator(begin()); }
+
+    const_reverse_iterator rbegin() const
+    {
+        return const_reverse_iterator(end());
+    }
+    const_reverse_iterator rend() const
+    {
+        return const_reverse_iterator(begin());
+    }
 
     size_type max_size() const
     {

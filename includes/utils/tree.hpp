@@ -270,8 +270,8 @@ public:
 
     rb_tree(const rb_tree& other)
     {
-        size_ = other.size_;
-        comp_ = other.comp_;
+        size_      = other.size_;
+        comp_      = other.comp_;
         node_alloc = other.node_alloc;
         initialize_node();
     }
@@ -283,8 +283,11 @@ public:
         delete_node(end_);
     }
 
-    size_type     size() { return size_; }
-    value_compare value_comp() { return comp_; }
+    size_type                  size() { return size_; }
+    value_compare&             value_comp() { return comp_; }
+    const value_compare&       value_comp() const { return comp_; }
+    node_allocator_type&       node_allocator() { return node_alloc; }
+    const node_allocator_type& node_allocator() const { return node_alloc; }
 
 public:
     node_pointer  root() const { return end_->left; }

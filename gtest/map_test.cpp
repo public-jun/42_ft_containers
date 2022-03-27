@@ -8,7 +8,7 @@
 TEST(Map, Constructor)
 {
     // map()
-    // ft::map<int, int> m;
+    ft::map<int, int> m;
 
     // explicit map(const Compare& comp, const Allocator& alloc = Allocator()
     // );
@@ -40,6 +40,23 @@ TEST(Map, Constructor)
         }
     }
     // map( const map& other );
+
+    // operator=(const map& other);
+    {
+        ft::map<int, int> m;
+        for (int i = 0; i < 10; ++i)
+            m.insert(ft::make_pair(i, i));
+        ft::map<int, int> m1;
+        m1 = m;
+        for (int i = 0; i < 10; ++i)
+            EXPECT_EQ(m[i], m1[i]);
+        ft::map<int, int> m2;
+        for (int i = 10; i < 20; ++i)
+            m2.insert(ft::make_pair(i, i));
+        m1 = m2;
+        for (int i = 0; i < 10; ++i)
+            EXPECT_EQ(m2[i], m1[i]);
+    }
 }
 
 TEST(Map, ElementAccess)

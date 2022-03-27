@@ -26,6 +26,7 @@ TEST(Map, Constructor)
             EXPECT_EQ(*m1it, *mit);
             ++m1it;
         }
+        EXPECT_EQ(m.get_allocator(), m1.get_allocator());
     }
     {
         ft::map<int, int> m;
@@ -56,6 +57,8 @@ TEST(Map, Constructor)
         m1 = m2;
         for (int i = 0; i < 10; ++i)
             EXPECT_EQ(m2[i], m1[i]);
+        EXPECT_EQ(m.get_allocator(), m1.get_allocator());
+        EXPECT_EQ(m1.get_allocator(), m2.get_allocator());
     }
 }
 

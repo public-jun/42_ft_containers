@@ -110,6 +110,15 @@ public:
 
     ~map() {}
 
+    // Element access
+    // Returns a reference to the value that is mapped to a key equivalent to
+    // key, performing an insertion if such key does not already exist.
+
+    mapped_type& operator[](const key_type& key)
+    {
+        return insert(ft::make_pair(key, mapped_type())).first->second;
+    }
+
     iterator               begin() { return tree_.begin(); }
     const_iterator         begin() const { return tree_.begin(); }
     iterator               end() { return tree_.end(); }

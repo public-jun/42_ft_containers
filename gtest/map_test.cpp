@@ -42,6 +42,22 @@ TEST(Map, Constructor)
     // map( const map& other );
 }
 
+TEST(Map, ElementAccess)
+{
+    // std::map<Key,T,Compare,Allocator>::at
+    ft::map<int, char> m;
+    for (int i = 0; i < 10; ++i)
+        m.insert(ft::make_pair(i, 'a' + static_cast<char>(i)));
+    for (int i = 0; i < 10; ++i)
+        EXPECT_EQ('a' + i, m[i]);
+    m[10] = 'x';
+    EXPECT_EQ('x', m[10]);
+    m[-42] = 'y';
+    EXPECT_EQ('y', m[-42]);
+    m[0] = 'z';
+    EXPECT_EQ('z', m[0]);
+}
+
 TEST(Map, ModifiersInsert)
 {
     // std::pair<iterator,bool> insert( const value_type& value );
@@ -85,7 +101,7 @@ TEST(Map, LookupLowerBound)
     EXPECT_TRUE(m.end() == it);
 
     // Const
-    ft::map<int, int>           cm = m;
+    ft::map<int, int>                 cm = m;
     ft::map<int, int>::const_iterator cit;
     cit = cm.lower_bound(0);
     EXPECT_EQ(0, (*cit).first);

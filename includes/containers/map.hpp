@@ -160,6 +160,16 @@ public:
 
     const_iterator find(const key_type& key) const { return tree_.find(key); }
 
+    ft::pair<iterator, iterator> equal_range(const key_type& key)
+    {
+        return tree_.equal_range(key);
+    }
+
+    ft::pair<const_iterator, const_iterator> equal_range(const key_type& key) const
+    {
+        return tree_.equal_range(key);
+    }
+
     iterator lower_bound(const key_type& key) { return tree_.lower_bound(key); }
 
     const_iterator lower_bound(const key_type& key) const

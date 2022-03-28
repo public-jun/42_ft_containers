@@ -265,6 +265,59 @@ TEST(Map, Lookupfind)
     EXPECT_EQ(cm.end(), cit);
 }
 
+TEST(Map, LookupEqualRange)
+{
+    // Non Const
+    // std::pair<iterator,iterator> equal_range( const Key& key );
+    ft::map<int, int> m;
+    for (int i = 0; i < 100; i += 10)
+        m.insert(ft::make_pair(i, i));
+    ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::iterator> ret;
+    ret = m.equal_range(-10);
+    EXPECT_EQ(0, (*ret.first).first);
+    EXPECT_EQ(0, (*ret.second).first);
+    ret = m.equal_range(0);
+    EXPECT_EQ(0, (*ret.first).first);
+    EXPECT_EQ(10, (*ret.second).first);
+    ret = m.equal_range(42);
+    EXPECT_EQ(50, (*ret.first).first);
+    EXPECT_EQ(50, (*ret.second).first);
+    ret = m.equal_range(50);
+    EXPECT_EQ(50, (*ret.first).first);
+    EXPECT_EQ(60, (*ret.second).first);
+    ret = m.equal_range(90);
+    EXPECT_EQ(90, (*ret.first).first);
+    EXPECT_EQ(m.end(), ret.second);
+    ret = m.equal_range(100);
+    EXPECT_EQ(m.end(), ret.first);
+    EXPECT_EQ(m.end(), ret.second);
+
+    // Const
+    // ft::pair<const_iterator, const_iterator> equal_range(const Key& key)
+    // const;
+    const ft::map<int, int> cm(m);
+
+    ft::pair<ft::map<int, int>::const_iterator, ft::map<int, int>::const_iterator> cret;
+    cret = cm.equal_range(-10);
+    EXPECT_EQ(0, (*cret.first).first);
+    EXPECT_EQ(0, (*cret.second).first);
+    cret = cm.equal_range(0);
+    EXPECT_EQ(0, (*cret.first).first);
+    EXPECT_EQ(10, (*cret.second).first);
+    cret = cm.equal_range(42);
+    EXPECT_EQ(50, (*cret.first).first);
+    EXPECT_EQ(50, (*cret.second).first);
+    cret = cm.equal_range(50);
+    EXPECT_EQ(50, (*cret.first).first);
+    EXPECT_EQ(60, (*cret.second).first);
+    cret = cm.equal_range(90);
+    EXPECT_EQ(90, (*cret.first).first);
+    EXPECT_EQ(cm.end(), cret.second);
+    cret = cm.equal_range(100);
+    EXPECT_EQ(cm.end(), cret.first);
+    EXPECT_EQ(cm.end(), cret.second);
+}
+
 TEST(Map, LookupLowerBound)
 {
     // Non const

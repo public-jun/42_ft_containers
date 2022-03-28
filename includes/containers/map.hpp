@@ -198,45 +198,45 @@ public:
 };
 
 template <class _Key, class _Tp, class _Compare, class _Allocator>
-inline bool operator==(const map<_Key, _Tp, _Compare, _Allocator>& lhs,
-                       const map<_Key, _Tp, _Compare, _Allocator>& rhs)
+inline bool operator==(const ft::map<_Key, _Tp, _Compare, _Allocator>& lhs,
+                       const ft::map<_Key, _Tp, _Compare, _Allocator>& rhs)
 {
     return lhs.size() == rhs.size() &&
            ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 }
 
 template <class _Key, class _Tp, class _Compare, class _Allocator>
-inline bool operator!=(const map<_Key, _Tp, _Compare, _Allocator>& lhs,
-                       const map<_Key, _Tp, _Compare, _Allocator>& rhs)
+inline bool operator!=(const ft::map<_Key, _Tp, _Compare, _Allocator>& lhs,
+                       const ft::map<_Key, _Tp, _Compare, _Allocator>& rhs)
 {
     return !(lhs == rhs);
 }
 
 template <class _Key, class _Tp, class _Compare, class _Allocator>
-inline bool operator<(const map<_Key, _Tp, _Compare, _Allocator>& lhs,
-                      const map<_Key, _Tp, _Compare, _Allocator>& rhs)
+inline bool operator<(const ft::map<_Key, _Tp, _Compare, _Allocator>& lhs,
+                      const ft::map<_Key, _Tp, _Compare, _Allocator>& rhs)
 {
     return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(),
                                        rhs.end());
 }
 
 template <class _Key, class _Tp, class _Compare, class _Allocator>
-inline bool operator<=(const map<_Key, _Tp, _Compare, _Allocator>& lhs,
-                       const map<_Key, _Tp, _Compare, _Allocator>& rhs)
+inline bool operator<=(const ft::map<_Key, _Tp, _Compare, _Allocator>& lhs,
+                       const ft::map<_Key, _Tp, _Compare, _Allocator>& rhs)
 {
     return !(lhs > rhs);
 }
 
 template <class _Key, class _Tp, class _Compare, class _Allocator>
-inline bool operator>(const map<_Key, _Tp, _Compare, _Allocator>& lhs,
-                      const map<_Key, _Tp, _Compare, _Allocator>& rhs)
+inline bool operator>(const ft::map<_Key, _Tp, _Compare, _Allocator>& lhs,
+                      const ft::map<_Key, _Tp, _Compare, _Allocator>& rhs)
 {
     return rhs < lhs;
 }
 
 template <class _Key, class _Tp, class _Compare, class _Allocator>
-inline bool operator>=(const map<_Key, _Tp, _Compare, _Allocator>& lhs,
-                       const map<_Key, _Tp, _Compare, _Allocator>& rhs)
+inline bool operator>=(const ft::map<_Key, _Tp, _Compare, _Allocator>& lhs,
+                       const ft::map<_Key, _Tp, _Compare, _Allocator>& rhs)
 {
     return !(lhs < rhs);
 }

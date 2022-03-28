@@ -509,3 +509,66 @@ TEST(Map, ObserversValueComp)
         EXPECT_TRUE(comp(ft::make_pair("xyz", 'a'), ft::make_pair("abc", 'a')));
     }
 }
+
+TEST(Map, NonMemberFunctionsLexicographical)
+{
+    {
+        ft::map<int, char> m1;
+        ft::map<int, char> m2;
+        m1[0] = 'a';
+        m2[0] = 'a';
+        EXPECT_TRUE(m1 == m2);
+        EXPECT_FALSE(m1 != m2);
+        EXPECT_FALSE(m1 < m2);
+        EXPECT_TRUE(m1 <= m2);
+        EXPECT_FALSE(m1 > m2);
+        EXPECT_TRUE(m1 >= m2);
+
+        m2[1] = 'b';
+        // a & ab
+        EXPECT_FALSE(m1 == m2);
+        EXPECT_TRUE(m1 != m2);
+        EXPECT_TRUE(m1 < m2);
+        EXPECT_TRUE(m1 <= m2);
+        EXPECT_FALSE(m1 > m2);
+        EXPECT_FALSE(m1 >= m2);
+
+        m1[1] = 'c';
+        // ac & ab
+        EXPECT_FALSE(m1 == m2);
+        EXPECT_TRUE(m1 != m2);
+        EXPECT_FALSE(m1 < m2);
+        EXPECT_FALSE(m1 <= m2);
+        EXPECT_TRUE(m1 > m2);
+        EXPECT_TRUE(m1 >= m2);
+    }
+    // key を比較する。同じ場合は valueで比較する。
+    {
+        ft::map<std::string, char, std::less<std::string> > m1;
+        ft::map<std::string, char, std::less<std::string> > m2;
+        m1["aaa"] = 'a';
+        m2["aaa"] = 'a';
+        EXPECT_TRUE(m1 == m2);
+        EXPECT_FALSE(m1 != m2);
+        EXPECT_FALSE(m1 < m2);
+        EXPECT_TRUE(m1 <= m2);
+        EXPECT_FALSE(m1 > m2);
+        EXPECT_TRUE(m1 >= m2);
+        m2["aaa"] = 'b';
+        EXPECT_FALSE(m1 == m2);
+        EXPECT_TRUE(m1 != m2);
+        EXPECT_TRUE(m1 < m2);
+        EXPECT_TRUE(m1 <= m2);
+        EXPECT_FALSE(m1 > m2);
+        EXPECT_FALSE(m1 >= m2);
+        m1["bbb"] = 'b';
+        // ab & b
+        EXPECT_EQ(2, m1.size());
+        EXPECT_FALSE(m1 == m2);
+        EXPECT_TRUE(m1 != m2);
+        EXPECT_TRUE(m1 < m2);
+        EXPECT_TRUE(m1 <= m2);
+        EXPECT_FALSE(m1 > m2);
+        EXPECT_FALSE(m1 >= m2);
+    }
+}

@@ -240,5 +240,12 @@ inline bool operator>=(const ft::map<_Key, _Tp, _Compare, _Allocator>& lhs,
 {
     return !(lhs < rhs);
 }
+
+template <class _Key, class _Tp, class _Compare, class _Allocator>
+inline void swap(ft::map<_Key, _Tp, _Compare, _Allocator>& lhs,
+                 ft::map<_Key, _Tp, _Compare, _Allocator>& rhs)
+{
+    lhs.swap(rhs);
+}
 } // namespace ft
 #endif

@@ -188,6 +188,12 @@ public:
     {
         return tree_.upper_bound(key);
     }
+
+    // Observes
+    key_compare key_comp() const
+    {
+        return tree_.value_comp().key_comp();
+    }
 };
 } // namespace ft
 #endif

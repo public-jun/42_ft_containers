@@ -184,18 +184,18 @@ TEST(Map, CapacityMaxSize)
         EXPECT_EQ(stl_m.max_size(), ft_m.max_size());
     }
     {
-        ft::map<std::string, int>  ft_m;
-        std::map<std::string, int> stl_m;
+        ft::map<std::string, int, std::less<std::string> >  ft_m;
+        std::map<std::string, int, std::less<std::string> > stl_m;
         EXPECT_EQ(stl_m.max_size(), ft_m.max_size());
     }
     {
-        ft::map<std::string, char>  ft_m;
-        std::map<std::string, char> stl_m;
+        ft::map<std::string, char, std::less<std::string> >  ft_m;
+        std::map<std::string, char, std::less<std::string> > stl_m;
         EXPECT_EQ(stl_m.max_size(), ft_m.max_size());
     }
     {
-        ft::map<double, float>  ft_m;
-        std::map<double, float> stl_m;
+        ft::map<double, float, std::less<double> >  ft_m;
+        std::map<double, float, std::less<double> > stl_m;
         EXPECT_EQ(stl_m.max_size(), ft_m.max_size());
     }
 }
@@ -268,7 +268,7 @@ TEST(Map, ModifiersMemberSwap)
 
     prev_m1_it = m1.begin();
     ft::map<int, char>           empty1;
-    ft::map<int, char>::iterator prev_empty_it = empty1.begin();
+    ft::map<int, char>::iterator prev_empty_it  = empty1.begin();
     ft::map<int, char>::iterator prev_empty_end = empty1.end();
     empty1.swap(m1);
     tmp_it = empty1.begin();
@@ -426,4 +426,44 @@ TEST(Map, LookupUpperBound)
     EXPECT_EQ(20, (*cit).first);
     cit = cm.upper_bound(100);
     EXPECT_EQ(cm.end(), cit);
+}
+
+TEST(Map, ObserversKeyComp)
+{
+    {
+        ft::map<int, char>              m;
+        ft::map<int, char>::key_compare comp;
+        comp = m.key_comp();
+        EXPECT_TRUE(comp(1, 2));
+        EXPECT_FALSE(comp(2, 2));
+        EXPECT_FALSE(comp(3, 2));
+    }
+
+    {
+        ft::map<int, char, std::greater<int> >              m;
+        ft::map<int, char, std::greater<int> >::key_compare comp;
+        comp = m.key_comp();
+        EXPECT_FALSE(comp(1, 2));
+        EXPECT_FALSE(comp(2, 2));
+        EXPECT_TRUE(comp(3, 2));
+    }
+
+    {
+        ft::map<std::string, char, std::less<std::string> >              m;
+        ft::map<std::string, char, std::less<std::string> >::key_compare comp;
+        comp = m.key_comp();
+        EXPECT_TRUE(comp("abc", "xyz"));
+        EXPECT_FALSE(comp("abc", "abc"));
+        EXPECT_FALSE(comp("xyz", "abc"));
+    }
+
+    {
+        ft::map<std::string, char, std::greater<std::string> > m;
+        ft::map<std::string, char, std::greater<std::string> >::key_compare
+            comp;
+        comp = m.key_comp();
+        EXPECT_FALSE(comp("abc", "xyz"));
+        EXPECT_FALSE(comp("abc", "abc"));
+        EXPECT_TRUE(comp("xyz", "abc"));
+    }
 }

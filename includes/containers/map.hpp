@@ -153,6 +153,11 @@ public:
         tree_.insert(first, last);
     }
 
+    void swap(map& other)
+    {
+        tree_.swap(other.tree_);
+    }
+
     // Lookup
     size_type count(const key_type& key) const { return tree_.count(key); }
 

@@ -237,6 +237,60 @@ TEST(Map, ModifiersClear)
     m.clear();
 }
 
+TEST(Map, ModifiersMemberSwap)
+{
+    ft::map<int, char> m1;
+    for (int i = 0; i < 10; ++i)
+        m1.insert(ft::make_pair(i, 'a' + i));
+    ft::map<int, char> m2;
+    for (int i = -10; i < -4; ++i)
+        m2.insert(ft::make_pair(i, 'z' - i));
+    ft::map<int, char>::iterator prev_m1_it = m1.begin();
+    ft::map<int, char>::iterator prev_m2_it = m2.begin();
+    ft::map<int, char>::iterator tmp_it;
+    m1.swap(m2);
+    tmp_it = m2.begin();
+    for (ft::map<int, char>::iterator end = m2.end(); tmp_it != end;
+         ++tmp_it, ++prev_m1_it)
+    {
+        EXPECT_EQ(prev_m1_it, tmp_it);
+        EXPECT_EQ((*prev_m1_it).first, (*tmp_it).first);
+        EXPECT_EQ((*prev_m1_it).second, (*tmp_it).second);
+    }
+    tmp_it = m1.begin();
+    for (ft::map<int, char>::iterator end = m1.end(); tmp_it != end;
+         ++tmp_it, ++prev_m2_it)
+    {
+        EXPECT_EQ(prev_m2_it, tmp_it);
+        EXPECT_EQ((*prev_m2_it).first, (*tmp_it).first);
+        EXPECT_EQ((*prev_m2_it).second, (*tmp_it).second);
+    }
+
+    prev_m1_it = m1.begin();
+    ft::map<int, char>           empty1;
+    ft::map<int, char>::iterator prev_empty_it = empty1.begin();
+    ft::map<int, char>::iterator prev_empty_end = empty1.end();
+    empty1.swap(m1);
+    tmp_it = empty1.begin();
+    for (ft::map<int, char>::iterator end = empty1.end(); tmp_it != end;
+         ++tmp_it, ++prev_m1_it)
+    {
+        EXPECT_EQ(prev_m1_it, tmp_it);
+        EXPECT_EQ((*prev_m1_it).first, (*tmp_it).first);
+        EXPECT_EQ((*prev_m1_it).second, (*tmp_it).second);
+    }
+    EXPECT_NE(prev_empty_it, m1.begin());
+    EXPECT_NE(prev_empty_end, m1.end());
+    for (int i = 0; i < 10; ++i)
+        m1.insert(ft::make_pair(i, 'a' + i));
+    tmp_it = m1.begin();
+    for (int i = 0; i < 10; ++i, ++tmp_it)
+    {
+        EXPECT_EQ(i, (*tmp_it).first);
+        EXPECT_EQ('a' + i, (*tmp_it).second);
+    }
+}
+
 TEST(Map, LookupCount)
 {
     ft::map<int, int> m;
@@ -297,7 +351,9 @@ TEST(Map, LookupEqualRange)
     // const;
     const ft::map<int, int> cm(m);
 
-    ft::pair<ft::map<int, int>::const_iterator, ft::map<int, int>::const_iterator> cret;
+    ft::pair<ft::map<int, int>::const_iterator,
+             ft::map<int, int>::const_iterator>
+        cret;
     cret = cm.equal_range(-10);
     EXPECT_EQ(0, (*cret.first).first);
     EXPECT_EQ(0, (*cret.second).first);

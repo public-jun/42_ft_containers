@@ -284,6 +284,13 @@ public:
         delete_node(end_);
     }
 
+    void delete_all()
+    {
+        clear();
+        delete_node(nil_);
+        delete_node(end_);
+    }
+
     allocator_type alloc() const { return allocator_type(node_allocator()); }
 
     size_type                  size() const { return size_; }
@@ -347,6 +354,26 @@ public:
     {
         for (; first != last; ++first)
             insert(*first);
+    }
+
+    void swap(rb_tree& other)
+    {
+        std::swap(nil_, other.nil_);
+        std::swap(begin_, other.begin_);
+        std::swap(end_, other.end_);
+        std::swap(node_alloc, other.node_alloc);
+        std::swap(size_, other.size_);
+        std::swap(comp_, other.comp_);
+        if (size() == 0)
+        {
+            delete_all();
+            initialize_node();
+        }
+        if (other.size() == 0)
+        {
+            other.delete_all();
+            other.initialize_node();
+        }
     }
 
     // Lookup
@@ -474,7 +501,8 @@ public:
     size_type           size_;
     value_compare       comp_;
 
-private:
+// private:
+public:
     // node を作成する
     void initialize_node()
     {

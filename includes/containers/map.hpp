@@ -154,10 +154,7 @@ public:
     }
 
     // Lookup
-    size_type count(const key_type& key) const
-    {
-        return tree_.count(key);
-    }
+    size_type count(const key_type& key) const { return tree_.count(key); }
 
     iterator find(const key_type& key) { return tree_.find(key); }
 
@@ -168,6 +165,13 @@ public:
     const_iterator lower_bound(const key_type& key) const
     {
         return tree_.lower_bound(key);
+    }
+
+    iterator upper_bound(const key_type& key) { return tree_.upper_bound(key); }
+
+    const_iterator upper_bound(const key_type& key) const
+    {
+        return tree_.upper_bound(key);
     }
 };
 } // namespace ft

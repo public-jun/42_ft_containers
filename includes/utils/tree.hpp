@@ -410,6 +410,40 @@ public:
         return iterator(result, nil_);
     }
 
+    iterator upper_bound(const key_type& key)
+    {
+        node_pointer root_node = root();
+        node_pointer result    = end_;
+        while (root_node != nil_)
+        {
+            if (comp_(key, root_node->value))
+            {
+                result    = root_node;
+                root_node = root_node->left;
+            }
+            else
+                root_node = root_node->right;
+        }
+        return iterator(result, nil_);
+    }
+
+    const_iterator upper_bound(const key_type& key) const
+    {
+        node_pointer root_node = root();
+        node_pointer result    = end_;
+        while (root_node != nil_)
+        {
+            if (comp_(key, root_node->value))
+            {
+                result    = root_node;
+                root_node = root_node->left;
+            }
+            else
+                root_node = root_node->right;
+        }
+        return const_iterator(result, nil_);
+    }
+
     void clear()
     {
         destroy(root());

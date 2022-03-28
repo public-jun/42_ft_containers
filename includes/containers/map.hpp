@@ -1,6 +1,7 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
+#include <algorithm.hpp>
 #include <pair.hpp>
 #include <tree.hpp>
 
@@ -153,10 +154,7 @@ public:
         tree_.insert(first, last);
     }
 
-    void swap(map& other)
-    {
-        tree_.swap(other.tree_);
-    }
+    void swap(map& other) { tree_.swap(other.tree_); }
 
     // Lookup
     size_type count(const key_type& key) const { return tree_.count(key); }
@@ -170,7 +168,8 @@ public:
         return tree_.equal_range(key);
     }
 
-    ft::pair<const_iterator, const_iterator> equal_range(const key_type& key) const
+    ft::pair<const_iterator, const_iterator>
+    equal_range(const key_type& key) const
     {
         return tree_.equal_range(key);
     }
@@ -190,16 +189,56 @@ public:
     }
 
     // Observes
-    key_compare key_comp() const
-    {
-        return tree_.value_comp().key_comp();
-    }
+    key_compare key_comp() const { return tree_.value_comp().key_comp(); }
 
-    // std::map::value_compare value_comp() const;
     value_compare value_comp() const
     {
         return value_compare(tree_.value_comp().key_comp());
     }
 };
+
+template <class _Key, class _Tp, class _Compare, class _Allocator>
+inline bool operator==(const map<_Key, _Tp, _Compare, _Allocator>& lhs,
+                       const map<_Key, _Tp, _Compare, _Allocator>& rhs)
+{
+    return lhs.size() == rhs.size() &&
+           ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+}
+
+template <class _Key, class _Tp, class _Compare, class _Allocator>
+inline bool operator!=(const map<_Key, _Tp, _Compare, _Allocator>& lhs,
+                       const map<_Key, _Tp, _Compare, _Allocator>& rhs)
+{
+    return !(lhs == rhs);
+}
+
+template <class _Key, class _Tp, class _Compare, class _Allocator>
+inline bool operator<(const map<_Key, _Tp, _Compare, _Allocator>& lhs,
+                      const map<_Key, _Tp, _Compare, _Allocator>& rhs)
+{
+    return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(),
+                                       rhs.end());
+}
+
+template <class _Key, class _Tp, class _Compare, class _Allocator>
+inline bool operator<=(const map<_Key, _Tp, _Compare, _Allocator>& lhs,
+                       const map<_Key, _Tp, _Compare, _Allocator>& rhs)
+{
+    return !(lhs > rhs);
+}
+
+template <class _Key, class _Tp, class _Compare, class _Allocator>
+inline bool operator>(const map<_Key, _Tp, _Compare, _Allocator>& lhs,
+                      const map<_Key, _Tp, _Compare, _Allocator>& rhs)
+{
+    return rhs < lhs;
+}
+
+template <class _Key, class _Tp, class _Compare, class _Allocator>
+inline bool operator>=(const map<_Key, _Tp, _Compare, _Allocator>& lhs,
+                       const map<_Key, _Tp, _Compare, _Allocator>& rhs)
+{
+    return !(lhs < rhs);
+}
 } // namespace ft
 #endif

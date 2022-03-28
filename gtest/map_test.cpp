@@ -467,3 +467,45 @@ TEST(Map, ObserversKeyComp)
         EXPECT_TRUE(comp("xyz", "abc"));
     }
 }
+
+TEST(Map, ObserversValueComp)
+{
+    {
+        ft::map<int, char>                m;
+        ft::map<int, char>::value_compare comp = m.value_comp();
+        EXPECT_TRUE(comp(ft::make_pair(1, 'a'), ft::make_pair(2, 'a')));
+        EXPECT_FALSE(comp(ft::make_pair(2, 'a'), ft::make_pair(2, 'a')));
+        EXPECT_FALSE(comp(ft::make_pair(3, 'a'), ft::make_pair(1, 'a')));
+    }
+
+    {
+        ft::map<int, char, std::greater<int> >                m;
+        ft::map<int, char, std::greater<int> >::value_compare comp =
+            m.value_comp();
+        EXPECT_FALSE(comp(ft::make_pair(1, 'a'), ft::make_pair(2, 'a')));
+        EXPECT_FALSE(comp(ft::make_pair(2, 'a'), ft::make_pair(2, 'a')));
+        EXPECT_TRUE(comp(ft::make_pair(3, 'a'), ft::make_pair(1, 'a')));
+    }
+
+    {
+        ft::map<std::string, char, std::less<std::string> > m;
+        ft::map<std::string, char, std::less<std::string> >::value_compare
+            comp = m.value_comp();
+        EXPECT_TRUE(comp(ft::make_pair("abc", 'a'), ft::make_pair("xyz", 'a')));
+        EXPECT_FALSE(
+            comp(ft::make_pair("abc", 'a'), ft::make_pair("abc", 'a')));
+        EXPECT_FALSE(
+            comp(ft::make_pair("xyz", 'a'), ft::make_pair("abc", 'a')));
+    }
+
+    {
+        ft::map<std::string, char, std::greater<std::string> > m;
+        ft::map<std::string, char, std::greater<std::string> >::value_compare
+            comp = m.value_comp();
+        EXPECT_FALSE(
+            comp(ft::make_pair("abc", 'a'), ft::make_pair("xyz", 'a')));
+        EXPECT_FALSE(
+            comp(ft::make_pair("abc", 'a'), ft::make_pair("abc", 'a')));
+        EXPECT_TRUE(comp(ft::make_pair("xyz", 'a'), ft::make_pair("abc", 'a')));
+    }
+}

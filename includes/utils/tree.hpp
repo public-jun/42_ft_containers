@@ -374,6 +374,20 @@ public:
         return end();
     }
 
+    ft::pair<iterator, iterator> equal_range(const key_type& key)
+    {
+        iterator first = lower_bound(key);
+        iterator second = upper_bound(key);
+        return make_pair(first, second);
+    }
+
+    ft::pair<const_iterator, const_iterator> equal_range(const key_type& key) const
+    {
+        const_iterator first = lower_bound(key);
+        const_iterator second = upper_bound(key);
+        return make_pair(first, second);
+    }
+
     iterator lower_bound(const key_type& key)
     {
         node_pointer root_node = root();
@@ -398,7 +412,6 @@ public:
         node_pointer result    = end_;
         while (root_node != nil_)
         {
-            // root->value >= key
             if (!comp_(root_node->value, key))
             {
                 result    = root_node;

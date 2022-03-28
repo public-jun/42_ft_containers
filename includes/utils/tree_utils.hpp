@@ -131,7 +131,7 @@ void print_tree(node_pointer __nd, node_pointer nil, size_t __level)
     {
         return;
     }
-    print_tree(__nd->right, nil,__level + 1);
+    print_tree(__nd->right, nil, __level + 1);
     for (size_t i = 0; i < __level; i++)
     {
         std::cout << "  ";
@@ -246,7 +246,7 @@ inline void tree_balance_after_insert(node_pointer root, node_pointer x,
                     tree_left_rotate(x, nil);
                 }
                 /*
-                    ●16 を左挿入時、叔父(○70)が赤色の場合
+                    ●16 を左挿入時、叔父(○70)が黒色の場合
                                    /
                                  ○50
                                 /   \

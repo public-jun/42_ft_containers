@@ -289,3 +289,32 @@ TEST(Map, LookupLowerBound)
     cit = cm.lower_bound(53);
     EXPECT_TRUE(cm.end() == cit);
 }
+
+TEST(Map, LookupUpperBound)
+{
+    // Non const
+    // iterator upper_bound( const Key& key );
+    ft::map<int, int> m;
+    for (int i = 0; i < 50; i += 10)
+        m.insert(ft::make_pair(i, i));
+    ft::map<int, int>::iterator it;
+    it = m.upper_bound(-100);
+    EXPECT_EQ(m.begin(), it);
+    EXPECT_EQ(0, (*it).first);
+    it = m.upper_bound(10);
+    EXPECT_EQ(20, (*it).first);
+    it = m.upper_bound(100);
+    EXPECT_EQ(m.end(), it);
+
+    // Const
+    // const_iterator upper_bound( const Key& key ) const;
+    const ft::map<int, int>           cm(m);
+    ft::map<int, int>::const_iterator cit;
+    cit = cm.upper_bound(-100);
+    EXPECT_EQ(cm.begin(), cit);
+    EXPECT_EQ(0, (*cit).first);
+    cit = cm.upper_bound(10);
+    EXPECT_EQ(20, (*cit).first);
+    cit = cm.upper_bound(100);
+    EXPECT_EQ(cm.end(), cit);
+}

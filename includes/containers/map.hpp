@@ -194,6 +194,12 @@ public:
     {
         return tree_.value_comp().key_comp();
     }
+
+    // std::map::value_compare value_comp() const;
+    value_compare value_comp() const
+    {
+        return value_compare(tree_.value_comp().key_comp());
+    }
 };
 } // namespace ft
 #endif

@@ -148,6 +148,11 @@ public:
         return tree_.insert(v);
     }
 
+    iterator insert(iterator hint, const value_type& value)
+    {
+        return tree_.insert(hint, value);
+    }
+
     template <class InputIt>
     void insert(InputIt first, InputIt last)
     {

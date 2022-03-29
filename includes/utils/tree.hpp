@@ -349,6 +349,11 @@ public:
         return pair<iterator, bool>(iterator(res_c, nil_), is_inserted);
     }
 
+    iterator insert(iterator hint, const value_type& value)
+    {
+        return __emplace_hint_unique_key(hint, value).first;
+    }
+
     template <class InputIt>
     void insert(InputIt first, InputIt last)
     {
@@ -403,14 +408,15 @@ public:
 
     ft::pair<iterator, iterator> equal_range(const key_type& key)
     {
-        iterator first = lower_bound(key);
+        iterator first  = lower_bound(key);
         iterator second = upper_bound(key);
         return make_pair(first, second);
     }
 
-    ft::pair<const_iterator, const_iterator> equal_range(const key_type& key) const
+    ft::pair<const_iterator, const_iterator>
+    equal_range(const key_type& key) const
     {
-        const_iterator first = lower_bound(key);
+        const_iterator first  = lower_bound(key);
         const_iterator second = upper_bound(key);
         return make_pair(first, second);
     }
@@ -501,7 +507,7 @@ public:
     size_type           size_;
     value_compare       comp_;
 
-// private:
+    // private:
 public:
     // node を作成する
     void initialize_node()
@@ -588,6 +594,86 @@ public:
         parent = end_;
         return parent->left;
     }
+
+    pair<iterator, bool> __emplace_hint_unique_key(iterator          hint,
+                                                   const value_type& value)
+    {
+        node_pointer  parent = nil_;
+        // node_pointer  dummy;
+        // node_pointer& child       = __find_equal(hint, parent, dummy, value);
+        node_pointer& child       = __find_equal(hint, parent, value);
+        node_pointer  r           = child;
+        bool          is_inserted = false;
+        if (child == nil_)
+        {
+            node_pointer tmp = create_node(value);
+            tmp->parent      = parent;
+            child            = tmp;
+            if (begin_->left != nil_)
+                begin_ = begin_->left;
+            tree_balance_after_insert(root(), child, nil_);
+            ++size_;
+            r           = tmp;
+            is_inserted = true;
+        }
+        return pair<iterator, bool>(iterator(r, nil_), is_inserted);
+    }
+
+    // node_pointer& __find_equal(iterator hint, node_pointer& parent,
+    //    node_pointer& dummy, const value_type& value)
+    node_pointer& __find_equal(iterator hint, node_pointer& parent,
+                               const value_type& value)
+    {
+        if (hint == end() || comp_(value, *hint)) // check before
+        {
+            // value < *hint
+            const_iterator prior = hint;
+            if (prior == begin() || comp_(*(--prior), value))
+            {
+                // *prev(hint) < value < *hint
+                if (hint.base()->left == nil_)
+                {
+                    parent = hint.base();
+                    return parent->left;
+                }
+                else
+                {
+                    parent = prior.base();
+                    return prior.base()->right;
+                }
+            }
+            // value <= *prev(hint)
+            return __find_equal(parent, value);
+        }
+        else if (comp_(*hint, value)) // check after
+        {
+            // *hint < value
+            const_iterator next = __next(hint);
+            if (next == end() || comp_(value, *next))
+            {
+                // *hint < value < *(next(hint))
+                if (hint.base()->right == nil_)
+                {
+                    parent = hint.base();
+                    return hint.base()->right;
+                }
+                else
+                {
+                    parent = next.base();
+                    return parent->left;
+                }
+            }
+            // *next(hint) <= value
+            return __find_equal(parent, value);
+        }
+        // else value == *hint
+        parent = hint.base();
+        // dummy  = hint.base();
+        // return dummy;
+        return parent;
+    }
+
+    const_iterator __next(iterator it) { return ++(const_iterator(it)); }
 };
 } // namespace ft
 

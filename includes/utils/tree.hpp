@@ -368,6 +368,26 @@ public:
         delete_node(pos.base());
     }
 
+    void erase(iterator first, iterator last)
+    {
+        while (first != last)
+        {
+            node_pointer np = first.base();
+            iterator     r  = __remove_node_pointer(np);
+            delete_node(first.base());
+            first = r;
+        }
+    }
+
+    size_type erase(const key_type& key)
+    {
+        iterator it = find(key);
+        if (it == end())
+            return 0;
+        erase(it);
+        return 1;
+    }
+
     void swap(rb_tree& other)
     {
         std::swap(nil_, other.nil_);
@@ -683,7 +703,7 @@ public:
 
     const_iterator __next(iterator it) { return ++(const_iterator(it)); }
 
-    void __remove_node_pointer(node_pointer ptr) throw()
+    iterator __remove_node_pointer(node_pointer ptr) throw()
     {
         iterator r(ptr, nil_);
         ++r;
@@ -692,6 +712,7 @@ public:
             begin_ = r.base();
         --size_;
         tree_remove(root(), ptr, nil_);
+        return r;
     }
 };
 } // namespace ft

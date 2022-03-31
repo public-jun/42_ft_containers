@@ -3,7 +3,10 @@
 #include <gtest/gtest.h>
 #include <map>
 #include <time.h>
-#define SIZE 5000
+
+#define SIZE 1000
+#define cout std::cout
+#define endl std::endl
 
 TEST(Map, Constructor)
 {
@@ -262,6 +265,7 @@ TEST(Map, ModifiersInsert)
 TEST(Map, ModifiersErase)
 {
     std::srand(time(NULL));
+    // void erase( iterator pos );
     {
         std::vector<int>  v;
         ft::map<int, int> m;
@@ -282,6 +286,95 @@ TEST(Map, ModifiersErase)
         }
         EXPECT_EQ(m.size(), 0);
         EXPECT_TRUE(m.empty());
+    }
+
+    // void erase( iterator first, iterator last );
+    {
+        std::vector<int>  v;
+        ft::map<int, int> m;
+
+        ft::pair<ft::map<int, int>::iterator, bool> ret;
+        for (int i = 0; i < SIZE; ++i)
+        {
+            int key = std::rand() % SIZE;
+            ret     = m.insert(ft::make_pair(key, key));
+            EXPECT_EQ(ret.first->first, key);
+            if (ret.second == true)
+                v.insert(v.begin(), key);
+        }
+        std::sort(v.begin(), v.end());
+
+        std::vector<int>::iterator vf, vl, vtmp;
+        // 削除する範囲の値を得る
+        while (true)
+        {
+            vf = find(v.begin(), v.end(), std::rand() % SIZE);
+            vl = find(vf, v.end(), std::rand() % SIZE);
+            if (vf != v.end() && vl != v.end())
+                break;
+        }
+        ft::map<int, int>::iterator first, last, mtmp;
+        first = m.find(*vf);
+        last  = m.find(*vl);
+
+        m.erase(first, last);
+
+        vtmp = v.begin();
+        mtmp = m.begin();
+
+        std::size_t size             = 0;
+        bool        is_removed_range = false;
+        for (; vtmp != v.end(); ++vtmp)
+        {
+            if (vtmp == vf)
+                is_removed_range = true;
+            if (vtmp == vl)
+                is_removed_range = false;
+            if (is_removed_range == false)
+            {
+                EXPECT_EQ(*vtmp, (*mtmp).first);
+                ++size;
+                ++mtmp;
+            }
+            // [first, last) が消去されているか確認
+            if (is_removed_range == true)
+                EXPECT_EQ(m.end(), m.find(*vtmp));
+        }
+        EXPECT_EQ(size, m.size());
+        EXPECT_FALSE(m.empty());
+    }
+
+    // size_type erase( const key_type& key );
+    {
+        std::vector<int>  v;
+        ft::map<int, int> m;
+        int               key;
+
+        ft::pair<ft::map<int, int>::iterator, bool> ret;
+        for (int i = 0; i < SIZE; ++i)
+        {
+            key = std::rand() % SIZE;
+            ret = m.insert(ft::make_pair(key, key));
+            EXPECT_EQ(ret.first->first, key);
+            if (ret.second == true)
+                v.insert(v.begin(), key);
+        }
+        std::sort(v.begin(), v.end());
+
+        for (int i = 0; i < SIZE; ++i)
+        {
+            key = std::rand() % SIZE;
+
+            std::vector<int>::iterator it = find(v.begin(), v.end(), key);
+            if (it != v.end())
+            {
+                EXPECT_EQ(1, m.erase(key));
+                v.erase(it);
+            }
+            else
+                EXPECT_EQ(0, m.erase(key));
+            EXPECT_EQ(v.size(), m.size());
+        }
     }
 }
 

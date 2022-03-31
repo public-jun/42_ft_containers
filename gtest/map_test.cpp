@@ -259,6 +259,32 @@ TEST(Map, ModifiersInsert)
     }
 }
 
+TEST(Map, ModifiersErase)
+{
+    std::srand(time(NULL));
+    {
+        std::vector<int>  v;
+        ft::map<int, int> m;
+
+        ft::pair<ft::map<int, int>::iterator, bool> ret;
+        for (int i = 0; i < SIZE; ++i)
+        {
+            int key = std::rand() % SIZE;
+            ret     = m.insert(ft::make_pair(key, key));
+            EXPECT_EQ(ret.first->first, key);
+            if (ret.second == true)
+                v.insert(v.begin(), key);
+        }
+        std::vector<int>::iterator it = v.begin();
+        for (std::vector<int>::iterator end = v.end(); it != end; ++it)
+        {
+            m.erase(m.find(*(it)));
+        }
+        EXPECT_EQ(m.size(), 0);
+        EXPECT_TRUE(m.empty());
+    }
+}
+
 TEST(Map, ModifiersClear)
 {
     ft::map<int, int> m;

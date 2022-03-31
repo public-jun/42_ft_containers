@@ -159,6 +159,8 @@ public:
         tree_.insert(first, last);
     }
 
+    void erase(iterator pos) { tree_.erase(pos); }
+
     void swap(map& other) { tree_.swap(other.tree_); }
 
     // Lookup

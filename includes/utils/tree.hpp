@@ -361,6 +361,13 @@ public:
             insert(*first);
     }
 
+    void erase(iterator pos)
+    {
+        node_pointer np = pos.base();
+        __remove_node_pointer(np);
+        delete_node(pos.base());
+    }
+
     void swap(rb_tree& other)
     {
         std::swap(nil_, other.nil_);
@@ -514,8 +521,9 @@ public:
     {
         nil_ = node_alloc.allocate(1);
         node_alloc.construct(nil_);
-        nil_->left  = nil_;
-        nil_->right = nil_;
+        nil_->parent = nil_;
+        nil_->left   = nil_;
+        nil_->right  = nil_;
 
         end_ = node_alloc.allocate(1);
         node_alloc.construct(end_);
@@ -598,7 +606,7 @@ public:
     pair<iterator, bool> __emplace_hint_unique_key(iterator          hint,
                                                    const value_type& value)
     {
-        node_pointer  parent = nil_;
+        node_pointer parent = nil_;
         // node_pointer  dummy;
         // node_pointer& child       = __find_equal(hint, parent, dummy, value);
         node_pointer& child       = __find_equal(hint, parent, value);
@@ -674,6 +682,17 @@ public:
     }
 
     const_iterator __next(iterator it) { return ++(const_iterator(it)); }
+
+    void __remove_node_pointer(node_pointer ptr) throw()
+    {
+        iterator r(ptr, nil_);
+        ++r;
+        // 削除するノードが begin なら begin++ を begin_ に
+        if (begin_ == ptr)
+            begin_ = r.base();
+        --size_;
+        tree_remove(root(), ptr, nil_);
+    }
 };
 } // namespace ft
 

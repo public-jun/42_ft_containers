@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 #include <time.h>
+#include <sstream>
 #include <vector>
 
 ft::vector<int> gen_random_vector(std::size_t size)
@@ -280,7 +281,7 @@ TEST(Vector, Front)
         ft::vector<int> v(10);
         for (int i = 0; i < 10; ++i)
             v.at(i) = i;
-        const ft::vector<int> cv(v);
+        const ft::vector<int>            cv(v);
         ft::vector<int>::const_reference cref = cv.front();
         EXPECT_EQ(0, cref);
     }
@@ -290,7 +291,7 @@ TEST(Vector, Front)
         for (int i = 0; i < 10; ++i)
             v.at(i) = i;
         ft::vector<int>::const_reference c_ref = v.front();
-        ft::vector<int>::reference ref = v.front();
+        ft::vector<int>::reference       ref   = v.front();
         EXPECT_EQ(ref, c_ref);
         ref = 42;
         EXPECT_EQ(ref, c_ref);
@@ -315,7 +316,7 @@ TEST(Vector, Back)
         ft::vector<int> v(10);
         for (int i = 0; i < 10; ++i)
             v.at(i) = i;
-        const ft::vector<int> cv(v);
+        const ft::vector<int>            cv(v);
         ft::vector<int>::const_reference cref = cv.back();
         EXPECT_EQ(9, cref);
     }
@@ -325,7 +326,7 @@ TEST(Vector, Back)
         for (int i = 0; i < 10; ++i)
             v.at(i) = i;
         ft::vector<int>::const_reference c_ref = v.back();
-        ft::vector<int>::reference ref = v.back();
+        ft::vector<int>::reference       ref   = v.back();
         EXPECT_EQ(ref, c_ref);
         ref = 42;
         EXPECT_EQ(ref, c_ref);
@@ -367,22 +368,22 @@ TEST(Vector, MaxSize)
     // size_type max_size() const;
     {
         std::vector<int> stl_v;
-        ft::vector<int> ft_v;
+        ft::vector<int>  ft_v;
         EXPECT_EQ(stl_v.max_size(), ft_v.max_size());
     }
     {
         std::vector<char> stl_v;
-        ft::vector<char> ft_v;
+        ft::vector<char>  ft_v;
         EXPECT_EQ(stl_v.max_size(), ft_v.max_size());
     }
     {
         std::vector<std::string> stl_v;
-        ft::vector<std::string> ft_v;
+        ft::vector<std::string>  ft_v;
         EXPECT_EQ(stl_v.max_size(), ft_v.max_size());
     }
     {
         std::vector<double> stl_v;
-        ft::vector<double> ft_v;
+        ft::vector<double>  ft_v;
         EXPECT_EQ(stl_v.max_size(), ft_v.max_size());
     }
 }
@@ -413,7 +414,7 @@ TEST(Vector, Capacity)
 {
     // size_type capacity() const;
     {
-        ft::vector<int>  v;
+        ft::vector<int> v;
         EXPECT_EQ(0, v.capacity());
         EXPECT_EQ(0, v.size());
         v.reserve(10);
@@ -448,14 +449,137 @@ TEST(Vector, Clear)
 TEST(Vector, Insert)
 {
     // iterator insert( iterator pos, const T& value );
-    {}
+    {
+        // insert first iterator
+        ft::vector<int> v(3, 10);
+        for (int i = 0; i < 3; ++i)
+            EXPECT_EQ(10, v[i]);
+        EXPECT_EQ(3, v.size());
+        ft::vector<int>::iterator it;
+        it = v.insert(v.begin(), 20);
+        EXPECT_EQ(4, v.size());
+        EXPECT_EQ(20, v[0]);
+        for (int i = 1; i < 4; ++i)
+            EXPECT_EQ(10, v[i]);
+    }
+    {
+        // insert last iterator
+        ft::vector<int> v(3, 10);
+        for (int i = 0; i < 3; ++i)
+            EXPECT_EQ(10, v[i]);
+        EXPECT_EQ(3, v.size());
+        ft::vector<int>::iterator it;
+        it = v.insert(v.end(), 20);
+        EXPECT_EQ(4, v.size());
+        for (int i = 0; i < 3; ++i)
+            EXPECT_EQ(10, v[i]);
+        EXPECT_EQ(20, v[3]);
+    }
+    {
+        // insert mid iterator
+        ft::vector<int>           v(10, 10);
+        ft::vector<int>::iterator it;
+        it = v.insert(v.begin() + 5, 20);
+        for (int i = 0; i < 5; ++i)
+            EXPECT_EQ(10, v[i]);
+        EXPECT_EQ(20, v[5]);
+        for (int i = 6; i < 11; ++i)
+            EXPECT_EQ(10, v[i]);
+    }
 
     // void insert( iterator pos, size_type count, const T& value );
-    {}
+    {
+        std::vector<int> stl_v(100);
+        for (int i = 0; i < 100; ++i)
+            stl_v[i] = i;
+        ft::vector<int> ft_v(100);
+        for (int i = 0; i < 100; ++i)
+            ft_v[i] = i;
+        std::vector<int>::iterator stl_it;
+        ft::vector<int>::iterator  ft_it;
+        stl_it = stl_v.begin();
+        ft_it  = ft_v.begin();
+
+        stl_v.insert(stl_it, 10, 10);
+        ft_v.insert(ft_it, 10, 10);
+        stl_it = stl_v.begin();
+        ft_it  = ft_v.begin();
+        for (int i = 0; i < 110; ++i)
+            EXPECT_EQ(*(stl_it++), *(ft_it++));
+
+        stl_it = stl_v.end();
+        ft_it  = ft_v.end();
+        stl_v.insert(stl_it, 10, 20);
+        ft_v.insert(ft_it, 10, 20);
+        stl_it = stl_v.begin();
+        ft_it  = ft_v.begin();
+        for (int i = 0; i < 120; ++i)
+            EXPECT_EQ(*(stl_it++), *(ft_it++));
+
+        stl_it = stl_v.begin();
+        ft_it  = ft_v.begin();
+        stl_v.insert(stl_it + 50, 10, 30);
+        ft_v.insert(ft_it + 50, 10, 30);
+        stl_it = stl_v.begin();
+        ft_it  = ft_v.begin();
+        for (int i = 0; i < 130; ++i)
+            EXPECT_EQ(*(stl_it++), *(ft_it++));
+    }
 
     // template< class InputIt >
     // void insert( iterator pos, InputIt first, InputIt last);
-    {}
+    {
+        ft::vector<int>  v1(10, 10);
+        ft::vector<int>  v2(20, 20);
+        std::vector<int> stl_v;
+        stl_v.insert(stl_v.begin(), v1.begin(), v1.end());
+        stl_v.insert(stl_v.begin(), v2.begin(), v2.end());
+
+        ft::vector<int>::iterator it;
+        it = v1.begin();
+        std::vector<int>::iterator stl_it;
+        stl_it = stl_v.begin();
+
+        v1.insert(it, v2.begin(), v2.end());
+        it = v1.begin();
+        for (std::vector<int>::iterator end = stl_v.end(); stl_it != end;
+             ++stl_it, ++it)
+        {
+            EXPECT_EQ(*stl_it, *it);
+        }
+        EXPECT_EQ(stl_v.size(), v1.size());
+    }
+    {
+        // input iterator ver
+        std::stringstream ss1;
+        ss1 << 1 << endl << 2 << endl << 3;
+        std::istream_iterator<int> is_it1(ss1);
+        std::istream_iterator<int> is_last1;
+        std::stringstream ss2;
+        ss2 << 1 << endl << 2 << endl << 3;
+        std::istream_iterator<int> is_it2(ss2);
+        std::istream_iterator<int> is_last2;
+
+        ft::vector<int> v(3, 10);
+        std::vector<int> stl_v(3, 10);
+        ft::vector<int>::iterator it;
+        std::vector<int>::iterator stl_it;
+        it = v.begin();
+        stl_it = stl_v.begin();
+        v.insert(it, is_it1, is_last1);
+        stl_v.insert(stl_it, is_it2, is_last2);
+        EXPECT_EQ(stl_v.size(), v.size());
+
+        it = v.begin();
+        stl_it = stl_v.begin();
+        for (std::vector<int>::iterator end = stl_v.end(); stl_it != end;
+             ++stl_it, ++it)
+        {
+            cout << *stl_it << endl;
+            cout << *it << endl;
+            EXPECT_EQ(*stl_it, *it);
+        }
+    }
 }
 
 TEST(Vector, Erase)

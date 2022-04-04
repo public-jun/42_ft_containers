@@ -4,14 +4,35 @@
 #include <map>
 #include <time.h>
 
+template <class T>
+void compare_map_iterator(T first1, T end1, T first2)
+{
+    for (; first1 != end1; ++first1, ++first2)
+    {
+        EXPECT_EQ((*first1).first, (*first2).first);
+        EXPECT_EQ((*first1).second, (*first2).second);
+    }
+}
 
 TEST(Map, Constructor)
 {
     // map()
-    ft::map<int, int> m;
+    {
+        ft::map<int, int> m;
+        EXPECT_EQ(0, m.size());
+        EXPECT_EQ(true, m.empty());
+        EXPECT_EQ(m.begin(), m.end());
+        EXPECT_EQ(m.rbegin(), m.rend());
+    }
 
     // explicit map(const Compare& comp, const Allocator& alloc = Allocator()
     // );
+    {
+        ft::map<int, int, std::greater<int> > m((std::greater<int>()),
+                                                (std::allocator<int>()));
+        EXPECT_EQ(0, m.size());
+        EXPECT_EQ(true, m.empty());
+    }
 
     //  map( InputIt first, InputIt last, const Compare& comp = Compare(), const
     //  Allocator& alloc = Allocator() )
@@ -44,6 +65,15 @@ TEST(Map, Constructor)
         EXPECT_EQ(m.get_allocator(), m1.get_allocator());
     }
     // map( const map& other );
+    {
+        ft::map<int, int> m1;
+        for (int i = 0; i < 10; ++i)
+            m1.insert(ft::make_pair(i, i));
+        ft::map<int, int> m2(m1);
+        compare_map_iterator(m1.begin(), m1.end(), m2.begin());
+        EXPECT_EQ(m1.size(), m2.size());
+        EXPECT_EQ(m1.get_allocator(), m2.get_allocator());
+    }
 
     // operator=(const map& other);
     {
@@ -264,10 +294,10 @@ TEST(Map, ModifiersInsert)
         ft::map<int, int> m;
         for (int i = 1; i <= 20; ++i)
             m.insert(ft::make_pair(i, i));
-        for (int i = 41; i <= 60 ; ++i)
+        for (int i = 41; i <= 60; ++i)
             m.insert(ft::make_pair(i, i));
         ft::map<int, int> m1;
-        for (int i = 21; i <= 40 ; ++i)
+        for (int i = 21; i <= 40; ++i)
             m1.insert(ft::make_pair(i, i));
         m.insert(m1.begin(), m1.end());
         ft::map<int, int>::iterator it = m.begin();

@@ -136,7 +136,7 @@ public:
     reverse_iterator       rend() { return tree_.rend(); }
     const_reverse_iterator rend() const { return tree_.rend(); }
 
-    bool      empty() { return tree_.size() == 0; }
+    bool      empty() const { return tree_.size() == 0; }
     size_type size() const { return tree_.size(); }
     size_type max_size() const { return tree_.max_size(); }
 

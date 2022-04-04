@@ -4,9 +4,6 @@
 #include <map>
 #include <time.h>
 
-#define SIZE 1000
-#define cout std::cout
-#define endl std::endl
 
 TEST(Map, Constructor)
 {
@@ -260,6 +257,27 @@ TEST(Map, ModifiersInsert)
             ++it;
         }
     }
+
+    // template< class InputIt >
+    // void insert(InputIt first, InputIt last)
+    {
+        ft::map<int, int> m;
+        for (int i = 1; i <= 20; ++i)
+            m.insert(ft::make_pair(i, i));
+        for (int i = 41; i <= 60 ; ++i)
+            m.insert(ft::make_pair(i, i));
+        ft::map<int, int> m1;
+        for (int i = 21; i <= 40 ; ++i)
+            m1.insert(ft::make_pair(i, i));
+        m.insert(m1.begin(), m1.end());
+        ft::map<int, int>::iterator it = m.begin();
+        for (int i = 1; i <= 60; ++i)
+        {
+            EXPECT_EQ(i, (*it).first);
+            EXPECT_EQ(i, (*it).second);
+            it++;
+        }
+    }
 }
 
 TEST(Map, ModifiersErase)
@@ -385,6 +403,8 @@ TEST(Map, ModifiersClear)
         m.insert(ft::make_pair(i, i));
     m.clear();
     m.clear();
+    EXPECT_EQ(0, m.size());
+    EXPECT_TRUE(m.empty());
 }
 
 TEST(Map, ModifiersMemberSwap)

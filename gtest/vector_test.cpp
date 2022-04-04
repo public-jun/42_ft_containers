@@ -217,37 +217,119 @@ TEST(Vector, GetAllocator)
 TEST(Vector, At)
 {
     // reference at( size_type pos );
-    {}
+    {
+        ft::vector<int> v(10);
+        for (int i = 0; i < 10; ++i)
+            v.at(i) = i;
+        for (int i = 0; i < 10; ++i)
+            EXPECT_EQ(i, v.at(i));
+        v.at(5) = 42;
+        EXPECT_EQ(v.at(5), 42);
+        ASSERT_THROW(v.at(11), std::out_of_range);
+    }
 
     // const_reference at( size_type pos ) const;
-    {}
+    {
+        ft::vector<int> v(10);
+        for (int i = 0; i < 10; ++i)
+            v.at(i) = i;
+        const ft::vector<int> cv(v);
+        for (int i = 0; i < 10; ++i)
+            EXPECT_EQ(i, cv.at(i));
+        ASSERT_THROW(cv.at(11), std::out_of_range);
+    }
 }
 
 TEST(Vector, OperatorAccess)
 {
     // reference operator[]( size_type pos );
-    {}
+    {
+        ft::vector<int> v(10);
+        for (int i = 0; i < 10; ++i)
+            v[i] = i;
+        for (int i = 0; i < 10; ++i)
+            EXPECT_EQ(i, v[i]);
+    }
 
     // const_reference operator[]( size_type pos ) const;
-    {}
+    {
+        ft::vector<int> v(10);
+        for (int i = 0; i < 10; ++i)
+            v[i] = i;
+        const ft::vector<int> cv(v);
+        for (int i = 0; i < 10; ++i)
+            EXPECT_EQ(i, cv[i]);
+    }
 }
 
 TEST(Vector, Front)
 {
     //  reference front();
-    {}
+    {
+        ft::vector<int> v(10);
+        for (int i = 0; i < 10; ++i)
+            v.at(i) = i;
+        ft::vector<int>::reference ref = v.front();
+        EXPECT_EQ(0, ref);
+        ref = 42;
+        EXPECT_EQ(42, v.at(0));
+    }
 
     // const_reference front() const;
-    {}
+    {
+        ft::vector<int> v(10);
+        for (int i = 0; i < 10; ++i)
+            v.at(i) = i;
+        const ft::vector<int> cv(v);
+        ft::vector<int>::const_reference cref = cv.front();
+        EXPECT_EQ(0, cref);
+    }
+
+    {
+        ft::vector<int> v(10);
+        for (int i = 0; i < 10; ++i)
+            v.at(i) = i;
+        ft::vector<int>::const_reference c_ref = v.front();
+        ft::vector<int>::reference ref = v.front();
+        EXPECT_EQ(ref, c_ref);
+        ref = 42;
+        EXPECT_EQ(ref, c_ref);
+    }
 }
 
 TEST(Vector, Back)
 {
     // reference back();
-    {}
+    {
+        ft::vector<int> v(10);
+        for (int i = 0; i < 10; ++i)
+            v.at(i) = i;
+        ft::vector<int>::reference ref = v.back();
+        EXPECT_EQ(9, ref);
+        ref = 42;
+        EXPECT_EQ(42, v.at(9));
+    }
 
     // const_reference back() const;
-    {}
+    {
+        ft::vector<int> v(10);
+        for (int i = 0; i < 10; ++i)
+            v.at(i) = i;
+        const ft::vector<int> cv(v);
+        ft::vector<int>::const_reference cref = cv.back();
+        EXPECT_EQ(9, cref);
+    }
+
+    {
+        ft::vector<int> v(10);
+        for (int i = 0; i < 10; ++i)
+            v.at(i) = i;
+        ft::vector<int>::const_reference c_ref = v.back();
+        ft::vector<int>::reference ref = v.back();
+        EXPECT_EQ(ref, c_ref);
+        ref = 42;
+        EXPECT_EQ(ref, c_ref);
+    }
 }
 
 TEST(Vector, Iterator) {}

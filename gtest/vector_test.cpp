@@ -339,31 +339,110 @@ TEST(Vector, ReverseIterator) {}
 TEST(Vector, Empty)
 {
     // bool empty() const;
+    {
+        ft::vector<int> v;
+        EXPECT_TRUE(v.empty());
+        v.push_back(1);
+        EXPECT_FALSE(v.empty());
+    }
 }
 
 TEST(Vector, Size)
 {
     // size_type size() const;
+    {
+        ft::vector<int> v;
+        EXPECT_EQ(0, v.size());
+        for (int i = 0; i < 10; ++i)
+            v.push_back(i);
+        EXPECT_EQ(10, v.size());
+        for (int i = 10; i < 30; ++i)
+            v.push_back(i);
+        EXPECT_EQ(30, v.size());
+    }
 }
 
 TEST(Vector, MaxSize)
 {
     // size_type max_size() const;
+    {
+        std::vector<int> stl_v;
+        ft::vector<int> ft_v;
+        EXPECT_EQ(stl_v.max_size(), ft_v.max_size());
+    }
+    {
+        std::vector<char> stl_v;
+        ft::vector<char> ft_v;
+        EXPECT_EQ(stl_v.max_size(), ft_v.max_size());
+    }
+    {
+        std::vector<std::string> stl_v;
+        ft::vector<std::string> ft_v;
+        EXPECT_EQ(stl_v.max_size(), ft_v.max_size());
+    }
+    {
+        std::vector<double> stl_v;
+        ft::vector<double> ft_v;
+        EXPECT_EQ(stl_v.max_size(), ft_v.max_size());
+    }
 }
 
 TEST(Vector, Reserve)
 {
     // void reserve( size_type new_cap );
+    {
+        std::vector<int> v;
+        EXPECT_EQ(0, v.capacity());
+        v.reserve(40);
+        EXPECT_EQ(0, v.size());
+        EXPECT_EQ(40, v.capacity());
+        for (int i = 0; i < 20; ++i)
+            v.push_back(i);
+        for (int i = 0; i < 20; ++i)
+            EXPECT_EQ(i, v[i]);
+        EXPECT_EQ(20, v.size());
+        v.reserve(10);
+        EXPECT_EQ(20, v.size());
+        EXPECT_EQ(40, v.capacity());
+        for (int i = 0; i < 20; ++i)
+            EXPECT_EQ(i, v[i]);
+    }
 }
 
 TEST(Vector, Capacity)
 {
     // size_type capacity() const;
+    {
+        ft::vector<int>  v;
+        EXPECT_EQ(0, v.capacity());
+        EXPECT_EQ(0, v.size());
+        v.reserve(10);
+        EXPECT_EQ(0, v.size());
+        EXPECT_EQ(10, v.capacity());
+        v.push_back(1);
+        EXPECT_EQ(1, v.size());
+        EXPECT_EQ(10, v.capacity());
+    }
 }
 
 TEST(Vector, Clear)
 {
     // void clear();
+    ft::vector<int> v;
+    v.push_back(1);
+    EXPECT_EQ(1, v.size());
+    EXPECT_EQ(1, v.capacity());
+    v.clear();
+    EXPECT_EQ(0, v.size());
+    EXPECT_EQ(1, v.capacity());
+    v.reserve(100);
+    for (int i = 0; i < 10; ++i)
+        v.push_back(i);
+    EXPECT_EQ(10, v.size());
+    EXPECT_EQ(100, v.capacity());
+    v.clear();
+    EXPECT_EQ(0, v.size());
+    EXPECT_EQ(100, v.capacity());
 }
 
 TEST(Vector, Insert)

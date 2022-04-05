@@ -1,7 +1,12 @@
 #include <pair.hpp>
 #include <tree.hpp>
 
+#if __cplusplus >= 201103L
 #include <gtest/gtest.h>
+#else
+#include "ft_test.hpp"
+#endif
+
 #include <iostream>
 
 TEST(Tree, TreeNodeContruct)
@@ -42,11 +47,11 @@ TEST(Tree, TreeNodeCheckType)
 class TreeIteratorTest : public ::testing::Test
 {
 protected:
-    typedef typename ft::rb_tree<int, std::less<int>, std::allocator<int> >
-                                          base;
-    typedef typename base::node_pointer   node_pointer;
-    typedef typename base::iterator       iterator;
-    typedef typename base::const_iterator const_iterator;
+    // typedef typename ft::rb_tree<int, std::less<int>, std::allocator<int> >
+    //                                       base;
+    // typedef typename base::node_pointer   node_pointer;
+    // typedef typename base::iterator       iterator;
+    // typedef typename base::const_iterator const_iterator;
 
     virtual void SetUp()
     {
@@ -70,10 +75,12 @@ protected:
         // tree.delete_node(tree.end_);
     }
 
-    base         tree;
-    node_pointer root;
-    node_pointer l_child;
-    node_pointer r_child;
+    ft::rb_tree<int, std::less<int>, std::allocator<int> >               tree;
+    ft::rb_tree<int, std::less<int>, std::allocator<int> >::node_pointer root;
+    ft::rb_tree<int, std::less<int>, std::allocator<int> >::node_pointer
+        l_child;
+    ft::rb_tree<int, std::less<int>, std::allocator<int> >::node_pointer
+        r_child;
 };
 
 TEST_F(TreeIteratorTest, PreIncrement)
@@ -82,7 +89,8 @@ TEST_F(TreeIteratorTest, PreIncrement)
     EXPECT_EQ(0, tree.begin_->parent->value);
     EXPECT_EQ(1, tree.begin_->parent->right->value);
 
-    iterator it = tree.begin();
+    ft::rb_tree<int, std::less<int>, std::allocator<int> >::iterator it =
+        tree.begin();
     EXPECT_TRUE(tree.begin() == it);
     EXPECT_EQ(-1, *(it));
     EXPECT_EQ(0, *(++it));
@@ -92,7 +100,8 @@ TEST_F(TreeIteratorTest, PreIncrement)
 
 TEST_F(TreeIteratorTest, PostIncrement)
 {
-    iterator it = tree.begin();
+    ft::rb_tree<int, std::less<int>, std::allocator<int> >::iterator it =
+        tree.begin();
     EXPECT_TRUE(tree.begin() == it);
     EXPECT_EQ(-1, *(it++));
     EXPECT_EQ(0, *(it++));
@@ -102,7 +111,7 @@ TEST_F(TreeIteratorTest, PostIncrement)
 
 TEST_F(TreeIteratorTest, PreDecrement)
 {
-    iterator it = tree.end();
+    ft::rb_tree<int, std::less<int>, std::allocator<int> >::iterator it = tree.end();
     EXPECT_TRUE(tree.end() == it);
     EXPECT_EQ(1, *(--it));
     EXPECT_EQ(0, *(--it));
@@ -112,7 +121,7 @@ TEST_F(TreeIteratorTest, PreDecrement)
 
 TEST_F(TreeIteratorTest, PostDecrement)
 {
-    iterator it = tree.end();
+    ft::rb_tree<int, std::less<int>, std::allocator<int> >::iterator it = tree.end();
     EXPECT_EQ(tree.end(), it--);
     EXPECT_EQ(1, *(it--));
     EXPECT_EQ(0, *(it--));
@@ -122,7 +131,7 @@ TEST_F(TreeIteratorTest, PostDecrement)
 
 TEST_F(TreeIteratorTest, AssignValue)
 {
-    iterator it = tree.begin();
+    ft::rb_tree<int, std::less<int>, std::allocator<int> >::iterator it = tree.begin();
     EXPECT_EQ(-1, *it);
     *it = 42;
     EXPECT_EQ(42, *it);
@@ -132,7 +141,7 @@ TEST_F(TreeIteratorTest, AssignValue)
 
 TEST_F(TreeIteratorTest, ConstAssignValue)
 {
-    const_iterator cit = tree.begin();
+    ft::rb_tree<int, std::less<int>, std::allocator<int> >::const_iterator cit = tree.begin();
     EXPECT_EQ(-1, *cit);
     // Error
     // *cit = -2
@@ -144,7 +153,7 @@ TEST_F(TreeIteratorTest, ConstPreIncrement)
     EXPECT_EQ(0, tree.begin_->parent->value);
     EXPECT_EQ(1, tree.begin_->parent->right->value);
 
-    const_iterator it = tree.begin();
+    ft::rb_tree<int, std::less<int>, std::allocator<int> >::const_iterator it = tree.begin();
     EXPECT_TRUE(tree.begin() == it);
     EXPECT_EQ(-1, *(it));
     EXPECT_EQ(0, *(++it));
@@ -158,7 +167,7 @@ TEST_F(TreeIteratorTest, ConstPreIncrement)
 
 TEST_F(TreeIteratorTest, ConstPostIncrement)
 {
-    const_iterator it = tree.begin();
+    ft::rb_tree<int, std::less<int>, std::allocator<int> >::const_iterator it = tree.begin();
     EXPECT_TRUE(tree.begin() == it);
     EXPECT_EQ(-1, *(it++));
     EXPECT_EQ(0, *(it++));
@@ -168,7 +177,7 @@ TEST_F(TreeIteratorTest, ConstPostIncrement)
 
 TEST_F(TreeIteratorTest, ConstPreDecrement)
 {
-    const_iterator it = tree.end();
+    ft::rb_tree<int, std::less<int>, std::allocator<int> >::const_iterator it = tree.end();
     EXPECT_TRUE(tree.end() == it);
     EXPECT_EQ(1, *(--it));
     EXPECT_EQ(0, *(--it));
@@ -178,7 +187,7 @@ TEST_F(TreeIteratorTest, ConstPreDecrement)
 
 TEST_F(TreeIteratorTest, ConstPostDecrement)
 {
-    const_iterator it = tree.end();
+    ft::rb_tree<int, std::less<int>, std::allocator<int> >::const_iterator it = tree.end();
     EXPECT_EQ(tree.end(), it--);
     EXPECT_EQ(1, *(it--));
     EXPECT_EQ(0, *(it--));

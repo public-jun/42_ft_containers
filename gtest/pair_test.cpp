@@ -1,6 +1,11 @@
 #include <pair.hpp>
 
+#if __cplusplus >= 201103L
 #include <gtest/gtest.h>
+#else
+#include "ft_test.hpp"
+#endif
+
 #include <map>
 
 TEST(Pair, DefaultConstructor)
@@ -59,11 +64,6 @@ TEST(Pair, AssginOperator)
     EXPECT_EQ('a', p4.first);
     EXPECT_EQ("hoge", p4.second);
 
-    ft::pair<int, char> p5(100, 'a');
-    p5 = p5;
-
-    EXPECT_EQ(100, p5.first);
-    EXPECT_EQ('a', p5.second);
 }
 
 TEST(Pair, OperatorEqual)

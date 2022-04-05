@@ -1,6 +1,11 @@
 #include <set.hpp>
 
+#if __cplusplus >= 201103L
 #include <gtest/gtest.h>
+#else
+#include "ft_test.hpp"
+#endif
+
 #include <set>
 #include <time.h>
 
@@ -145,7 +150,7 @@ TEST(Set, CapacitySizeAndEmpty)
 {
     ft::set<int> s;
     EXPECT_TRUE(s.empty());
-    for (int i = 0; i < 10; ++i)
+    for (std::size_t i = 0; i < 10; ++i)
     {
         s.insert(i);
         EXPECT_EQ(i + 1, s.size());
@@ -225,7 +230,6 @@ TEST(Set, ModifiersInsert)
         }
         it    = s.begin();
         end   = s.end();
-        int i = 0;
 
         sit = stl_s.begin();
         while (it != end)

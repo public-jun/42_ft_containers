@@ -1,7 +1,12 @@
 #include <stack.hpp>
 #include <vector.hpp>
 
+#if __cplusplus >= 201103L
 #include <gtest/gtest.h>
+#else
+#include "ft_test.hpp"
+#endif
+
 #include <stack>
 
 namespace {
@@ -78,7 +83,6 @@ TEST(Stack, Top)
     int_stack.push(2);
 
     EXPECT_EQ(2, int_stack.top());
-    ft::stack<int>::const_reference c_value = int_stack.top();
     EXPECT_EQ(2, int_stack.top());
     int_stack.push(3);
     EXPECT_EQ(3, int_stack.top());
@@ -97,7 +101,7 @@ TEST(Stack, Size)
 {
     ft::stack<int> int_stack;
 
-    int i = 0;
+    std::size_t i = 0;
     for (; i < 20; ++i)
     {
         EXPECT_EQ(i, int_stack.size());

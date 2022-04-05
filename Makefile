@@ -31,7 +31,7 @@ srcs := $(addprefix $(srcsdir)/,$(srcsname))
 #####################################
 #	Test 						 	#
 #####################################
-INCLUDE += -I./testfiles
+# INCLUDE += -I./testfiles
 
 #####################################
 #	.o files					 	#
@@ -148,11 +148,23 @@ test_compile = clang++ -std=c++11 \
 	-g -fsanitize=address -fsanitize=undefined -fsanitize=leak \
 	-I$(gtestdir) $(INCLUDE) -lpthread -o tester
 
+mytest_compile = clang++ -Wall -Wextra -Werror -std=c++98 \
+	gtest/testlib_main.cpp \
+	$(INCLUDE) -lpthread -o tester
+
+# -I$(gtestdir) $(INCLUDE) -lpthread -o tester
+
+
 
 .PHONY: gtest
 gtest: $(gtest) fclean
 	$(test_compile)
 	./tester
 # ./tester # --gtest_filter=Vector.other
+
+.PHONY: mytest
+mytest:
+	$(mytest_compile)
+	./tester
 
 -include $(DEPS_STL) $(DEPS_FT)

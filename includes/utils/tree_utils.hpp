@@ -135,7 +135,7 @@ template <class node_pointer>
 inline void tree_balance_after_insert(node_pointer root, node_pointer x,
                                       node_pointer nil) throw()
 {
-    node_pointer tmp = x;
+    // node_pointer tmp = x;
     if (x == root)
         x->color = kBlack;
     else

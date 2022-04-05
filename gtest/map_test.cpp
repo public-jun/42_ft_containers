@@ -1,7 +1,13 @@
 #include <map.hpp>
 
+#if __cplusplus >= 201103L
 #include <gtest/gtest.h>
+#else
+#include "ft_test.hpp"
+#endif
+
 #include <map>
+#include <set>
 #include <time.h>
 
 template <class T>
@@ -196,7 +202,7 @@ TEST(Map, CapacitySizeAndEmpty)
 {
     ft::map<int, int> m;
     EXPECT_TRUE(m.empty());
-    for (int i = 0; i < 10; ++i)
+    for (std::size_t i = 0; i < 10; ++i)
     {
         m.insert(ft::make_pair(i, i));
         EXPECT_EQ(i + 1, m.size());
@@ -277,7 +283,6 @@ TEST(Map, ModifiersInsert)
         }
         it    = m.begin();
         end   = m.end();
-        int i = 0;
 
         sit = s.begin();
         while (it != end)

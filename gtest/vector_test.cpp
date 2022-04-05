@@ -1,9 +1,25 @@
 #include <vector.hpp>
 
+#if __cplusplus >= 201103L
 #include <gtest/gtest.h>
+#else
+#include "ft_test.hpp"
+#endif
+
 #include <sstream>
 #include <time.h>
 #include <vector>
+
+namespace {
+
+template <class T>
+void judge_equal_vector_value(T v1, T v2)
+{
+    typename T::iterator it1 = v1.begin();
+    typename T::iterator it2 = v2.begin();
+    for (typename T::iterator end = v1.end(); it1 != end; ++it1, ++it2)
+        EXPECT_EQ(*it1, *it2);
+}
 
 ft::vector<int> gen_random_vector(std::size_t size)
 {
@@ -16,13 +32,6 @@ ft::vector<int> gen_random_vector(std::size_t size)
     return v;
 }
 
-template <class T>
-void judge_equal_vector_value(T v1, T v2)
-{
-    typename T::iterator it1 = v1.begin();
-    typename T::iterator it2 = v2.begin();
-    for (typename T::iterator end = v1.end(); it1 != end; ++it1, ++it2)
-        EXPECT_EQ(*it1, *it2);
 }
 
 TEST(Vector, Constructor)
@@ -226,7 +235,7 @@ TEST(Vector, At)
             EXPECT_EQ(i, v.at(i));
         v.at(5) = 42;
         EXPECT_EQ(v.at(5), 42);
-        ASSERT_THROW(v.at(11), std::out_of_range);
+        EXPECT_THROW(v.at(11), std::out_of_range);
     }
 
     // const_reference at( size_type pos ) const;
@@ -237,7 +246,7 @@ TEST(Vector, At)
         const ft::vector<int> cv(v);
         for (int i = 0; i < 10; ++i)
             EXPECT_EQ(i, cv.at(i));
-        ASSERT_THROW(cv.at(11), std::out_of_range);
+        EXPECT_THROW(cv.at(11), std::out_of_range);
     }
 }
 

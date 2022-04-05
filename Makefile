@@ -152,7 +152,7 @@ test_compile = clang++ -std=c++11 \
 .PHONY: gtest
 gtest: $(gtest) fclean
 	$(test_compile)
-	./tester --gtest_filter=Vector*.*
+	./tester
 # ./tester # --gtest_filter=Vector.other
 
 -include $(DEPS_STL) $(DEPS_FT)

@@ -1,8 +1,8 @@
 #include <vector.hpp>
 
 #include <gtest/gtest.h>
-#include <time.h>
 #include <sstream>
+#include <time.h>
 #include <vector>
 
 ft::vector<int> gen_random_vector(std::size_t size)
@@ -555,22 +555,22 @@ TEST(Vector, Insert)
         ss1 << 1 << endl << 2 << endl << 3;
         std::istream_iterator<int> is_it1(ss1);
         std::istream_iterator<int> is_last1;
-        std::stringstream ss2;
+        std::stringstream          ss2;
         ss2 << 1 << endl << 2 << endl << 3;
         std::istream_iterator<int> is_it2(ss2);
         std::istream_iterator<int> is_last2;
 
-        ft::vector<int> v(3, 10);
-        std::vector<int> stl_v(3, 10);
-        ft::vector<int>::iterator it;
+        ft::vector<int>            v(3, 10);
+        std::vector<int>           stl_v(3, 10);
+        ft::vector<int>::iterator  it;
         std::vector<int>::iterator stl_it;
-        it = v.begin();
+        it     = v.begin();
         stl_it = stl_v.begin();
         v.insert(it, is_it1, is_last1);
         stl_v.insert(stl_it, is_it2, is_last2);
         EXPECT_EQ(stl_v.size(), v.size());
 
-        it = v.begin();
+        it     = v.begin();
         stl_it = stl_v.begin();
         for (std::vector<int>::iterator end = stl_v.end(); stl_it != end;
              ++stl_it, ++it)
@@ -580,7 +580,7 @@ TEST(Vector, Insert)
     }
     {
         ft::vector<std::string> v(1, "aaa");
-        std::string arr[4];
+        std::string             arr[4];
         arr[0] = "xxx";
         arr[1] = "yyy";
         arr[2] = "zzz";
@@ -591,8 +591,8 @@ TEST(Vector, Insert)
         EXPECT_EQ(v[3], "aaa");
     }
     {
-        std::size_t size = 10;
-        ft::vector<int> v(10);
+        std::size_t       size = 10;
+        ft::vector<int>   v(10);
         std::stringstream ss;
         for (std::size_t i = 0; i < size; ++i)
             ss << i << " ";
@@ -602,47 +602,222 @@ TEST(Vector, Insert)
         for (int i = 0; i < 10; ++i)
             EXPECT_EQ(0, v[i]);
         for (int i = 0; i < 10; ++i)
-            EXPECT_EQ(i, v[i+10]);
+            EXPECT_EQ(i, v[i + 10]);
     }
 }
 
 TEST(Vector, Erase)
 {
     // iterator erase( iterator pos );
-    {}
+    {
+        ft::vector<int> fv(10);
+        for (int i = 0; i < 10; ++i)
+            fv[i] = i;
+        std::vector<int>           sv(fv.begin(), fv.end());
+        ft::vector<int>::iterator  fit;
+        std::vector<int>::iterator sit;
+
+        for (int i = 0; i < 10; ++i)
+        {
+            int offset = std::rand() % (10 - i);
+
+            fit = fv.begin() + offset;
+            sit = sv.begin() + offset;
+            fit = fv.erase(fit);
+            sit = sv.erase(sit);
+            fit = fv.begin();
+            sit = sv.begin();
+            for (std::vector<int>::iterator end = sv.end(); sit != end;
+                 ++sit, ++fit)
+                EXPECT_EQ(*fit, *sit);
+            EXPECT_EQ(fv.size(), sv.size());
+        }
+    }
 
     // iterator erase( iterator first, iterator last );
-    {}
+    {
+        for (int cnt = 0; cnt < 10; ++cnt)
+        {
+            ft::vector<int> v(50);
+            for (int i = 0; i < 50; ++i)
+                v[i] = i;
+            ft::vector<int>::iterator it, first, last;
+            while (true)
+            {
+                first = v.begin() + std::rand() % 50;
+                last  = v.begin() + std::rand() % 50;
+                if (first <= last)
+                    break;
+            }
+            std::vector<int>           f_half(v.begin(), first);
+            std::vector<int>           l_half(last, v.end());
+            std::vector<int>::iterator sit;
+            v.erase(first, last);
+
+            sit = f_half.begin();
+            it  = v.begin();
+            for (std::vector<int>::iterator end = f_half.end(); sit != end;
+                 ++sit, ++it)
+                EXPECT_EQ(*sit, *it);
+            sit = l_half.begin();
+            for (std::vector<int>::iterator end = l_half.end(); sit != end;
+                 ++sit, ++it)
+                EXPECT_EQ(*sit, *it);
+        }
+    }
 }
 
 TEST(Vector, PushBack)
 {
     // void push_back( const T& value );
-    {}
+    {
+        for (int cnt = 0; cnt < 10; ++cnt)
+        {
+            ft::vector<int>  v;
+            std::vector<int> sv;
+            for (int i = 0; i < 1000; ++i)
+            {
+                int value = std::rand() % 1000;
+                v.push_back(value);
+                sv.push_back(value);
+            }
+            for (int i = 0; i < 1000; ++i)
+                EXPECT_EQ(v[i], sv[i]);
+            EXPECT_EQ(v.size(), sv.size());
+            EXPECT_EQ(v.capacity(), sv.capacity());
+        }
+    }
 }
 
 TEST(Vector, PopBack)
 {
     // void pop_back();
-    {}
+    {
+        ft::vector<int>  v;
+        std::vector<int> sv;
+        for (int i = 0; i < 1000; ++i)
+        {
+            int value = std::rand() % 1000;
+            v.push_back(value);
+            sv.push_back(value);
+        }
+        for (int i = 0; i < 1000; ++i)
+            EXPECT_EQ(v[i], sv[i]);
+        for (int i = 0; i < 1000; ++i)
+        {
+            v.pop_back();
+            sv.pop_back();
+        }
+        EXPECT_EQ(v.size(), sv.size());
+    }
 }
 
 TEST(Vector, Resize)
 {
     // void resize( size_type count, T value = T() );
-    {}
+    {
+        ft::vector<int> v;
+        for (int i = 0; i < 100; ++i)
+            v.push_back(i);
+        std::vector<int> sv(v.begin(), v.end());
+        v.resize(200, 42);
+        sv.resize(200, 42);
+        for (int i = 0; i < 200; ++i)
+            EXPECT_EQ(v[i], sv[i]);
+        EXPECT_EQ(v.size(), sv.size());
+        v.resize(10, 42);
+        sv.resize(10, 42);
+        for (int i = 0; i < 10; ++i)
+            EXPECT_EQ(v[i], sv[i]);
+        EXPECT_EQ(v.size(), sv.size());
+    }
 }
 
 TEST(Vector, Swap)
 {
     // void swap( vector& other );
-    {}
+    {
+        for (int cnt = 0; cnt < 10; ++cnt)
+        {
+            ft::vector<int> v1 = gen_random_vector(100 * cnt);
+            ft::vector<int> cp_v1(v1);
+            ft::vector<int> v2 = gen_random_vector(10 * cnt);
+            ft::vector<int> cp_v2(v2);
+            v1.swap(v2);
+            EXPECT_EQ(v1, cp_v2);
+            EXPECT_EQ(v2, cp_v1);
+        }
+    }
 }
 
-TEST(Vector, NonMemberFunctionsLexicographical) {}
+TEST(Vector, NonMemberFunctionsLexicographical)
+{
+    {
+        ft::vector<int> v1;
+        for (int i = 0; i < 10; ++i)
+            v1.push_back(i);
+        ft::vector<int> v2(v1);
+        EXPECT_TRUE(v1 == v2);
+        EXPECT_FALSE(v1 != v2);
+        EXPECT_FALSE(v1 < v2);
+        EXPECT_TRUE(v1 <= v2);
+        EXPECT_FALSE(v1 > v2);
+        EXPECT_TRUE(v1 >= v2);
+    }
+    {
+        ft::vector<int> v1(3, 10);
+        ft::vector<int> v2(3, 5);
+        EXPECT_FALSE(v1 == v2);
+        EXPECT_TRUE(v1 != v2);
+        EXPECT_FALSE(v1 < v2);
+        EXPECT_FALSE(v1 <= v2);
+        EXPECT_TRUE(v1 > v2);
+        EXPECT_TRUE(v1 >= v2);
+    }
+    {
+        ft::vector<int> v1(5, 5);
+        ft::vector<int> v2(3, 5);
+        EXPECT_FALSE(v1 == v2);
+        EXPECT_TRUE(v1 != v2);
+        EXPECT_FALSE(v1 < v2);
+        EXPECT_FALSE(v1 <= v2);
+        EXPECT_TRUE(v1 > v2);
+        EXPECT_TRUE(v1 >= v2);
+    }
+    {
+        ft::vector<int> v1(5, 5);
+        ft::vector<int> v2(3, 10);
+        EXPECT_FALSE(v1 == v2);
+        EXPECT_TRUE(v1 != v2);
+        EXPECT_TRUE(v1 < v2);
+        EXPECT_TRUE(v1 <= v2);
+        EXPECT_FALSE(v1 > v2);
+        EXPECT_FALSE(v1 >= v2);
+    }
+}
 
 TEST(Vector, NonMemberFunctionsSwap)
 {
     //  void swap( vector& other );
-    {}
+    {
+        for (int cnt = 0; cnt < 10; ++cnt)
+        {
+            ft::vector<int> v1 = gen_random_vector(100 * cnt);
+            ft::vector<int> cp_v1(v1);
+            ft::vector<int> v2 = gen_random_vector(10 * cnt);
+            ft::vector<int> cp_v2(v2);
+            ft::swap(v1, v2);
+            EXPECT_EQ(v1, cp_v2);
+            EXPECT_EQ(v2, cp_v1);
+        }
+    }
+    {
+        ft::vector<int> v1;
+        ft::vector<int> cp_v1(v1);
+        ft::vector<int> v2;
+        ft::vector<int> cp_v2(v2);
+        ft::swap(v1, v2);
+        EXPECT_EQ(v1, cp_v2);
+        EXPECT_EQ(v2, cp_v1);
+    }
 }

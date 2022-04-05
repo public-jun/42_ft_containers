@@ -575,10 +575,34 @@ TEST(Vector, Insert)
         for (std::vector<int>::iterator end = stl_v.end(); stl_it != end;
              ++stl_it, ++it)
         {
-            cout << *stl_it << endl;
-            cout << *it << endl;
             EXPECT_EQ(*stl_it, *it);
         }
+    }
+    {
+        ft::vector<std::string> v(1, "aaa");
+        std::string arr[4];
+        arr[0] = "xxx";
+        arr[1] = "yyy";
+        arr[2] = "zzz";
+        arr[3] = "end";
+        v.insert(v.begin(), arr, arr + 3);
+        for (int i = 0; i < 3; ++i)
+            EXPECT_EQ(v[i], arr[i]);
+        EXPECT_EQ(v[3], "aaa");
+    }
+    {
+        std::size_t size = 10;
+        ft::vector<int> v(10);
+        std::stringstream ss;
+        for (std::size_t i = 0; i < size; ++i)
+            ss << i << " ";
+        std::istream_iterator<int> iit(ss);
+        std::istream_iterator<int> eos;
+        v.insert(v.end(), iit, eos);
+        for (int i = 0; i < 10; ++i)
+            EXPECT_EQ(0, v[i]);
+        for (int i = 0; i < 10; ++i)
+            EXPECT_EQ(i, v[i+10]);
     }
 }
 

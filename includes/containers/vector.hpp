@@ -541,17 +541,12 @@ bool operator>=(const ft::vector<_Tp, _Allocator>& __lhs,
     return !(__lhs < __rhs);
 }
 
-} // namespace ft
-
-namespace std {
-
 template <class _Tp, class _Allocator>
 void swap(ft::vector<_Tp, _Allocator>& __lhs,
           ft::vector<_Tp, _Allocator>& __rhs)
 {
     __lhs.swap(__rhs);
 }
-
-} // namespace std
+} // namespace ft
 
 #endif

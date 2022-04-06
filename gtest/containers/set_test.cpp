@@ -1,9 +1,12 @@
+#if STL // -DTEST=1
+#else   // -DTEST=0
 #include <set.hpp>
+#endif
 
 #if __cplusplus >= 201103L
 #include <gtest/gtest.h>
 #else
-#include "ft_test.hpp"
+#include "../ft_test.hpp"
 #endif
 
 #include <set>
@@ -228,8 +231,8 @@ TEST(Set, ModifiersInsert)
             ++it;
             stl_s.insert(key);
         }
-        it    = s.begin();
-        end   = s.end();
+        it  = s.begin();
+        end = s.end();
 
         sit = stl_s.begin();
         while (it != end)

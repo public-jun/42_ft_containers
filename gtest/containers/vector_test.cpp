@@ -1,9 +1,12 @@
+#if STL // -DTEST=1
+#else   // -DTEST=0
 #include <vector.hpp>
+#endif
 
 #if __cplusplus >= 201103L
 #include <gtest/gtest.h>
 #else
-#include "ft_test.hpp"
+#include "../ft_test.hpp"
 #endif
 
 #include <sstream>
@@ -32,7 +35,7 @@ ft::vector<int> gen_random_vector(std::size_t size)
     return v;
 }
 
-}
+} // namespace
 
 TEST(Vector, Constructor)
 {

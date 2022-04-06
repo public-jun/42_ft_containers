@@ -7,6 +7,12 @@ https://github.com/JUNNETWORKS/42-ft_containers/tree/main/test/testlib
 #ifndef GTEST_FT_TEST_HPP_
 #define GTEST_FT_TEST_HPP_
 
+#if STL // -DSTL=1
+// namespace ft = std;
+#define ft std
+#else // -DSTL=0
+#endif
+
 #include <cassert>
 #include <string>
 #include <vector>

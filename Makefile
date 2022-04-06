@@ -9,22 +9,16 @@ NAME_FT := ft_container
 #####################################
 CXX := clang++
 CXXFLAGS := -Wall -Wextra -Werror -std=c++98 -pedantic -g
-# CXXFLAGS := -Wall -Wextra -Werror -std=c++98 -pedantic -g -fsanitize=leak,undefined,address
-# CXXFLAGS := -Wall -Wextra -Werror
-# CXXFLAGS := -Wall -Wextra -g -std=c++98
 
 #####################################
 #	Include header				 	#
 #####################################
 INCLUDE := -I./includes/containers -I./includes/utils
-# INCLUDE :=
 
 #####################################
 #	Src							 	#
 #####################################
-srcsname := main.cpp \
-			test_vector.cpp \
-			test_algorithm.cpp
+srcsname := main.cpp
 srcsdir := ./testfiles
 srcs := $(addprefix $(srcsdir)/,$(srcsname))
 
@@ -91,21 +85,6 @@ $(OBJDIR_STL)/%.o: $(srcsdir)/%.cpp  | $(DEPSDIR_STL)
 $(OBJDIR_FT)/%.o: $(srcsdir)/%.cpp  | $(DEPSDIR_FT)
 	$(CXX) $(CXXFLAGS) $(DEPFLAG_FT) -c ./$< $(INCLUDE) -o $@
 
-
-
-ft: $(result) $(NAME_FT)
-	@./$(NAME_FT) > $(ft_out) 2>$(ft_err) ||:
-	@cat $(ft_out)
-	@cat $(ft_err)
-
-stl: $(result) $(NAME_STL)
-	@./$(NAME_STL) > $(stl_out) 2>$(stl_err) ||:
-	@cat $(stl_out)
-	@cat $(stl_err)
-
-$(result):
-	mkdir -p $(result)
-
 .PHONY: clean
 clean:
 	$(RM) *.dSYM
@@ -113,7 +92,7 @@ clean:
 
 .PHONY: fclean
 fclean: clean
-	$(RM) $(NAME_STL) $(NAME_FT) $(result) tester
+	$(RM) $(NAME_STL) $(NAME_FT) $(result) tester mytest_exe mytest_stl_exe
 
 .PHONY: cleangtest
 cleangtest:
@@ -122,14 +101,7 @@ cleangtest:
 .PHONY: re
 re: fclean all
 
-test: $(result) $(NAME_FT) $(NAME_STL)
-	@./$(NAME_FT) > $(ft_out) 2>$(ft_err)
-	@./$(NAME_STL) > $(stl_out) 2>$(stl_err)
-	diff $(ft_out) $(stl_out) ||:
-	@echo "---ft_err---"
-	@cat $(ft_err)
-	@echo "---stl_err---"
-	@cat $(stl_err)
+################# google test ####################
 
 gtestdir =    ./test
 gtest    =    $(gtestdir)/gtest $(gtestdir)/googletest-release-1.11.0
@@ -148,23 +120,26 @@ test_compile = clang++ -std=c++11 \
 	-g -fsanitize=address -fsanitize=undefined -fsanitize=leak \
 	-I$(gtestdir) $(INCLUDE) -lpthread -o tester
 
-mytest_compile = clang++ -Wall -Wextra -Werror -std=c++98 \
-	gtest/testlib_main.cpp \
-	$(INCLUDE) -lpthread -o tester
-
-# -I$(gtestdir) $(INCLUDE) -lpthread -o tester
-
-
-
 .PHONY: gtest
 gtest: $(gtest) fclean
 	$(test_compile)
 	./tester
 # ./tester # --gtest_filter=Vector.other
 
+#################### my test #######################
+
+mytest_compile = clang++ -Wall -Wextra -Werror -std=c++98 \
+	gtest/testlib_main.cpp \
+	$(INCLUDE) -lpthread
+
 .PHONY: mytest
 mytest:
-	$(mytest_compile)
-	./tester
+	$(mytest_compile) -o ./mytest_exe
+	./mytest_exe
+
+.PHONY: mytest_stl
+mytest_stl:
+	$(mytest_compile) -DSTL=1 -o ./mytest_stl_exe
+	./mytest_stl_exe
 
 -include $(DEPS_STL) $(DEPS_FT)

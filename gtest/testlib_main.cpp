@@ -12,12 +12,16 @@ testf_func_vec_type testf_functions;
 
 /***** Include all the files that use GoogleTest to test *****/
 
-#include "vector_test.cpp"
-#include "set_test.cpp"
-#include "tree_test.cpp"
-#include "pair_test.cpp"
-#include "map_test.cpp"
-#include "stack_test.cpp"
+#if STL // -DTEST=1
+#else   // -DTEST=0
+#include "./other/pair_test.cpp"
+#include "./other/tree_test.cpp"
+#endif
+
+#include "./containers/map_test.cpp"
+#include "./containers/set_test.cpp"
+#include "./containers/stack_test.cpp"
+#include "./containers/vector_test.cpp"
 
 namespace ft {
 namespace test {
@@ -36,7 +40,6 @@ bool MakeAndRegisterTestInfo(std::string test_name, testing::Test* func)
 
 } // namespace test
 } // namespace ft
-
 
 int main()
 {

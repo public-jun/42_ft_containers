@@ -3,7 +3,7 @@
 #if __cplusplus >= 201103L
 #include <gtest/gtest.h>
 #else
-#include "ft_test.hpp"
+#include "../ft_test.hpp"
 #endif
 
 #include <map>

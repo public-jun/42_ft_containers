@@ -1,9 +1,12 @@
+#if STL
+#else
 #include <map.hpp>
+#endif
 
 #if __cplusplus >= 201103L
 #include <gtest/gtest.h>
 #else
-#include "ft_test.hpp"
+#include "../ft_test.hpp"
 #endif
 
 #include <map>
@@ -281,8 +284,8 @@ TEST(Map, ModifiersInsert)
             ++it;
             s.insert(key);
         }
-        it    = m.begin();
-        end   = m.end();
+        it  = m.begin();
+        end = m.end();
 
         sit = s.begin();
         while (it != end)

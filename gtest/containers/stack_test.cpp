@@ -1,10 +1,13 @@
+#if STL // -DTEST=1
+#else   // -DTEST=0
 #include <stack.hpp>
 #include <vector.hpp>
+#endif
 
 #if __cplusplus >= 201103L
 #include <gtest/gtest.h>
 #else
-#include "ft_test.hpp"
+#include "../ft_test.hpp"
 #endif
 
 #include <stack>
@@ -34,7 +37,7 @@ TEST(Stack, InitializeWithContainer)
     for (int i = 0; i < 10; ++i)
         int_vec.push_back(i);
 
-    ft::stack<int> int_stack(int_vec);
+    ft::stack<int, ft::vector<int> > int_stack(int_vec);
     for (int i = 9; i >= 0; --i)
     {
         EXPECT_EQ(int_stack.top(), int_vec[i]);

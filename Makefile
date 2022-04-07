@@ -170,4 +170,13 @@ stdgbench:
 	$(INCLUDE) \
 	-o stdbenchmark_exe
 
+################# google bench ####################
+
+.PHONY: mybench
+mybench:
+	clang++ -Wall -Wextra -Werror -std=c++98 \
+	./mybenchmark/bench.cpp \
+	$(INCLUDE) \
+	-o mybench_exe
+
 -include $(DEPS_STL) $(DEPS_FT)

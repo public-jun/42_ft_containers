@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 
+#include "./test_utils/color.hpp"
 #include "ft_test.hpp"
 
 #define SIZE 1000
@@ -57,7 +58,7 @@ int main()
 
         cout << "RUN:     " << test_func_name << endl;
         test_func();
-        cout << "SUCCESS: " << test_func_name << "\n" << endl;
+        cout << GREEN << "SUCCESS: " << test_func_name << END << "\n" << endl;
     }
 
     cout << "Test Finished!!" << endl;
@@ -71,7 +72,7 @@ int main()
 
         cout << "RUN:     " << test_func_name << endl;
         test_obj->Run();
-        cout << "SUCCESS: " << test_func_name << "\n" << endl;
+        cout << GREEN << "SUCCESS: " << test_func_name << END << "\n" << endl;
     }
 
     cout << "All tests succeeded." << endl;

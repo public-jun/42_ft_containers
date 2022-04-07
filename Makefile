@@ -174,7 +174,7 @@ stdgbench:
 
 .PHONY: mybench
 mybench:
-	clang++ -Wall -Wextra -Werror -std=c++98 \
+	clang++ -Wall -Wextra -Werror -std=c++98 -O0 \
 	./mybenchmark/bench.cpp \
 	$(INCLUDE) \
 	-o mybench_exe

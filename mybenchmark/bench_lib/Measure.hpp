@@ -1,7 +1,7 @@
 #ifndef MEASURE_HPP
 #define MEASURE_HPP
 
-#include "../gtest/test_utils/color.hpp"
+#include "../../gtest/test_utils/color.hpp"
 #include "StopWatch.hpp"
 #include <iomanip>
 #include <iostream>

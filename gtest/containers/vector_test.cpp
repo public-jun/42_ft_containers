@@ -665,6 +665,7 @@ TEST(Vector, Erase)
             std::vector<int>           l_half(last, v.end());
             std::vector<int>::iterator sit;
             v.erase(first, last);
+            EXPECT_EQ(v.size(), f_half.size() + l_half.size());
 
             sit = f_half.begin();
             it  = v.begin();

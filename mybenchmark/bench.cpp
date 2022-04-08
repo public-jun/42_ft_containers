@@ -1,6 +1,7 @@
 #include "stack_bench.cpp"
 #include "vector_bench.cpp"
 #include "map_bench.cpp"
+#include "set_bench.cpp"
 
 #include <iomanip>
 #include <iostream>
@@ -20,4 +21,5 @@ int main()
     vector_bench();
     stack_bench();
     map_bench();
+    set_bench();
 }

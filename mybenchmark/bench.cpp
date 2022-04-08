@@ -1,5 +1,6 @@
 #include "stack_bench.cpp"
 #include "vector_bench.cpp"
+#include "map_bench.cpp"
 
 #include <iomanip>
 #include <iostream>
@@ -18,4 +19,5 @@ int main()
     print_title();
     vector_bench();
     stack_bench();
+    map_bench();
 }

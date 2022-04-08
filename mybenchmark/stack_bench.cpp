@@ -1,20 +1,10 @@
 #include "./bench_lib/bench.hpp"
 
-#include <iomanip>
-#include <iostream>
-#include <sstream>
-#include <vector>
 
 #include <stack.hpp>
 #include <stack>
 
 template <class Stack>
-void bm_stack_def_constructor()
-{
-    Stack v;
-}
-
-template <class Stack, class Vec>
 void bm_stack_def_constructor()
 {
     Stack v;

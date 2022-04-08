@@ -1,7 +1,5 @@
 #include "./bench_lib/bench.hpp"
 
-#include <iomanip>
-#include <iostream>
 #include <sstream>
 #include <vector.hpp>
 #include <vector>

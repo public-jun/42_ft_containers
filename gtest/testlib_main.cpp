@@ -16,7 +16,6 @@ testf_func_vec_type testf_functions;
 #if STL // -DTEST=1
 #else   // -DTEST=0
 #include "./other/pair_test.cpp"
-#include "./other/tree_test.cpp"
 #endif
 
 #include "./containers/map_test.cpp"

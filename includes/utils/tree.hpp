@@ -299,7 +299,6 @@ public:
     node_allocator_type&       node_allocator() { return node_alloc; }
     const node_allocator_type& node_allocator() const { return node_alloc; }
 
-public:
     node_pointer  root() const { return end_->left; }
     node_pointer* root_ptr() const { return &(end_->left); }
 
@@ -525,7 +524,7 @@ public:
         end_->left = nil_;
     }
 
-    // private:
+private:
     node_pointer nil_;
     node_pointer begin_;
     node_pointer end_;
@@ -534,8 +533,6 @@ public:
     size_type           size_;
     value_compare       comp_;
 
-    // private:
-public:
     // node を作成する
     void initialize_node()
     {
@@ -551,7 +548,6 @@ public:
         begin_     = end_;
     }
 
-public:
     node_pointer create_node(const value_type& value)
     {
         node_pointer new_node = node_alloc.allocate(1);

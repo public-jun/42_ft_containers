@@ -127,9 +127,9 @@ void stack_bench()
     BM_REGIST("stack_top", bm_stack_top<ft::stack<int> >,
               bm_stack_top<std::stack<int> >, LOOP2, 1);
     BM_REGIST("stack_empty", bm_stack_empty<ft::stack<int> >,
-              bm_stack_empty<std::stack<int> >, LOOP2, 1);
+              bm_stack_empty<std::stack<int> >, LOOP, 1);
     BM_REGIST("stack_size", bm_stack_size<ft::stack<int> >,
-              bm_stack_size<std::stack<int> >, LOOP2, 1);
+              bm_stack_size<std::stack<int> >, LOOP, 1);
     BM_REGIST("stack_push", bm_stack_push<ft::stack<int> >,
               bm_stack_push<std::stack<int> >, LOOP2, 1);
     BM_REGIST("stack_pop", bm_stack_pop<ft::stack<int> >,

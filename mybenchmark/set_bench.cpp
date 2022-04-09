@@ -405,35 +405,32 @@ void set_bench()
 {
     for (int i = 0; i < 1000; ++i)
     {
-        g_ss.insert(i*2);
-        g_fs.insert(i*2);
+        g_ss.insert(i * 2);
+        g_fs.insert(i * 2);
     }
-    BM_REGIST("set_def_constructor",
-              (bm_set_def_constructor<ft::set<int> >),
-              (bm_set_def_constructor<std::set<int> >), LOOP, 1);
+    BM_REGIST("set_def_constructor", (bm_set_def_constructor<ft::set<int> >),
+              (bm_set_def_constructor<std::set<int> >), LOOP2, 100);
     BM_REGIST("set_constructor",
               (bm_set_constructor<ft::set<int, std::greater<int> > >),
-              (bm_set_constructor<std::set<int, std::greater<int> > >),
-              LOOP, 1);
+              (bm_set_constructor<std::set<int, std::greater<int> > >), LOOP2,
+              100);
     BM_REGIST("set_range_constructor",
               (bm_set_range_constructor<ft::set<int> >),
-              (bm_set_range_constructor<std::set<int> >), LOOP2, 1);
-    BM_REGIST("set_copy_constructor",
-              (bm_set_copy_constructor<ft::set<int> >),
-              (bm_set_copy_constructor<std::set<int> >), LOOP2, 1);
-    BM_REGIST("set_assign_operator",
-              (bm_set_assign_operator<ft::set<int> >),
-              (bm_set_assign_operator<std::set<int> >), LOOP2, 1);
+              (bm_set_range_constructor<std::set<int> >), LOOP3, 100);
+    BM_REGIST("set_copy_constructor", (bm_set_copy_constructor<ft::set<int> >),
+              (bm_set_copy_constructor<std::set<int> >), LOOP3, 100);
+    BM_REGIST("set_assign_operator", (bm_set_assign_operator<ft::set<int> >),
+              (bm_set_assign_operator<std::set<int> >), LOOP3, 100);
     BM_REGIST("set_get_allocator", (bm_set_get_allocator<ft::set<int> >),
               (bm_set_get_allocator<std::set<int> >), LOOP, 1);
     BM_REGIST("set_begin", (bm_set_begin<ft::set<int> >),
-              (bm_set_begin<std::set<int> >), LOOP2, 1);
+              (bm_set_begin<std::set<int> >), LOOP3, 100);
     BM_REGIST("set_end", (bm_set_end<ft::set<int> >),
-              (bm_set_end<std::set<int> >), LOOP2, 1);
+              (bm_set_end<std::set<int> >), LOOP3, 100);
     BM_REGIST("set_rbegin", (bm_set_rbegin<ft::set<int> >),
-              (bm_set_rbegin<std::set<int> >), LOOP2, 1);
+              (bm_set_rbegin<std::set<int> >), LOOP3, 100);
     BM_REGIST("set_rend", (bm_set_rend<ft::set<int> >),
-              (bm_set_rend<std::set<int> >), LOOP2, 1);
+              (bm_set_rend<std::set<int> >), LOOP3, 100);
     BM_REGIST("set_empty", (bm_set_empty<ft::set<int> >),
               (bm_set_empty<std::set<int> >), LOOP, 1);
     BM_REGIST("set_size", (bm_set_size<ft::set<int> >),
@@ -441,45 +438,45 @@ void set_bench()
     BM_REGIST("set_max_size", (bm_set_max_size<ft::set<int> >),
               (bm_set_max_size<std::set<int> >), LOOP, 1);
     BM_REGIST("set_clear", (bm_set_clear<ft::set<int> >),
-              (bm_set_clear<std::set<int> >), LOOP2, 1);
+              (bm_set_clear<std::set<int> >), LOOP3, 100);
     BM_REGIST("set_insert", (bm_set_insert<ft::set<int> >),
-              (bm_set_insert<std::set<int> >), LOOP2, 1);
+              (bm_set_insert<std::set<int> >), LOOP3, 100);
     BM_REGIST("set_insert_hint", (bm_set_insert_hint<ft::set<int> >),
-              (bm_set_insert_hint<std::set<int> >), LOOP2, 1);
+              (bm_set_insert_hint<std::set<int> >), LOOP3, 100);
     BM_REGIST("set_insert_range", (bm_set_insert_range<ft::set<int> >),
-              (bm_set_insert_range<std::set<int> >), LOOP2, 1);
+              (bm_set_insert_range<std::set<int> >), LOOP3, 100);
     BM_REGIST("set_erase", (bm_set_erase<ft::set<int> >),
-              (bm_set_erase<std::set<int> >), LOOP2, 1);
+              (bm_set_erase<std::set<int> >), LOOP3, 100);
     BM_REGIST("set_erase_range", (bm_set_erase_range<ft::set<int> >),
-              (bm_set_erase_range<std::set<int> >), LOOP2, 1);
+              (bm_set_erase_range<std::set<int> >), LOOP3, 100);
     BM_REGIST("set_erase_key", (bm_set_erase_key<ft::set<int> >),
-              (bm_set_erase_key<std::set<int> >), LOOP2, 1);
+              (bm_set_erase_key<std::set<int> >), LOOP3, 100);
     BM_REGIST("set_swap", (bm_set_swap<ft::set<int> >),
-              (bm_set_swap<std::set<int> >), LOOP2, 1);
+              (bm_set_swap<std::set<int> >), LOOP3, 100);
     BM_REGIST("set_count", (bm_set_count<ft::set<int> >),
-              (bm_set_count<std::set<int> >), LOOP2, 1);
+              (bm_set_count<std::set<int> >), LOOP3, 100);
     BM_REGIST("set_find", (bm_set_find<ft::set<int> >),
-              (bm_set_find<std::set<int> >), LOOP2, 1);
+              (bm_set_find<std::set<int> >), LOOP3, 100);
     BM_REGIST("set_equal_range", (bm_set_equal_range<ft::set<int> >),
-              (bm_set_equal_range<std::set<int> >), LOOP2, 1);
+              (bm_set_equal_range<std::set<int> >), LOOP3, 100);
     BM_REGIST("set_lower_bound", (bm_set_lower_bound<ft::set<int> >),
-              (bm_set_lower_bound<std::set<int> >), LOOP2, 1);
+              (bm_set_lower_bound<std::set<int> >), LOOP3, 100);
     BM_REGIST("set_upper_bound", (bm_set_upper_bound<ft::set<int> >),
-              (bm_set_upper_bound<std::set<int> >), LOOP2, 1);
+              (bm_set_upper_bound<std::set<int> >), LOOP3, 100);
     BM_REGIST("set_key_comp", (bm_set_key_comp<ft::set<int> >),
-              (bm_set_key_comp<std::set<int> >), LOOP2, 1);
+              (bm_set_key_comp<std::set<int> >), LOOP2, 100);
     BM_REGIST("set_value_comp", (bm_set_value_comp<ft::set<int> >),
-              (bm_set_value_comp<std::set<int> >), LOOP, 1);
+              (bm_set_value_comp<std::set<int> >), LOOP2, 100);
     BM_REGIST("set_equal", (bm_set_equal<ft::set<int> >),
               (bm_set_equal<std::set<int> >), LOOP, 1);
     BM_REGIST("set_not_equal", (bm_set_not_equal<ft::set<int> >),
-              (bm_set_not_equal<std::set<int> >), LOOP2, 1);
+              (bm_set_not_equal<std::set<int> >), LOOP, 1);
     BM_REGIST("set_less", (bm_set_less<ft::set<int> >),
-              (bm_set_less<std::set<int> >), LOOP2, 1);
+              (bm_set_less<std::set<int> >), LOOP, 1);
     BM_REGIST("set_greater", (bm_set_greater<ft::set<int> >),
-              (bm_set_greater<std::set<int> >), LOOP2, 1);
+              (bm_set_greater<std::set<int> >), LOOP, 1);
     BM_REGIST("set_less_equal", (bm_set_less_equal<ft::set<int> >),
-              (bm_set_less_equal<std::set<int> >), LOOP2, 1);
+              (bm_set_less_equal<std::set<int> >), LOOP, 1);
     BM_REGIST("set_greater_equal", (bm_set_greater_equal<ft::set<int> >),
-              (bm_set_greater_equal<std::set<int> >), LOOP2, 1);
+              (bm_set_greater_equal<std::set<int> >), LOOP, 1);
 }

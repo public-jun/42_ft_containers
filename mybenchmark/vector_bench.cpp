@@ -428,33 +428,33 @@ void vector_bench()
     BM_REGIST("vector_clear", bm_vec_clear<ft::vector<int> >,
               bm_vec_clear<std::vector<int> >, LOOP2, 1);
     BM_REGIST("vector_insert1", bm_vec_insert1<ft::vector<int> >,
-              bm_vec_insert1<std::vector<int> >, LOOP2, 10);
+              bm_vec_insert1<std::vector<int> >, LOOP2, 1);
     BM_REGIST("vector_insert2", bm_vec_insert2<ft::vector<int> >,
-              bm_vec_insert2<std::vector<int> >, LOOP2, 10);
+              bm_vec_insert2<std::vector<int> >, LOOP2, 1);
     BM_REGIST("vector_insert_count1", bm_vec_insert_count1<ft::vector<int> >,
-              bm_vec_insert_count1<std::vector<int> >, LOOP2, 10);
+              bm_vec_insert_count1<std::vector<int> >, LOOP2, 1);
     BM_REGIST("vector_insert_count2", bm_vec_insert_count2<ft::vector<int> >,
-              bm_vec_insert_count2<std::vector<int> >, LOOP2, 10);
+              bm_vec_insert_count2<std::vector<int> >, LOOP2, 1);
     BM_REGIST("vector_insert_input_range1",
               bm_vec_insert_input_range1<ft::vector<int> >,
-              bm_vec_insert_input_range1<std::vector<int> >, LOOP2, 1);
+              bm_vec_insert_input_range1<std::vector<int> >, LOOP3, 100);
     BM_REGIST("vector_insert_input_range2",
               bm_vec_insert_input_range2<ft::vector<int> >,
-              bm_vec_insert_input_range2<std::vector<int> >, LOOP2, 1);
+              bm_vec_insert_input_range2<std::vector<int> >, LOOP3, 100);
     BM_REGIST("vector_insert_input_range3",
               bm_vec_insert_input_range3<ft::vector<int> >,
-              bm_vec_insert_input_range3<std::vector<int> >, LOOP2, 1);
+              bm_vec_insert_input_range3<std::vector<int> >, LOOP3, 100);
     BM_REGIST("vector_insert_forward_range1",
               bm_vec_insert_forward_range1<ft::vector<int> >,
-              bm_vec_insert_forward_range1<std::vector<int> >, LOOP2, 1);
+              bm_vec_insert_forward_range1<std::vector<int> >, LOOP3, 100);
     BM_REGIST("vector_insert_forward_range2",
               bm_vec_insert_forward_range2<ft::vector<int> >,
-              bm_vec_insert_forward_range2<std::vector<int> >, LOOP2, 1);
+              bm_vec_insert_forward_range2<std::vector<int> >, LOOP3, 100);
     BM_REGIST("vector_insert_forward_range3",
               bm_vec_insert_forward_range3<ft::vector<int> >,
-              bm_vec_insert_forward_range3<std::vector<int> >, LOOP2, 1);
+              bm_vec_insert_forward_range3<std::vector<int> >, LOOP3, 100);
     BM_REGIST("vector_erase", bm_vec_erase<ft::vector<int> >,
-              bm_vec_erase<std::vector<int> >, LOOP2, 1);
+              bm_vec_erase<std::vector<int> >, LOOP3, 100);
     BM_REGIST("vector_erase_range", bm_vec_erase_range<ft::vector<int> >,
               bm_vec_erase_range<std::vector<int> >, LOOP2, 1);
     BM_REGIST("vector_reserve", bm_vec_reserve<ft::vector<int> >,

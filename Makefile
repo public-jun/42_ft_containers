@@ -128,34 +128,6 @@ mytest_stl:
 	$(mytest_compile) -DSTL=1 -o ./mytest_stl_exe
 	./mytest_stl_exe
 
-################# google bench ####################
-
-gbenchdir = ./benchmark
-bench = ./bench
-
-.PHONY: gbench
-gbench:
-	clang++ -std=c++11 -O2 \
-	$(bench)/gbench.cpp \
-	-isystem $(gbenchdir)/include \
-	-L$(gbenchdir)/build/src \
-	-lbenchmark -lpthread \
-	-I/usr/local/include \
-	$(INCLUDE) \
-	-DUSE_LIB=ft \
-	-o benchmark_exe
-
-.PHONY: stdgbench
-stdgbench:
-	clang++ -std=c++11 -O2 \
-	$(bench)/gbench.cpp \
-	-isystem $(gbenchdir)/include \
-	-L$(gbenchdir)/build/src \
-	-lbenchmark -lpthread \
-	-I/usr/local/include \
-	$(INCLUDE) \
-	-o stdbenchmark_exe
-
 ################# my bench ####################
 
 .PHONY: mybench

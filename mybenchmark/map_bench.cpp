@@ -180,7 +180,7 @@ void bm_map_insert()
 {
     Map m(g_sm);
     for (int i = 0; i < 1000; ++i)
-        m.insert(std::make_pair(i*2 + 1, i));
+        m.insert(std::make_pair(i * 2 + 1, i));
 }
 
 template <>
@@ -188,7 +188,7 @@ void bm_map_insert<ft::map<int, int> >()
 {
     ft::map<int, int> m(g_fm);
     for (int i = 0; i < 1000; ++i)
-        m.insert(ft::make_pair(i*2 + 1, i));
+        m.insert(ft::make_pair(i * 2 + 1, i));
 }
 
 template <class Map>
@@ -421,8 +421,8 @@ void map_bench()
 {
     for (int i = 0; i < 1000; ++i)
     {
-        g_sm.insert(std::make_pair(i*2, i));
-        g_fm.insert(ft::make_pair(i*2, i));
+        g_sm.insert(std::make_pair(i * 2, i));
+        g_fm.insert(ft::make_pair(i * 2, i));
     }
     BM_REGIST("map_def_constructor",
               (bm_map_def_constructor<ft::map<int, int> >),
@@ -444,61 +444,61 @@ void map_bench()
               (bm_map_get_allocator<std::map<int, int> >), LOOP, 1);
     BM_REGIST("map_access_operator",
               (bm_map_access_operator<ft::map<int, int> >),
-              (bm_map_access_operator<std::map<int, int> >), LOOP2, 1);
+              (bm_map_access_operator<std::map<int, int> >), LOOP3, 100);
     BM_REGIST("map_begin", (bm_map_begin<ft::map<int, int> >),
-              (bm_map_begin<std::map<int, int> >), LOOP2, 1);
+              (bm_map_begin<std::map<int, int> >), LOOP3, 100);
     BM_REGIST("map_end", (bm_map_end<ft::map<int, int> >),
-              (bm_map_end<std::map<int, int> >), LOOP2, 1);
+              (bm_map_end<std::map<int, int> >), LOOP3, 100);
     BM_REGIST("map_rbegin", (bm_map_rbegin<ft::map<int, int> >),
-              (bm_map_rbegin<std::map<int, int> >), LOOP2, 1);
+              (bm_map_rbegin<std::map<int, int> >), LOOP3, 100);
     BM_REGIST("map_rend", (bm_map_rend<ft::map<int, int> >),
-              (bm_map_rend<std::map<int, int> >), LOOP2, 1);
+              (bm_map_rend<std::map<int, int> >), LOOP3, 100);
     BM_REGIST("map_empty", (bm_map_empty<ft::map<int, int> >),
-              (bm_map_empty<std::map<int, int> >), LOOP, 1);
+              (bm_map_empty<std::map<int, int> >), LOOP3, 100);
     BM_REGIST("map_size", (bm_map_size<ft::map<int, int> >),
               (bm_map_size<std::map<int, int> >), LOOP, 1);
     BM_REGIST("map_max_size", (bm_map_max_size<ft::map<int, int> >),
               (bm_map_max_size<std::map<int, int> >), LOOP, 1);
     BM_REGIST("map_clear", (bm_map_clear<ft::map<int, int> >),
-              (bm_map_clear<std::map<int, int> >), LOOP2, 1);
+              (bm_map_clear<std::map<int, int> >), LOOP3, 100);
     BM_REGIST("map_insert", (bm_map_insert<ft::map<int, int> >),
-              (bm_map_insert<std::map<int, int> >), LOOP2, 1);
+              (bm_map_insert<std::map<int, int> >), LOOP3, 100);
     BM_REGIST("map_insert_hint", (bm_map_insert_hint<ft::map<int, int> >),
-              (bm_map_insert_hint<std::map<int, int> >), LOOP2, 1);
+              (bm_map_insert_hint<std::map<int, int> >), LOOP3, 100);
     BM_REGIST("map_insert_range", (bm_map_insert_range<ft::map<int, int> >),
-              (bm_map_insert_range<std::map<int, int> >), LOOP2, 1);
+              (bm_map_insert_range<std::map<int, int> >), LOOP3, 100);
     BM_REGIST("map_erase", (bm_map_erase<ft::map<int, int> >),
-              (bm_map_erase<std::map<int, int> >), LOOP2, 1);
+              (bm_map_erase<std::map<int, int> >), LOOP3, 100);
     BM_REGIST("map_erase_range", (bm_map_erase_range<ft::map<int, int> >),
-              (bm_map_erase_range<std::map<int, int> >), LOOP2, 1);
+              (bm_map_erase_range<std::map<int, int> >), LOOP3, 100);
     BM_REGIST("map_erase_key", (bm_map_erase_key<ft::map<int, int> >),
-              (bm_map_erase_key<std::map<int, int> >), LOOP2, 1);
+              (bm_map_erase_key<std::map<int, int> >), LOOP3, 100);
     BM_REGIST("map_swap", (bm_map_swap<ft::map<int, int> >),
-              (bm_map_swap<std::map<int, int> >), LOOP2, 1);
+              (bm_map_swap<std::map<int, int> >), LOOP3, 100);
     BM_REGIST("map_count", (bm_map_count<ft::map<int, int> >),
-              (bm_map_count<std::map<int, int> >), LOOP2, 1);
+              (bm_map_count<std::map<int, int> >), LOOP3, 100);
     BM_REGIST("map_find", (bm_map_find<ft::map<int, int> >),
-              (bm_map_find<std::map<int, int> >), LOOP2, 1);
+              (bm_map_find<std::map<int, int> >), LOOP3, 100);
     BM_REGIST("map_equal_range", (bm_map_equal_range<ft::map<int, int> >),
-              (bm_map_equal_range<std::map<int, int> >), LOOP2, 1);
+              (bm_map_equal_range<std::map<int, int> >), LOOP3, 100);
     BM_REGIST("map_lower_bound", (bm_map_lower_bound<ft::map<int, int> >),
-              (bm_map_lower_bound<std::map<int, int> >), LOOP2, 1);
+              (bm_map_lower_bound<std::map<int, int> >), LOOP3, 100);
     BM_REGIST("map_upper_bound", (bm_map_upper_bound<ft::map<int, int> >),
-              (bm_map_upper_bound<std::map<int, int> >), LOOP2, 1);
+              (bm_map_upper_bound<std::map<int, int> >), LOOP3, 100);
     BM_REGIST("map_key_comp", (bm_map_key_comp<ft::map<int, int> >),
-              (bm_map_key_comp<std::map<int, int> >), LOOP2, 1);
+              (bm_map_key_comp<std::map<int, int> >), LOOP2, 10);
     BM_REGIST("map_value_comp", (bm_map_value_comp<ft::map<int, int> >),
-              (bm_map_value_comp<std::map<int, int> >), LOOP, 1);
+              (bm_map_value_comp<std::map<int, int> >), LOOP2, 10);
     BM_REGIST("map_equal", (bm_map_equal<ft::map<int, int> >),
               (bm_map_equal<std::map<int, int> >), LOOP, 1);
     BM_REGIST("map_not_equal", (bm_map_not_equal<ft::map<int, int> >),
-              (bm_map_not_equal<std::map<int, int> >), LOOP2, 1);
+              (bm_map_not_equal<std::map<int, int> >), LOOP, 1);
     BM_REGIST("map_less", (bm_map_less<ft::map<int, int> >),
-              (bm_map_less<std::map<int, int> >), LOOP2, 1);
+              (bm_map_less<std::map<int, int> >), LOOP, 1);
     BM_REGIST("map_greater", (bm_map_greater<ft::map<int, int> >),
-              (bm_map_greater<std::map<int, int> >), LOOP2, 1);
+              (bm_map_greater<std::map<int, int> >), LOOP, 1);
     BM_REGIST("map_less_equal", (bm_map_less_equal<ft::map<int, int> >),
-              (bm_map_less_equal<std::map<int, int> >), LOOP2, 1);
+              (bm_map_less_equal<std::map<int, int> >), LOOP, 1);
     BM_REGIST("map_greater_equal", (bm_map_greater_equal<ft::map<int, int> >),
-              (bm_map_greater_equal<std::map<int, int> >), LOOP2, 1);
+              (bm_map_greater_equal<std::map<int, int> >), LOOP, 1);
 }

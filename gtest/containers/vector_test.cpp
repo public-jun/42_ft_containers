@@ -224,6 +224,7 @@ TEST(Vector, GetAllocator)
             EXPECT_EQ('a' + i, p[i]);
         for (i = 0; i < 5; ++i)
             v.get_allocator().destroy(&p[i]);
+        v.get_allocator().deallocate(p, 5);
     }
 }
 

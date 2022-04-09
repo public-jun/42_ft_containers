@@ -114,7 +114,7 @@ cleangtest:
 
 #################### my test #######################
 
-mytest_compile = $(CXX) $(CXXFLAGS) -g -fsanitize=address -fsanitize=undefined -fsanitize=leak \
+mytest_compile = $(CXX) $(CXXFLAGS) \
 	gtest/testlib_main.cpp \
 	$(INCLUDE) -lpthread
 

@@ -454,7 +454,7 @@ void map_bench()
     BM_REGIST("map_rend", (bm_map_rend<ft::map<int, int> >),
               (bm_map_rend<std::map<int, int> >), LOOP3, 100);
     BM_REGIST("map_empty", (bm_map_empty<ft::map<int, int> >),
-              (bm_map_empty<std::map<int, int> >), LOOP2, 1);
+              (bm_map_empty<std::map<int, int> >), LOOP, 1);
     BM_REGIST("map_size", (bm_map_size<ft::map<int, int> >),
               (bm_map_size<std::map<int, int> >), LOOP, 1);
     BM_REGIST("map_max_size", (bm_map_max_size<ft::map<int, int> >),

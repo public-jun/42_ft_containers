@@ -11,6 +11,5 @@
 #include "containers/vector_test.cpp"
 #include "containers/stack_test.cpp"
 #include "other/pair_test.cpp"
-#include "other/tree_test.cpp"
 #include "containers/map_test.cpp"
 #include "containers/set_test.cpp"

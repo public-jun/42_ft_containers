@@ -58,23 +58,23 @@ inline void tree_left_rotate(node_pointer x, node_pointer nil) throw()
 {
     /*
         x が left_child の時
-                ○100                     ○100
+                ○ 100                     ○ 100
                 /                           /
-            ○10(x)                     ○20(y)
+            ○ 10(x)                  ○ 20(y)
             /   \         ->            /   \
-        ○5      ○20(y)             ○10(x)  ○25
+        ○ 5      ○ 20(y)          ○ 10(x)  ○ 25
                 /   \                /    \
-            ○15     ○25         ○5    ○15
+            ○ 15     ○ 2        ○ 5    ○ 15
 
 
         x が right_child の時
-        ○0                          ○0
+        ○ 0                          ○ 0
            \                            \
-            ○10(x)                     ○20(y)
+            ○ 10(x)                     ○ 20(y)
             /   \           ->           /   \
-        ○5      ○20(y)              ○10(x)  ○25
+        ○ 5     ○ 20(y)            ○ 10(x)  ○ 25
                 /   \                /    \
-            ○15     ○25          ○5    ○15
+            ○ 15    ○ 25        ○ 5   ○ 15
     */
     node_pointer y = x->right;
     x->right       = y->left;
@@ -94,22 +94,22 @@ inline void tree_right_rotate(node_pointer x, node_pointer nil)
 {
     /*
         x が left_child の時
-                   ○100                  ○100
+                   ○ 100                  ○ 100
                   /                        /
-             ○20(x)                   ○10(y)
+             ○ 20(x)                   ○ 10(y)
              /   \         ->          /   \
-         ○10(y)  ○25            ○15    ○20(x)
+         ○ 10(y) ○ 25             ○ 15   ○ 20(x)
          /   \                            /    \
-      ○5     ○15                      ○15    ○25
+      ○5     ○15                      ○ 15    ○ 25
 
         x が right_child の時
-            ○0                    ○0
+            ○ 0                    ○ 0
               \                      \
-             ○20(x)                  ○10(y)
+             ○ 20(x)                  ○ 10(y)
              /   \         ->          /   \
-         ○10(y)  ○25            ○15    ○20(x)
+         ○ 10(y)  ○ 25            ○ 15    ○ 20(x)
          /   \                            /    \
-      ○5     ○15                      ○15    ○25
+      ○ 5     ○ 15                    ○ 15   ○ 25
     */
     node_pointer y = x->left;
     x->left        = y->right;
@@ -126,9 +126,10 @@ inline void tree_right_rotate(node_pointer x, node_pointer nil)
 
 /*
 赤黒木のルール
-1.
-2.
-3.
+1. 各ノードは赤か黒の色をもつ。
+2. 根は黒である
+3. 葉 (NIL) はすべて黒である。葉はすべて根と同じ色である。
+4. 根から葉までの道に含まれる黒いノードの数は、葉によらず一定である
 */
 
 template <class node_pointer>
@@ -155,24 +156,24 @@ inline void tree_balance_after_insert(node_pointer root, node_pointer x,
             if (y != nil && y->color == kRed)
             {
                 /*
-                    ●16 挿入時、叔父(○70)が赤色の場合
+                    ● 16 挿入時、叔父( ○ 70)が赤色の場合
                                    /
-                                 ○50
+                                 ○ 50
                                 /   \
-                            ●20     ●70
+                            ● 20    ● 70
                             /   \   /   \
-                        ●16     ○○     ○
+                        ● 16   ○ ○    ○
                         /   \
                       ○     ○
 
                     親、祖父、叔父の色を変更
-                    -> ●50より上を再帰的に調べる
+                    -> ● 50より上を再帰的に調べる
                                    /
-                                 ●50
+                                 ● 50
                                 /   \
-                            ○20     ○70
+                            ○ 20    ○ 70
                             /   \   /   \
-                        ●16     ○○     ○
+                        ● 16    ○ ○     ○
                         /   \
                       ○     ○
                 */
@@ -192,9 +193,9 @@ inline void tree_balance_after_insert(node_pointer root, node_pointer x,
                 {
                     x = x->parent;
                     /*
-                        ●16 を右挿入時、叔父(○70)が赤色の場合
+                        ● 16 を右挿入時、叔父(○ 70)が赤色の場合
                                          /
-                                      ○50
+                                      ○ 50
                                     /       \
                                 ●12       ○70
                                /     \     /   \
@@ -318,7 +319,7 @@ void tree_remove(node_pointer root, node_pointer z, node_pointer nil)
     node_pointer w = nil;
     // x と y の親をリンクし、w を見つけます
     if (x != nil)
-        x->parent = y->parent; // xの親を祖父にする
+        x->parent = y->parent; // y の親を x の親にする
     if (tree_is_left_child(y))
     {
         y->parent->left = x; // 祖父の子要素を xにする
@@ -355,34 +356,101 @@ void tree_remove(node_pointer root, node_pointer z, node_pointer nil)
     // 赤色もしくは最後のノードを削除した場合はリバランスは必要ない
     if (removed_black == kBlack && root != nil)
     {
+        // リバランスを行う。
+        // x は、その色が何であろうと、(
+        // 削除された __y から転送された)暗黙の黒色を関連付けます。
+
+        // もし x が root(この場合 null にはできない)
+        // なら、どちらにしても黒になるはずで、もし二重に黒いなら、二重は無視すればいいのです。
+
+        // もし x が赤なら(この場合 nil
+        // にはなりえません)、その色を黒に設定するだけで、暗黙の黒を吸収することができます。
+
+        // yは黒で、一つの子( x )しか持っていないので、 x
+        // は赤で子がいないか、もしくは nil である。さもなければ y
+        // は左右のポインタの下で異なる黒の高さを持つことになります。
         if (x != nil)
             x->color = kBlack;
         else
         {
             while (true)
             {
-                // print_tree(root, nil, 10);
-                // node_info(w, nil);
                 if (!tree_is_left_child(w)) // if x is left child
                 {
                     if (w->color == kRed)
                     {
+                        // w ( x の兄弟)が赤のとき
+                        /*
+                                       /
+                                     ○ 親
+                                    /    \
+                                 ○x      ●w
+                                /   \    /   \
+                                       ○左   ○右
+                        */
+                        // 親と w の色を入れ替える
                         w->color         = kBlack;
                         w->parent->color = kRed;
+                        /*
+                                       /
+                                     ● 親
+                                    /   \
+                                 ○x     ○w
+                                /   \    /   \
+                                       ○左     ○右
+                        */
+                        // 親を左回転
                         tree_left_rotate(w->parent, nil);
+                        /*
+                                       /
+                                     ○ w
+                                    /   \
+                                 ●親    ○右
+                                /   \
+                              ○x  ○左
+                        */
                         // x is still valid
                         // reset root only if necessary
                         if (root == w->left)
                             root = w;
                         // reset sibling, and it still can't be null
+                        // ○左を w( x の兄弟)にして再度ループ
                         w = w->left->right;
                     }
                     // w->color is Black, w may have null children
                     if ((w->left == nil || w->left->color == kBlack) &&
                         (w->right == nil || w->right->color == kBlack))
                     {
+                        // w (x の兄弟)が黒 && w の子要素がどちらも黒(nil)
+                        /*
+                                       /
+                                     ◎ 親
+                                    /    \
+                                 ○x      ○w
+                                /   \    /   \
+                                       ○左   ○右
+                        */
+                        // w (x の兄弟)を赤にする
+                        /*
+                                       /
+                                     ◎ 親
+                                    /    \
+                                 ○x      ●w
+                                /   \    /   \
+                                       ○左   ○右
+                        */
                         w->color = kRed;
-                        x        = w->parent;
+
+                        // x を親にする
+                        /*
+                                       /
+                                     ◎ 親(x)
+                                    /    \
+                                 ○       ●w
+                                /   \    /   \
+                                       ○左   ○右
+                        */
+                        x = w->parent;
                         // x can no longer be nil
                         if (x == root || x->color == kRed)
                         {
@@ -390,26 +458,93 @@ void tree_remove(node_pointer root, node_pointer z, node_pointer nil)
                             break;
                         }
                         // reset sibling, and it still can't be nil
+                        // x が更新されたので w (x の兄弟)も更新
                         w = tree_is_left_child(x) ? x->parent->right
                                                   : x->parent->left;
                         // continue;
+                        // 木をのぼる
                     }
                     else // w has a red child
                     {
                         if (w->right == nil || w->right->color == kBlack)
                         {
+                            // w (x の兄弟)が黒
+                            // && 右の子が黒(nil)
+                            // && 左の子が赤(non-nil)
+                            /*
+                                           /
+                                         ◎ 親
+                                        /    \
+                                     ○x      ○w
+                                    /   \    /   \
+                                           ●左   ○右
+                            */
+
+                            // w (xの兄弟) と左の色を交換
+                            /*
+                                           /
+                                         ◎ 親
+                                        /    \
+                                     ○x      ●w
+                                    /   \    /   \
+                                           ○左   ○右
+                            */
                             // w left child is non-nil and red
                             w->left->color = kBlack;
                             w->color       = kRed;
+
+                            // w を右回転し、左を w (xの兄弟)にする
+                            /*
+                                           /
+                                         ◎ 親
+                                        /    \
+                                     ○x      ○w(左)
+                                    /   \    /   \
+                                                 ●w(元)
+                                                /   \
+                                                    ○右
+                            */
                             tree_right_rotate(w, nil);
                             // w is known not to be root, so root hasn't changed
                             // reset sibling, and it still can't be nill
                             w = w->parent;
                         }
+                        // w (x の兄弟)が黒
+                        // && 右の子が赤
+                        /*
+                                       /
+                                     ◎ 親
+                                    /    \
+                                 ○x      ○w
+                                /   \    /   \
+                                       ◎左   ●右
+                        */
+
+                        // 親と w (xの兄弟)の色を交換
+                        // && 右を黒に
+                        /*
+                                       /
+                                     ○ 親
+                                    /    \
+                                 ○x      ◎ w
+                                /   \    /   \
+                                       ◎左   ○右
+                        */
                         // w has a right red child, left child may be nil
                         w->color         = w->parent->color;
                         w->parent->color = kBlack;
                         w->right->color  = kBlack;
+
+                        // 親を左回転
+                        // xを根として break
+                        /*
+                                       /
+                                     ◎ w
+                                    /    \
+                                 ○親     ○右
+                                /   \
+                               ○x  ◎左
+                        */
                         tree_left_rotate(w->parent, nil);
                         break;
                     }

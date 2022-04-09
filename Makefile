@@ -8,7 +8,7 @@ NAME_FT := ft_container
 #	Compile option				 	#
 #####################################
 CXX := clang++
-CXXFLAGS := -Wall -Wextra -Werror -std=c++98 -pedantic -g
+CXXFLAGS := -Wall -Wextra -Werror -std=c++98
 
 #####################################
 #	Include header				 	#
@@ -21,11 +21,6 @@ INCLUDE := -I./includes/containers -I./includes/utils
 srcsname := main.cpp
 srcsdir := ./testfiles
 srcs := $(addprefix $(srcsdir)/,$(srcsname))
-
-#####################################
-#	Test 						 	#
-#####################################
-# INCLUDE += -I./testfiles
 
 #####################################
 #	.o files					 	#
@@ -51,15 +46,6 @@ DEPFLAG_FT = -MT $@ -MMD -MP -MF $(DEPSDIR_FT)/$*.d
 #	build files					 	#
 #####################################
 build := $(OBJDIR_STL) $(DEPSDIR_STL) $(OBJDIR_FT) $(DEPSDIR_FT)
-
-#####################################
-#	result files				 	#
-#####################################
-result := ./result
-ft_out := $(result)/ft_out
-ft_err := $(result)/ft_err
-stl_out := $(result)/stl_out
-stl_err := $(result)/stl_err
 
 #####################################
 #	Remove option				 	#
@@ -92,11 +78,7 @@ clean:
 
 .PHONY: fclean
 fclean: clean
-	$(RM) $(NAME_STL) $(NAME_FT) $(result) tester *exe
-
-.PHONY: cleangtest
-cleangtest:
-	$(RM) $(gtestdir)
+	$(RM) $(NAME_STL) $(NAME_FT) tester *exe
 
 .PHONY: re
 re: fclean all
@@ -126,9 +108,13 @@ gtest: $(gtest) fclean
 	./tester
 # ./tester # --gtest_filter=Vector.other
 
+.PHONY: cleangtest
+cleangtest:
+	$(RM) $(gtestdir)
+
 #################### my test #######################
 
-mytest_compile = clang++ -Wall -Wextra -Werror -std=c++98 \
+mytest_compile = $(CXX) $(CXXFLAGS) -g -fsanitize=address -fsanitize=undefined -fsanitize=leak \
 	gtest/testlib_main.cpp \
 	$(INCLUDE) -lpthread
 
@@ -170,11 +156,11 @@ stdgbench:
 	$(INCLUDE) \
 	-o stdbenchmark_exe
 
-################# google bench ####################
+################# my bench ####################
 
 .PHONY: mybench
 mybench:
-	clang++ -Wall -Wextra -Werror -std=c++98 -O0 \
+	$(CXX) $(CXXFLAGS) -O0 \
 	./mybenchmark/bench.cpp \
 	$(INCLUDE) \
 	-o mybench_exe

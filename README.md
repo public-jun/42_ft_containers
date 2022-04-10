@@ -15,23 +15,42 @@ InstalledDir: /usr/local/opt/llvm/bin
 $ git clone https://github.com/public-jun/42_ft_containers.git
 ```
 
-`cpp`ファイルの中で `include` し、利用してください。
-```cpp
-#include "42_ft_containers/includes/vector.hpp"
-#include "42_ft_containers/includes/map.hpp"
-#include "42_ft_containers/includes/stack.hpp"
-#include "42_ft_containers/includes/set.hpp"
-```
-もしくはコンパイル時に `-I` オプションで `include` してください。
+コンパイル時に `-I` オプションで `include` し、`cpp`ファイルで `include` してください。
 ```bash
-
+$ clang++ main.cpp -I./42_ft_containers/includes/containers -I./42_ft_containers/includes/utils
+```
+`main.cpp`
+```
+#include <vector.hpp>
+#include <map.hpp>
+#include <stack.hpp>
+#include <set.hpp>
 ```
 
 
-### TESTS
-make
+## TESTS
+### Unit TEST
+---
+google test(c++11) で行う
+```
+$ make gtest
+```
 
-make mytest
-make gtest
+自作テスト(c++98)で行う
+```
+$ make mytest
+$ ./mytest_exe
+```
+### Benchmark TEST
+---
+```bash
+$ make mybench
+$ ./mybench_exe
+```
 
-make mybench
+### Clean up
+```bash
+$ make clean (except Execution binary)
+or
+$ make fclean 
+```
